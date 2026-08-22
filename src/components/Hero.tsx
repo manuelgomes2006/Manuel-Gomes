@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown, Code2 } from 'lucide-react';
+import { ArrowDown, Sparkles, Code2 } from 'lucide-react';
 import { PERSONAL_DATA } from '../data/content';
 
 export const Hero: React.FC = () => {
@@ -88,7 +88,7 @@ export const Hero: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Right Column: Mobile-Optimized Monogram Canvas */}
+        {/* Right Column: High-Contrast B&W Photographic Focal Point */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -97,47 +97,40 @@ export const Hero: React.FC = () => {
         >
           <div className="relative group max-w-md w-full">
             
-            {/* Glow border */}
-            <div className="absolute -inset-1 bg-gradient-to-tr from-zinc-700 via-zinc-400 to-zinc-800 rounded-2xl opacity-20 blur-xl transition-all duration-700 pointer-events-none" />
+            {/* Glow border frame behind container */}
+            <div className="absolute -inset-1 bg-gradient-to-tr from-zinc-700 via-zinc-400 to-zinc-800 rounded-2xl opacity-25 group-hover:opacity-45 blur-xl transition-all duration-700 pointer-events-none" />
 
-            {/* Canvas Frame */}
-            <div className="relative min-h-[340px] sm:h-[480px] rounded-2xl bg-[#0d0d10] border border-zinc-800/80 shadow-2xl p-6 sm:p-8 flex flex-col justify-between overflow-hidden">
-              <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none" />
-              <div className="absolute inset-0 bg-radial-glow opacity-70 pointer-events-none" />
+            {/* Photo Container Card */}
+            <div className="relative rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800/80 shadow-2xl">
+              {/* Overlay vignette */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-transparent to-transparent opacity-80 z-10" />
 
-              {/* Top Header Row */}
-              <div className="flex items-center justify-between z-10">
-                <div className="flex items-center space-x-1.5">
-                  <div className="w-2 h-2 rounded-full bg-zinc-600" />
-                  <div className="w-2 h-2 rounded-full bg-zinc-700" />
-                  <div className="w-2 h-2 rounded-full bg-zinc-800" />
-                </div>
-                <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-zinc-500">
-                  DEVELOPER // ARCHITECTURE
-                </span>
-              </div>
+              {/* Film Grain Texture Layer */}
+              <div className="absolute inset-0 opacity-20 pointer-events-none z-20 mix-blend-overlay bg-grid-pattern" />
 
-              {/* Center Monogram */}
-              <div className="my-auto py-6 text-center space-y-3 z-10">
-                <div className="w-20 sm:w-24 h-20 sm:h-24 mx-auto rounded-2xl bg-zinc-900/90 border border-zinc-800 flex items-center justify-center shadow-inner">
-                  <span className="text-2xl sm:text-3xl font-extrabold font-mono text-zinc-200 tracking-tighter">MG</span>
-                </div>
+              {/* Main Photo of Manuel */}
+              <img
+                src={PERSONAL_DATA.images.hero!}
+                alt="Manuel Gomes — AI & Web Developer"
+                className="w-full h-[420px] sm:h-[500px] object-cover object-top filter grayscale contrast-[1.25] brightness-[0.98] group-hover:scale-105 transition-transform duration-700 ease-out"
+              />
+
+              {/* Photo Bottom Caption */}
+              <div className="absolute bottom-6 left-6 right-6 z-20 flex items-center justify-between">
                 <div>
-                  <h3 className="text-base sm:text-lg font-bold tracking-widest uppercase text-white font-sans">MANUEL GOMES</h3>
-                  <p className="text-[11px] sm:text-xs font-mono text-zinc-400 uppercase tracking-wider mt-1">AI Developer & Entrepreneur</p>
+                  <h3 className="text-sm font-bold tracking-widest uppercase text-white font-sans">MANUEL GOMES</h3>
+                  <p className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider">AI Developer & Entrepreneur</p>
                 </div>
-              </div>
-
-              {/* Bottom Technical Bar */}
-              <div className="z-10 pt-4 border-t border-zinc-900/80 flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-zinc-500">
-                <div className="flex items-center space-x-1.5">
-                  <Code2 className="w-3.5 h-3.5 text-zinc-400" />
-                  <span>REACT // TS // GEMINI AI</span>
+                <div className="p-2 rounded-full bg-zinc-950/80 border border-zinc-800 backdrop-blur-md">
+                  <Sparkles className="w-4 h-4 text-zinc-300" />
                 </div>
-                <span className="text-zinc-400">EST. 2026</span>
               </div>
             </div>
 
+            {/* Floating Technical Lines Decorative Badge */}
+            <div className="absolute -bottom-4 -left-4 z-30 hidden sm:block px-4 py-2 bg-zinc-950/90 border border-zinc-800 rounded-xl backdrop-blur-md shadow-xl text-[11px] font-mono text-zinc-400">
+              <span className="text-zinc-200 font-semibold">EST. 2026</span> // KOLKATA, INDIA
+            </div>
           </div>
         </motion.div>
 

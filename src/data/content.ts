@@ -1,3 +1,7 @@
+import manuelHero from '../assets/images/manuel-hero.jpg';
+import manuelAbout from '../assets/images/manuel-about.jpg';
+import manuelBreak from '../assets/images/manuel-break.jpg';
+
 export const PERSONAL_DATA = {
   name: "MANUEL GOMES",
   role: "AI Developer, Web Developer & Aspiring Entrepreneur",
@@ -10,9 +14,9 @@ export const PERSONAL_DATA = {
   aboutTags: ["Developer", "AI Explorer", "Data Science Student", "Builder", "Designer", "Entrepreneur"],
   
   images: {
-    hero: null,
-    about: null,
-    break: null,
+    hero: manuelHero,
+    about: manuelAbout,
+    break: manuelBreak,
     gallery: [
       { id: 1, caption: "BUILDING", aspect: "aspect-[4/5]" },
       { id: 2, caption: "LEARNING", aspect: "aspect-[5/4]" },
