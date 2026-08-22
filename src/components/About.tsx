@@ -27,12 +27,12 @@ export const About: React.FC = () => {
               <img
                 src={PERSONAL_DATA.images.about!}
                 alt="Manuel Gomes — Portrait"
-                className="w-full h-[440px] md:h-[500px] object-cover object-top filter grayscale contrast-[1.2] brightness-95 group-hover:scale-105 transition-transform duration-700"
+                className="w-full h-[440px] md:h-[500px] object-cover object-top group-hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-transparent to-transparent opacity-60" />
               
               <div className="absolute bottom-6 left-6 right-6">
-                <p className="text-[11px] font-mono uppercase tracking-widest text-zinc-400">TECHNO INDIA UNIVERSITY</p>
+                <p className="text-[11px] font-mono uppercase tracking-widest text-zinc-300">TECHNO INDIA UNIVERSITY</p>
                 <p className="text-sm font-semibold text-white">Data Science & Artificial Intelligence</p>
               </div>
             </div>

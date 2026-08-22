@@ -13,17 +13,17 @@ export const PhotoBreak: React.FC = () => {
 
   return (
     <section ref={containerRef} className="relative h-[70vh] sm:h-[80vh] w-full overflow-hidden border-y border-zinc-900 flex items-center justify-center">
-      {/* Background Image with slow Parallax */}
+      {/* Background Image in Full Natural Color with slow Parallax */}
       <motion.div style={{ y }} className="absolute inset-0 w-full h-[120%] -top-[10%]">
         <img
           src={PERSONAL_DATA.images.break!}
-          alt="Manuel Gomes — Cinematic Visual Break"
-          className="w-full h-full object-cover filter grayscale contrast-130 brightness-75 object-top"
+          alt="Manuel Gomes — Visual Break"
+          className="w-full h-full object-cover brightness-90 object-top"
         />
       </motion.div>
 
       {/* Dark Vignette Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-black/40 to-[#09090b] opacity-80" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-black/40 to-[#09090b] opacity-75" />
       <div className="absolute inset-0 bg-grid-pattern opacity-25" />
 
       {/* Minimal Overlay Content */}
@@ -33,7 +33,7 @@ export const PhotoBreak: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-xs font-mono uppercase tracking-[0.3em] text-zinc-400 font-semibold"
+          className="text-xs font-mono uppercase tracking-[0.3em] text-zinc-300 font-semibold"
         >
           // MANUEL GOMES
         </motion.p>
@@ -51,7 +51,7 @@ export const PhotoBreak: React.FC = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-xs font-mono text-zinc-400 tracking-widest uppercase"
+          className="text-xs font-mono text-zinc-300 tracking-widest uppercase"
         >
           The journey is still loading...
         </motion.p>

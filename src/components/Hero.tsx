@@ -88,7 +88,7 @@ export const Hero: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Right Column: High-Contrast B&W Photographic Focal Point */}
+        {/* Right Column: Full Color Portrait Focal Point */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -103,23 +103,20 @@ export const Hero: React.FC = () => {
             {/* Photo Container Card */}
             <div className="relative rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800/80 shadow-2xl">
               {/* Overlay vignette */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-transparent to-transparent opacity-80 z-10" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-transparent to-transparent opacity-70 z-10" />
 
-              {/* Film Grain Texture Layer */}
-              <div className="absolute inset-0 opacity-20 pointer-events-none z-20 mix-blend-overlay bg-grid-pattern" />
-
-              {/* Main Photo of Manuel */}
+              {/* Main Photo of Manuel in Full Color */}
               <img
                 src={PERSONAL_DATA.images.hero!}
                 alt="Manuel Gomes — AI & Web Developer"
-                className="w-full h-[420px] sm:h-[500px] object-cover object-top filter grayscale contrast-[1.25] brightness-[0.98] group-hover:scale-105 transition-transform duration-700 ease-out"
+                className="w-full h-[420px] sm:h-[500px] object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
               />
 
               {/* Photo Bottom Caption */}
               <div className="absolute bottom-6 left-6 right-6 z-20 flex items-center justify-between">
                 <div>
                   <h3 className="text-sm font-bold tracking-widest uppercase text-white font-sans">MANUEL GOMES</h3>
-                  <p className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider">AI Developer & Entrepreneur</p>
+                  <p className="text-[11px] font-mono text-zinc-300 uppercase tracking-wider">AI Developer & Entrepreneur</p>
                 </div>
                 <div className="p-2 rounded-full bg-zinc-950/80 border border-zinc-800 backdrop-blur-md">
                   <Sparkles className="w-4 h-4 text-zinc-300" />
