@@ -5,7 +5,8 @@ import path from 'path';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: './', // Ensures relative asset URLs so GitHub Pages loads without a blank screen
+  // GitHub Pages base URL for repo 'Manuel-Gomes'
+  base: process.env.GITHUB_ACTIONS ? '/Manuel-Gomes/' : './',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
