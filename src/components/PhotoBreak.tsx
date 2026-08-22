@@ -1,30 +1,15 @@
 import React from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { PERSONAL_DATA } from '../data/content';
+import { motion } from 'framer-motion';
 
 export const PhotoBreak: React.FC = () => {
-  const containerRef = React.useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start end', 'end start'],
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], ['-10%', '10%']);
-
   return (
-    <section ref={containerRef} className="relative h-[70vh] sm:h-[80vh] w-full overflow-hidden border-y border-zinc-900 flex items-center justify-center">
-      {/* Background Image in Full Natural Color with slow Parallax */}
-      <motion.div style={{ y }} className="absolute inset-0 w-full h-[120%] -top-[10%]">
-        <img
-          src={PERSONAL_DATA.images.break!}
-          alt="Manuel Gomes — Visual Break"
-          className="w-full h-full object-cover brightness-90 object-top"
-        />
-      </motion.div>
+    <section className="relative py-28 sm:py-36 w-full overflow-hidden bg-[#09090b] border-y border-zinc-900 flex items-center justify-center">
+      {/* Background Radial Glow */}
+      <div className="absolute inset-0 bg-radial-glow opacity-60 pointer-events-none" />
+      <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none" />
 
-      {/* Dark Vignette Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-black/40 to-[#09090b] opacity-75" />
-      <div className="absolute inset-0 bg-grid-pattern opacity-25" />
+      {/* Ambient background blur elements */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-zinc-700/10 blur-[120px] rounded-full pointer-events-none" />
 
       {/* Minimal Overlay Content */}
       <div className="relative z-10 text-center px-6 max-w-4xl space-y-4">
@@ -33,7 +18,7 @@ export const PhotoBreak: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-xs font-mono uppercase tracking-[0.3em] text-zinc-300 font-semibold"
+          className="text-xs font-mono uppercase tracking-[0.3em] text-zinc-500 font-semibold"
         >
           // MANUEL GOMES
         </motion.p>
@@ -51,7 +36,7 @@ export const PhotoBreak: React.FC = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-xs font-mono text-zinc-300 tracking-widest uppercase"
+          className="text-xs font-mono text-zinc-400 tracking-widest uppercase"
         >
           The journey is still loading...
         </motion.p>

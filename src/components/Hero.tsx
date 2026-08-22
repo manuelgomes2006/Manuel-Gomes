@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown, Sparkles, Code2 } from 'lucide-react';
+import { ArrowDown, Code2 } from 'lucide-react';
 import { PERSONAL_DATA } from '../data/content';
 
 export const Hero: React.FC = () => {
@@ -88,7 +88,7 @@ export const Hero: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Right Column: Full Color Portrait Focal Point */}
+        {/* Right Column: Raw Unaltered Portrait Photo */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -97,36 +97,49 @@ export const Hero: React.FC = () => {
         >
           <div className="relative group max-w-md w-full">
             
-            {/* Glow border frame behind container */}
-            <div className="absolute -inset-1 bg-gradient-to-tr from-zinc-700 via-zinc-400 to-zinc-800 rounded-2xl opacity-25 group-hover:opacity-45 blur-xl transition-all duration-700 pointer-events-none" />
+            {/* Soft glow border behind photo */}
+            <div className="absolute -inset-1 bg-gradient-to-tr from-zinc-700 via-zinc-400 to-zinc-800 rounded-2xl opacity-25 group-hover:opacity-40 blur-xl transition-all duration-700 pointer-events-none" />
 
-            {/* Photo Container Card */}
-            <div className="relative rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800/80 shadow-2xl">
-              {/* Overlay vignette */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-transparent to-transparent opacity-70 z-10" />
-
-              {/* Main Photo of Manuel in Full Color */}
-              <img
-                src={PERSONAL_DATA.images.hero!}
-                alt="Manuel Gomes — AI & Web Developer"
-                className="w-full h-[420px] sm:h-[500px] object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
-              />
+            {/* Photo Card Container */}
+            <div className="relative rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800/80 shadow-2xl group">
+              {PERSONAL_DATA.images.hero ? (
+                <img
+                  src={PERSONAL_DATA.images.hero}
+                  alt="Manuel Gomes — Main Portrait"
+                  className="w-full h-[460px] sm:h-[540px] object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                />
+              ) : (
+                /* Fallback Monogram Canvas */
+                <div className="relative min-h-[340px] sm:h-[480px] bg-[#0d0d10] p-6 sm:p-8 flex flex-col justify-between">
+                  <div className="flex items-center justify-between z-10">
+                    <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-zinc-500">
+                      DEVELOPER // ARCHITECTURE
+                    </span>
+                  </div>
+                  <div className="my-auto py-6 text-center space-y-3 z-10">
+                    <div className="w-20 sm:w-24 h-20 sm:h-24 mx-auto rounded-2xl bg-zinc-900/90 border border-zinc-800 flex items-center justify-center">
+                      <span className="text-2xl sm:text-3xl font-extrabold font-mono text-zinc-200">MG</span>
+                    </div>
+                    <h3 className="text-base sm:text-lg font-bold tracking-widest uppercase text-white">MANUEL GOMES</h3>
+                  </div>
+                </div>
+              )}
 
               {/* Photo Bottom Caption */}
-              <div className="absolute bottom-6 left-6 right-6 z-20 flex items-center justify-between">
+              <div className="absolute bottom-4 left-4 right-4 z-20 flex items-center justify-between bg-zinc-950/80 backdrop-blur-md p-3.5 rounded-xl border border-zinc-800/80">
                 <div>
-                  <h3 className="text-sm font-bold tracking-widest uppercase text-white font-sans">MANUEL GOMES</h3>
-                  <p className="text-[11px] font-mono text-zinc-300 uppercase tracking-wider">AI Developer & Entrepreneur</p>
+                  <h3 className="text-xs font-bold tracking-widest uppercase text-white font-sans">MANUEL GOMES</h3>
+                  <p className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">AI Developer & Entrepreneur</p>
                 </div>
-                <div className="p-2 rounded-full bg-zinc-950/80 border border-zinc-800 backdrop-blur-md">
-                  <Sparkles className="w-4 h-4 text-zinc-300" />
-                </div>
+                <span className="text-[10px] font-mono text-zinc-400 bg-zinc-900 px-2.5 py-1 rounded-md border border-zinc-800">
+                  PORTRAIT
+                </span>
               </div>
             </div>
 
             {/* Floating Technical Lines Decorative Badge */}
             <div className="absolute -bottom-4 -left-4 z-30 hidden sm:block px-4 py-2 bg-zinc-950/90 border border-zinc-800 rounded-xl backdrop-blur-md shadow-xl text-[11px] font-mono text-zinc-400">
-              <span className="text-zinc-200 font-semibold">EST. 2026</span> // KOLKATA, INDIA
+              <span className="text-zinc-200 font-semibold">STATUS</span> // SYSTEM READY
             </div>
           </div>
         </motion.div>
