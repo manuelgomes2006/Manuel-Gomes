@@ -49,9 +49,9 @@ export const PERSONAL_DATA = {
       tagline: "AI-powered opportunity eligibility analyzer",
       description: "An application that analyzes student profiles against scholarships, internships, and competitions and provides eligibility verdicts, explanations, match percentages, and improvement recommendations.",
       tech: ["React", "TypeScript", "Tailwind CSS", "Gemini AI"],
-      githubUrl: "https://github.com/manuelgomes2006/ScholarMatch-AI",
-      liveUrl: "https://scholarmatch-ai.vercel.app",
-      image: null // Rendered via sleek technical card UI or screenshot frame
+      githubUrl: "https://github.com/manuelgomes2006/scholarmatch",
+      liveUrl: "https://manuelgomes2006.github.io/scholarmatch/",
+      image: null
     },
     {
       id: "raw-fitness",
