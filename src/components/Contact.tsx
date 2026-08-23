@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Github, Linkedin, Instagram, Send, CheckCircle, Loader2 } from 'lucide-react';
+import { Mail, Github, Linkedin, Instagram, Send, CheckCircle, Loader2, AlertCircle } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { PERSONAL_DATA } from '../data/content';
 
@@ -9,11 +9,44 @@ export const Contact: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [emailError, setEmailError] = useState('');
+
+  // Strict email regex validation
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email.trim());
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setFormData({ ...formData, email: val });
+    if (emailError) {
+      if (validateEmail(val)) {
+        setEmailError('');
+      }
+    }
+  };
+
+  const handleEmailBlur = () => {
+    if (formData.email.trim() && !validateEmail(formData.email)) {
+      setEmailError('Please enter a valid email address (e.g., name@domain.com)');
+    } else {
+      setEmailError('');
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) return;
     
+    // Validate inputs
+    if (!formData.name.trim() || !formData.message.trim()) return;
+
+    if (!validateEmail(formData.email)) {
+      setEmailError('Please enter a valid email address (e.g., name@domain.com)');
+      return;
+    }
+
+    setEmailError('');
     setIsSubmitting(true);
 
     try {
@@ -24,10 +57,10 @@ export const Contact: React.FC = () => {
           'Accept': 'application/json'
         },
         body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
-          _subject: `New Portfolio Message from ${formData.name}`,
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          message: formData.message.trim(),
+          _subject: `New Portfolio Message from ${formData.name.trim()}`,
           _template: 'table'
         })
       });
@@ -165,11 +198,20 @@ export const Contact: React.FC = () => {
                     <input
                       type="email"
                       required
-                      placeholder="Your email address"
+                      placeholder="Your email address (e.g., name@domain.com)"
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl bg-zinc-950 border border-zinc-800 text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-500 font-sans text-sm transition-colors"
+                      onChange={handleEmailChange}
+                      onBlur={handleEmailBlur}
+                      className={`w-full px-4 py-3 rounded-xl bg-zinc-950 border text-white placeholder-zinc-600 focus:outline-none font-sans text-sm transition-colors ${
+                        emailError ? 'border-red-500/80 focus:border-red-500' : 'border-zinc-800 focus:border-zinc-500'
+                      }`}
                     />
+                    {emailError && (
+                      <p className="text-xs font-mono text-red-400 mt-1 flex items-center space-x-1">
+                        <AlertCircle className="w-3.5 h-3.5 mr-1 inline shrink-0" />
+                        <span>{emailError}</span>
+                      </p>
+                    )}
                   </div>
 
                   <div className="space-y-1.5">
