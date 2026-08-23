@@ -60,7 +60,7 @@ export const PERSONAL_DATA = {
       description: "Raw Fitness is a modern, responsive web application designed for a local gym business. It provides users with essential information about gym memberships, schedules, and training programs.",
       tech: ["JavaScript", "HTML", "CSS", "PWA", "Chart.js"],
       githubUrl: "https://github.com/manuelgomes2006/Raw-Fitness",
-      liveUrl: "https://es2006.github.io/",
+      liveUrl: "https://manuelgomes2006.github.io/Raw-Fitness/",
       image: rawFitnessImg
     }
   ],
