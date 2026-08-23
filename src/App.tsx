@@ -11,9 +11,6 @@ import { Footer } from './components/Footer';
 export function App() {
   return (
     <div className="relative min-h-screen bg-[#09090b] text-zinc-100 selection:bg-zinc-200 selection:text-black">
-      {/* Subtle Grain Overlay */}
-      <div className="grain-overlay" />
-
       {/* Navigation Header */}
       <Navbar />
 

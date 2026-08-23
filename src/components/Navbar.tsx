@@ -10,7 +10,7 @@ export const Navbar: React.FC = () => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 30);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -22,18 +22,9 @@ export const Navbar: React.FC = () => {
     { name: 'Contact', href: '#contact' },
   ];
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    setMobileMenuOpen(false);
-    const target = document.querySelector(href);
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
           ? 'bg-[#09090b]/90 backdrop-blur-md border-b border-zinc-800/80 py-3.5 shadow-xl'
           : 'bg-transparent py-5'
@@ -43,7 +34,6 @@ export const Navbar: React.FC = () => {
         {/* Brand Logo */}
         <a
           href="#home"
-          onClick={(e) => handleNavClick(e, '#home')}
           className="text-base sm:text-lg font-black tracking-widest text-zinc-100 hover:text-white transition-colors uppercase font-sans"
         >
           {PERSONAL_DATA.name}
@@ -55,7 +45,6 @@ export const Navbar: React.FC = () => {
             <a
               key={link.name}
               href={link.href}
-              onClick={(e) => handleNavClick(e, link.href)}
               className="text-xs font-medium uppercase tracking-widest text-zinc-400 hover:text-zinc-100 transition-colors py-1 cursor-pointer"
             >
               {link.name}
@@ -67,11 +56,10 @@ export const Navbar: React.FC = () => {
         <div className="hidden md:flex items-center">
           <a
             href="#contact"
-            onClick={(e) => handleNavClick(e, '#contact')}
-            className="group relative inline-flex items-center justify-center px-4 py-2 text-xs font-semibold uppercase tracking-widest text-zinc-950 bg-zinc-100 rounded-full hover:bg-white transition-all duration-300 shadow-md transform-gpu hover:scale-[1.03]"
+            className="group relative inline-flex items-center justify-center px-4 py-2 text-xs font-semibold uppercase tracking-widest text-zinc-950 bg-zinc-100 rounded-full hover:bg-white transition-all duration-200 shadow-md transform-gpu hover:scale-105"
           >
             <span>Let's Talk</span>
-            <ArrowUpRight className="w-3.5 h-3.5 ml-1 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            <ArrowUpRight className="w-3.5 h-3.5 ml-1 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </a>
         </div>
 
@@ -87,12 +75,12 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-x-0 top-[62px] bg-[#09090b]/95 backdrop-blur-2xl border-b border-zinc-800 px-6 py-6 flex flex-col space-y-4 shadow-2xl animate-in slide-in-from-top-3 duration-300">
+        <div className="md:hidden fixed inset-x-0 top-[62px] bg-[#09090b]/95 backdrop-blur-2xl border-b border-zinc-800 px-6 py-6 flex flex-col space-y-4 shadow-2xl">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              onClick={(e) => handleNavClick(e, link.href)}
+              onClick={() => setMobileMenuOpen(false)}
               className="text-xs font-medium uppercase tracking-widest text-zinc-300 hover:text-white py-2.5 border-b border-zinc-900 flex items-center justify-between"
             >
               <span>{link.name}</span>
@@ -101,7 +89,7 @@ export const Navbar: React.FC = () => {
           ))}
           <a
             href="#contact"
-            onClick={(e) => handleNavClick(e, '#contact')}
+            onClick={() => setMobileMenuOpen(false)}
             className="mt-3 flex items-center justify-center px-6 py-3 text-xs font-semibold uppercase tracking-widest text-zinc-950 bg-white rounded-full"
           >
             Let's Talk
