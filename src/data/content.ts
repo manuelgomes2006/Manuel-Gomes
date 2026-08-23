@@ -56,9 +56,9 @@ export const PERSONAL_DATA = {
     {
       id: "raw-fitness",
       title: "RAW FITNESS",
-      tagline: "GYM website for a local business",
-      description: "Raw Fitness is a modern, responsive web application designed for a local gym business. It provides users with essential information about gym memberships, schedules, and training programs.",
-      tech: ["JavaScript", "HTML", "CSS", "PWA", "Chart.js"],
+      tagline: "Modern Gym Website",
+      description: "A responsive gym website designed to give a local fitness business a strong digital presence, showcasing its brand, facilities, training offerings, and gym experience through a bold, fitness-focused interface.",
+      tech: ["HTML", "CSS", "JavaScript"],
       githubUrl: "https://github.com/manuelgomes2006/Raw-Fitness",
       liveUrl: "https://manuelgomes2006.github.io/Raw-Fitness/",
       image: rawFitnessImg
