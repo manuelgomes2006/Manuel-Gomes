@@ -90,7 +90,7 @@ export const Hero: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Right Column: B&W Cinematic Portrait */}
+        {/* Right Column: Full Natural Color Portrait */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -103,7 +103,7 @@ export const Hero: React.FC = () => {
               <img
                 src={PERSONAL_DATA.images.hero}
                 alt="Manuel Gomes — Portrait"
-                className="w-full h-[400px] sm:h-[480px] object-cover object-center filter grayscale contrast-[1.25] brightness-[0.98] group-hover:scale-105 transition-transform duration-500"
+                className="w-full h-[400px] sm:h-[480px] object-cover object-center group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
               <div className="absolute bottom-4 left-4 right-4 z-10 flex items-center justify-between">

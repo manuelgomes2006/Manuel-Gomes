@@ -21,7 +21,7 @@ export const About: React.FC = () => {
               <img
                 src={PERSONAL_DATA.images.about}
                 alt="Manuel Gomes — Lifestyle Portrait"
-                className="w-full h-[360px] sm:h-[420px] object-cover object-center filter grayscale contrast-[1.25] brightness-95"
+                className="w-full h-[360px] sm:h-[420px] object-cover object-center"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
             </div>

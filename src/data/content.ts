@@ -1,5 +1,4 @@
-import manuelHeroBw from '../assets/images/manuel-hero-bw.jpg';
-import manuelAboutBw from '../assets/images/manuel-about-bw.jpg';
+import manuelMainPortrait from '../assets/images/manuel-main-portrait.jpg';
 import rawFitnessImg from '../assets/images/raw-fitness.jpg';
 
 export const PERSONAL_DATA = {
@@ -12,8 +11,8 @@ export const PERSONAL_DATA = {
   aboutTags: ["AI", "Web Development", "Data Science", "UI/UX", "Builder"],
   
   images: {
-    hero: manuelHeroBw,
-    about: manuelAboutBw,
+    hero: manuelMainPortrait,
+    about: manuelMainPortrait,
   },
 
   education: {
