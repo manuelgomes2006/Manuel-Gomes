@@ -141,9 +141,9 @@ export const Contact: React.FC = () => {
                   <div className="w-12 h-12 rounded-full bg-emerald-950 border border-emerald-800 text-emerald-400 flex items-center justify-center mx-auto">
                     <CheckCircle className="w-6 h-6" />
                   </div>
-                  <h3 className="text-xl font-bold text-white font-sans uppercase">Message Sent Successfully!</h3>
-                  <p className="text-xs font-mono text-zinc-400">
-                    Your message has been delivered to Manuel ({contact.email}).
+                  <h3 className="text-xl font-bold text-white font-sans uppercase">Thank You For Reaching Out</h3>
+                  <p className="text-sm text-zinc-300 max-w-md mx-auto leading-relaxed">
+                    Your message has been successfully received. A team member will review your inquiry and follow up with you shortly.
                   </p>
                 </div>
               ) : (
