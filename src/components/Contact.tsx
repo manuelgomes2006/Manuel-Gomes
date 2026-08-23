@@ -1,30 +1,57 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Github, Linkedin, Instagram, Send, CheckCircle } from 'lucide-react';
+import { Mail, Github, Linkedin, Instagram, Send, CheckCircle, Loader2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { PERSONAL_DATA } from '../data/content';
 
 export const Contact: React.FC = () => {
   const { contact } = PERSONAL_DATA;
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
     
-    setSubmitted(true);
-    confetti({
-      particleCount: 60,
-      spread: 50,
-      origin: { y: 0.8 },
-      colors: ['#ffffff', '#a1a1aa', '#71717a']
-    });
+    setIsSubmitting(true);
 
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({ name: '', email: '', message: '' });
-    }, 6000);
+    try {
+      const response = await fetch(`https://formsubmit.co/ajax/${contact.email}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          _subject: `New Portfolio Message from ${formData.name}`,
+          _template: 'table'
+        })
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+        confetti({
+          particleCount: 60,
+          spread: 50,
+          origin: { y: 0.8 },
+          colors: ['#ffffff', '#a1a1aa', '#71717a']
+        });
+      } else {
+        // Fallback to mailto link
+        window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(`Portfolio Inquiry from ${formData.name}`)}&body=${encodeURIComponent(`${formData.message}\n\nFrom: ${formData.name} (${formData.email})`)}`;
+        setSubmitted(true);
+      }
+    } catch (error) {
+      // Fallback to mailto link
+      window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(`Portfolio Inquiry from ${formData.name}`)}&body=${encodeURIComponent(`${formData.message}\n\nFrom: ${formData.name} (${formData.email})`)}`;
+      setSubmitted(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -116,7 +143,7 @@ export const Contact: React.FC = () => {
                   </div>
                   <h3 className="text-xl font-bold text-white font-sans uppercase">Message Sent Successfully!</h3>
                   <p className="text-xs font-mono text-zinc-400">
-                    Thank you for reaching out, Manuel will respond shortly.
+                    Your message has been delivered to Manuel ({contact.email}).
                   </p>
                 </div>
               ) : (
@@ -159,10 +186,20 @@ export const Contact: React.FC = () => {
 
                   <button
                     type="submit"
-                    className="w-full py-3.5 px-6 rounded-full bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-semibold uppercase tracking-widest transition-all duration-300 shadow-lg flex items-center justify-center space-x-2 transform-gpu hover:scale-[1.01]"
+                    disabled={isSubmitting}
+                    className="w-full py-3.5 px-6 rounded-full bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-semibold uppercase tracking-widest transition-all duration-300 shadow-lg flex items-center justify-center space-x-2 transform-gpu hover:scale-[1.01] disabled:opacity-50"
                   >
-                    <span>Send Message</span>
-                    <Send className="w-3.5 h-3.5" />
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>Sending...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Send Message</span>
+                        <Send className="w-3.5 h-3.5" />
+                      </>
+                    )}
                   </button>
                 </form>
               )}
