@@ -15,7 +15,7 @@ export const Skills: React.FC = () => {
   };
 
   return (
-    <section id="skills" className="py-20 bg-[#09090b] border-t border-zinc-900 relative">
+    <section id="skills" className="py-20 bg-[#09090b] border-t border-zinc-900 relative scroll-mt-24">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         
         {/* Section Tag */}
@@ -34,8 +34,8 @@ export const Skills: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="rounded-2xl bg-zinc-900/50 border border-zinc-800 p-6 backdrop-blur-md hover:border-zinc-700 transition-all duration-300"
+              transition={{ duration: 0.5, delay: idx * 0.1, ease: 'easeOut' }}
+              className="rounded-2xl bg-zinc-900/50 border border-zinc-800 p-6 backdrop-blur-md hover:border-zinc-700 transition-all duration-300 transform-gpu hover:-translate-y-1"
             >
               <div className="flex items-center space-x-2.5 pb-4 border-b border-zinc-800">
                 <div className="p-2 rounded-lg bg-zinc-800 border border-zinc-700">
@@ -50,7 +50,7 @@ export const Skills: React.FC = () => {
                 {skillGroup.items.map((item) => (
                   <span
                     key={item}
-                    className="px-2.5 py-1.5 rounded-md bg-zinc-950 border border-zinc-800 text-xs font-mono text-zinc-300"
+                    className="px-2.5 py-1.5 rounded-md bg-zinc-950 border border-zinc-800 text-xs font-mono text-zinc-300 hover:text-white hover:border-zinc-600 transition-colors"
                   >
                     {item}
                   </span>

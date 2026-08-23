@@ -28,7 +28,7 @@ export const Contact: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="py-24 bg-[#09090b] border-t border-zinc-900 relative">
+    <section id="contact" className="py-24 bg-[#09090b] border-t border-zinc-900 relative scroll-mt-24">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
@@ -38,7 +38,7 @@ export const Contact: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
             className="lg:col-span-5 space-y-6"
           >
             <div>
@@ -54,7 +54,7 @@ export const Contact: React.FC = () => {
             {/* Email Box */}
             <a
               href={`mailto:${contact.email}`}
-              className="flex items-center space-x-3.5 p-4 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-colors group"
+              className="flex items-center space-x-3.5 p-4 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-all duration-300 group transform-gpu hover:scale-[1.02]"
             >
               <div className="p-2.5 rounded-lg bg-zinc-800 text-zinc-200 group-hover:scale-105 transition-transform">
                 <Mail className="w-5 h-5" />
@@ -73,7 +73,7 @@ export const Contact: React.FC = () => {
                   href={contact.socials.github}
                   target="_blank"
                   rel="noreferrer"
-                  className="p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors"
+                  className="p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700 transition-all duration-300 transform-gpu hover:scale-110"
                   aria-label="GitHub"
                 >
                   <Github className="w-5 h-5" />
@@ -82,7 +82,7 @@ export const Contact: React.FC = () => {
                   href={contact.socials.linkedin}
                   target="_blank"
                   rel="noreferrer"
-                  className="p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors"
+                  className="p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700 transition-all duration-300 transform-gpu hover:scale-110"
                   aria-label="LinkedIn"
                 >
                   <Linkedin className="w-5 h-5" />
@@ -91,7 +91,7 @@ export const Contact: React.FC = () => {
                   href={contact.socials.instagram}
                   target="_blank"
                   rel="noreferrer"
-                  className="p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors"
+                  className="p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700 transition-all duration-300 transform-gpu hover:scale-110"
                   aria-label="Instagram"
                 >
                   <Instagram className="w-5 h-5" />
@@ -105,7 +105,7 @@ export const Contact: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
             className="lg:col-span-7"
           >
             <div className="rounded-3xl bg-zinc-900/50 border border-zinc-800 p-6 sm:p-8 backdrop-blur-xl shadow-2xl">
@@ -159,7 +159,7 @@ export const Contact: React.FC = () => {
 
                   <button
                     type="submit"
-                    className="w-full py-3.5 px-6 rounded-full bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-semibold uppercase tracking-widest transition-colors shadow-lg flex items-center justify-center space-x-2"
+                    className="w-full py-3.5 px-6 rounded-full bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-semibold uppercase tracking-widest transition-all duration-300 shadow-lg flex items-center justify-center space-x-2 transform-gpu hover:scale-[1.01]"
                   >
                     <span>Send Message</span>
                     <Send className="w-3.5 h-3.5" />

@@ -7,7 +7,7 @@ export const Education: React.FC = () => {
   const { education } = PERSONAL_DATA;
 
   return (
-    <section id="education" className="py-16 bg-[#09090b] border-t border-zinc-900 relative">
+    <section id="education" className="py-16 bg-[#09090b] border-t border-zinc-900 relative scroll-mt-24">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         
         {/* Section Tag */}
@@ -23,8 +23,8 @@ export const Education: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="rounded-2xl bg-zinc-900/60 border border-zinc-800 p-6 sm:p-8 backdrop-blur-md flex flex-col sm:flex-row sm:items-center justify-between gap-6"
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className="rounded-2xl bg-zinc-900/60 border border-zinc-800 p-6 sm:p-8 backdrop-blur-md flex flex-col sm:flex-row sm:items-center justify-between gap-6 hover:border-zinc-700 transition-all duration-300 transform-gpu"
         >
           <div className="flex items-start space-x-4">
             <div className="p-3 rounded-xl bg-zinc-800 border border-zinc-700 text-zinc-200 shrink-0">

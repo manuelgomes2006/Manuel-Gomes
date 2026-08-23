@@ -4,7 +4,7 @@ import { PERSONAL_DATA } from '../data/content';
 
 export const About: React.FC = () => {
   return (
-    <section id="about" className="py-20 bg-[#09090b] border-t border-zinc-900 relative">
+    <section id="about" className="py-20 bg-[#09090b] border-t border-zinc-900 relative scroll-mt-24">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
@@ -14,16 +14,16 @@ export const About: React.FC = () => {
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
             className="lg:col-span-5 relative"
           >
-            <div className="relative rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 shadow-xl max-w-sm mx-auto lg:max-w-none">
+            <div className="relative rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 shadow-xl max-w-sm mx-auto lg:max-w-none group">
               <img
                 src={PERSONAL_DATA.images.about}
                 alt="Manuel Gomes — Lifestyle Portrait"
-                className="w-full h-[360px] sm:h-[420px] object-cover object-center"
+                className="w-full h-[360px] sm:h-[420px] object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out transform-gpu"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
             </div>
           </motion.div>
 
@@ -32,7 +32,7 @@ export const About: React.FC = () => {
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
             className="lg:col-span-7 space-y-6"
           >
             <div>
@@ -53,7 +53,7 @@ export const About: React.FC = () => {
                 {PERSONAL_DATA.aboutTags.map((tag) => (
                   <span
                     key={tag}
-                    className="px-3.5 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-xs font-medium text-zinc-200"
+                    className="px-3.5 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-xs font-medium text-zinc-200 hover:border-zinc-700 hover:text-white transition-all duration-300 transform-gpu hover:scale-105"
                   >
                     {tag}
                   </span>

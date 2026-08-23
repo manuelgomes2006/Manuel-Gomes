@@ -5,7 +5,7 @@ import { PERSONAL_DATA } from '../data/content';
 
 export const Projects: React.FC = () => {
   return (
-    <section id="projects" className="py-24 bg-[#09090b] border-t border-zinc-900 relative">
+    <section id="projects" className="py-24 bg-[#09090b] border-t border-zinc-900 relative scroll-mt-24">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         
         {/* Section Header */}
@@ -27,8 +27,8 @@ export const Projects: React.FC = () => {
               initial={{ opacity: 0, y: 25 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: idx * 0.15 }}
-              className="rounded-3xl bg-zinc-900/60 border border-zinc-800 p-6 sm:p-10 backdrop-blur-xl hover:border-zinc-700 transition-all duration-300 shadow-2xl overflow-hidden group"
+              transition={{ duration: 0.6, delay: idx * 0.15, ease: 'easeOut' }}
+              className="rounded-3xl bg-zinc-900/60 border border-zinc-800 p-6 sm:p-10 backdrop-blur-xl hover:border-zinc-700 transition-all duration-500 shadow-2xl overflow-hidden group transform-gpu"
             >
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                 
@@ -39,7 +39,7 @@ export const Projects: React.FC = () => {
                       {project.id === 'scholarmatch-ai' ? <Cpu className="w-5 h-5" /> : <Dumbbell className="w-5 h-5" />}
                     </div>
                     <span className="text-xs font-mono uppercase tracking-widest text-zinc-400 bg-zinc-950 px-3 py-1 rounded-full border border-zinc-800">
-                      {project.id === 'scholarmatch-ai' ? 'AI PLATFORM' : 'WEB APP & PWA'}
+                      {project.id === 'scholarmatch-ai' ? 'AI PLATFORM' : 'WEB APPLICATION'}
                     </span>
                   </div>
 
@@ -74,7 +74,7 @@ export const Projects: React.FC = () => {
                       href={project.liveUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="px-5 py-2.5 rounded-full bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-semibold uppercase tracking-widest transition-colors inline-flex items-center"
+                      className="px-5 py-2.5 rounded-full bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-semibold uppercase tracking-widest transition-all duration-300 inline-flex items-center transform-gpu hover:scale-[1.03]"
                     >
                       <span>Live Demo</span>
                       <ExternalLink className="w-3.5 h-3.5 ml-1.5" />
@@ -83,7 +83,7 @@ export const Projects: React.FC = () => {
                       href={project.githubUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="px-5 py-2.5 rounded-full bg-zinc-800 border border-zinc-700 text-zinc-200 hover:text-white hover:bg-zinc-700 text-xs font-semibold uppercase tracking-widest transition-colors inline-flex items-center"
+                      className="px-5 py-2.5 rounded-full bg-zinc-800 border border-zinc-700 text-zinc-200 hover:text-white hover:bg-zinc-700 text-xs font-semibold uppercase tracking-widest transition-all duration-300 inline-flex items-center transform-gpu hover:scale-[1.03]"
                     >
                       <Github className="w-3.5 h-3.5 mr-1.5" />
                       <span>GitHub</span>
@@ -93,12 +93,12 @@ export const Projects: React.FC = () => {
 
                 {/* Screenshot / Visual Column */}
                 <div className="lg:col-span-5">
-                  <div className="relative rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 p-2 shadow-inner group-hover:border-zinc-700 transition-colors">
+                  <div className="relative rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 p-2 shadow-inner group-hover:border-zinc-700 transition-all duration-500">
                     {project.image ? (
                       <img
                         src={project.image}
                         alt={`${project.title} screenshot`}
-                        className="w-full h-56 sm:h-64 object-cover object-top rounded-xl filter contrast-105 group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-56 sm:h-64 object-cover object-top rounded-xl filter contrast-105 group-hover:scale-105 transition-transform duration-500 transform-gpu"
                       />
                     ) : (
                       /* Technical Card UI for ScholarMatch AI */
