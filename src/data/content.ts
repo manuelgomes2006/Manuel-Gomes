@@ -1,5 +1,7 @@
 import manuelMainPortrait from '../assets/images/manuel-main-portrait.jpg';
-import rawFitnessImg from '../assets/images/raw-fitness.jpg';
+import manuelAboutPortrait from '../assets/images/manuel-about-portrait.jpg';
+import scholarMatchImg from '../assets/images/scholarmatch-screenshot.png';
+import rawFitnessImg from '../assets/images/raw-fitness-screenshot.png';
 
 export const PERSONAL_DATA = {
   name: "MANUEL GOMES",
@@ -12,7 +14,7 @@ export const PERSONAL_DATA = {
   
   images: {
     hero: manuelMainPortrait,
-    about: manuelMainPortrait,
+    about: manuelAboutPortrait,
   },
 
   education: {
@@ -50,7 +52,7 @@ export const PERSONAL_DATA = {
       tech: ["React", "TypeScript", "Tailwind CSS", "Gemini AI"],
       githubUrl: "https://github.com/manuelgomes2006/scholarmatch",
       liveUrl: "https://manuelgomes2006.github.io/scholarmatch/",
-      image: null
+      image: scholarMatchImg
     },
     {
       id: "raw-fitness",
