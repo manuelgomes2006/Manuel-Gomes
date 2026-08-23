@@ -69,11 +69,11 @@ export const PERSONAL_DATA = {
   contact: {
     heading: "Let's build something.",
     text: "Have an idea, project, or opportunity? Let's talk.",
-    email: "manuelgomes.dev@gmail.com",
+    email: "manuelgomes062006@gmail.com",
     socials: {
       github: "https://github.com/manuelgomes2006",
-      linkedin: "https://linkedin.com",
-      instagram: "https://instagram.com"
+      linkedin: "https://www.linkedin.com/in/manuel-gomes-638418388/",
+      instagram: "https://www.instagram.com/manuel.undercover/"
     }
   }
 };
