@@ -107,7 +107,7 @@ export const Contact: React.FC = () => {
                 {contact.heading}
               </h2>
               <p className="text-zinc-400 text-sm sm:text-base leading-relaxed mt-3 font-normal">
-                "{contact.text}"
+                {contact.text}
               </p>
             </div>
 

@@ -4,14 +4,6 @@ import { ArrowDown, Github, Linkedin, Instagram, ArrowUpRight } from 'lucide-rea
 import { PERSONAL_DATA } from '../data/content';
 
 export const Hero: React.FC = () => {
-  const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    const target = document.querySelector(href);
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
   return (
     <section id="home" className="relative min-h-[90vh] flex items-center justify-center pt-28 pb-16 overflow-hidden scroll-mt-24">
       {/* Background radial glow */}
@@ -45,14 +37,13 @@ export const Hero: React.FC = () => {
 
           {/* Supporting Bio */}
           <p className="text-sm sm:text-base text-zinc-400 leading-relaxed font-normal max-w-xl">
-            "{PERSONAL_DATA.heroTagline}"
+            {PERSONAL_DATA.heroTagline}
           </p>
 
           {/* Action Buttons */}
           <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             <a
               href="#projects"
-              onClick={(e) => handleScrollTo(e, '#projects')}
               className="px-6 py-3.5 text-xs font-semibold uppercase tracking-widest text-zinc-950 bg-white hover:bg-zinc-200 rounded-full transition-all duration-300 shadow-lg text-center flex items-center justify-center transform-gpu hover:scale-[1.02]"
             >
               <span>View Projects</span>
@@ -60,7 +51,6 @@ export const Hero: React.FC = () => {
             </a>
             <a
               href="#contact"
-              onClick={(e) => handleScrollTo(e, '#contact')}
               className="px-6 py-3.5 text-xs font-semibold uppercase tracking-widest text-zinc-200 hover:text-white bg-zinc-900 border border-zinc-800 hover:border-zinc-700 rounded-full transition-all duration-300 text-center flex items-center justify-center transform-gpu hover:scale-[1.02]"
             >
               <span>Let's Connect</span>
@@ -131,7 +121,6 @@ export const Hero: React.FC = () => {
       {/* Scroll Down Indicator */}
       <motion.a
         href="#about"
-        onClick={(e) => handleScrollTo(e, '#about')}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 0.5 }}
