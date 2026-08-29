@@ -3,13 +3,17 @@ import { motion } from 'framer-motion';
 import { ArrowDown, Github, Linkedin, Instagram, ArrowUpRight, Sparkles } from 'lucide-react';
 import { PERSONAL_DATA } from '../data/content';
 import { TiltCard } from './TiltCard';
+import { ThreeCanvas } from './ThreeCanvas';
 
 export const Hero: React.FC = () => {
   return (
     <section id="home" className="relative min-h-[92vh] flex items-center justify-center pt-28 pb-16 overflow-hidden scroll-mt-24">
+      {/* 3D Interactive WebGL Particle Background */}
+      <ThreeCanvas />
+
       {/* Dynamic Background radial glows */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[550px] sm:w-[750px] h-[550px] sm:h-[750px] bg-gradient-to-tr from-zinc-700/15 via-zinc-500/10 to-transparent blur-[140px] rounded-full pointer-events-none" />
-      <div className="absolute inset-0 bg-grid-pattern opacity-25 pointer-events-none" />
+      <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none" />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
         
