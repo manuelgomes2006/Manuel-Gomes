@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { PERSONAL_DATA } from '../data/content';
+import { TiltCard } from './TiltCard';
 
 export const About: React.FC = () => {
   return (
@@ -9,7 +10,7 @@ export const About: React.FC = () => {
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           
-          {/* Left Column: Photo */}
+          {/* Left Column: Photo with 3D Tilt */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -17,14 +18,16 @@ export const About: React.FC = () => {
             transition={{ duration: 0.6, ease: 'easeOut' }}
             className="lg:col-span-5 relative"
           >
-            <div className="relative rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 shadow-xl max-w-sm mx-auto lg:max-w-none group">
-              <img
-                src={PERSONAL_DATA.images.about}
-                alt="Manuel Gomes — Lifestyle Portrait"
-                className="w-full h-[360px] sm:h-[420px] object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out transform-gpu"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-            </div>
+            <TiltCard className="max-w-sm mx-auto lg:max-w-none">
+              <div className="relative rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800/90 shadow-xl group">
+                <img
+                  src={PERSONAL_DATA.images.about}
+                  alt="Manuel Gomes — Lifestyle Portrait"
+                  className="w-full h-[360px] sm:h-[420px] object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out transform-gpu"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+              </div>
+            </TiltCard>
           </motion.div>
 
           {/* Right Column: Short Intro & Tags */}

@@ -7,10 +7,14 @@ import { Skills } from './components/Skills';
 import { Projects } from './components/Projects';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
+import { Spotlight } from './components/Spotlight';
 
 export function App() {
   return (
     <div className="relative min-h-screen bg-[#09090b] text-zinc-100 selection:bg-zinc-200 selection:text-black">
+      {/* Ambient Mouse Spotlight Tracker */}
+      <Spotlight />
+
       {/* Navigation Header */}
       <Navbar />
 
