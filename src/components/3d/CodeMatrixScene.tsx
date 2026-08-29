@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import galaxyBg from '../../assets/images/cinematic-galaxy-bg.jpg';
 
 export const CodeMatrixScene: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -20,13 +21,15 @@ export const CodeMatrixScene: React.FC = () => {
     };
     window.addEventListener('resize', handleResize);
 
-    // 4 Floating Soft Ambient Glow Orbs
-    const orbs = [
-      { x: width * 0.2, y: height * 0.3, vx: 0.4, vy: 0.3, radius: 350, color: 'rgba(139, 92, 246, 0.18)' }, // Violet
-      { x: width * 0.8, y: height * 0.7, vx: -0.3, vy: -0.4, radius: 400, color: 'rgba(6, 182, 212, 0.15)' }, // Cyan
-      { x: width * 0.5, y: height * 0.5, vx: 0.2, vy: -0.2, radius: 450, color: 'rgba(59, 130, 246, 0.14)' }, // Blue
-      { x: width * 0.3, y: height * 0.8, vx: -0.2, vy: 0.3, radius: 380, color: 'rgba(16, 185, 129, 0.12)' }, // Emerald
-    ];
+    // Fine floating cosmic dust particles
+    const starCount = 140;
+    const stars = Array.from({ length: starCount }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      size: Math.random() * 1.5 + 0.5,
+      alpha: Math.random() * 0.6 + 0.2,
+      speed: Math.random() * 0.15 + 0.05,
+    }));
 
     let mouseX = width / 2;
     let mouseY = height / 2;
@@ -38,37 +41,28 @@ export const CodeMatrixScene: React.FC = () => {
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
     const render = () => {
-      ctx.fillStyle = '#030305';
-      ctx.fillRect(0, 0, width, height);
+      ctx.clearRect(0, 0, width, height);
 
-      // Move & render floating ambient glow orbs
-      orbs.forEach((orb, i) => {
-        orb.x += orb.vx;
-        orb.y += orb.vy;
+      // Render floating micro-dust stars
+      stars.forEach((star) => {
+        star.y -= star.speed;
+        if (star.y < 0) star.y = height;
 
-        if (orb.x < -100 || orb.x > width + 100) orb.vx *= -1;
-        if (orb.y < -100 || orb.y > height + 100) orb.vy *= -1;
-
-        // Subtle mouse pull on nearest orb
-        if (i === 0) {
-          orb.x += (mouseX - orb.x) * 0.005;
-          orb.y += (mouseY - orb.y) * 0.005;
-        }
-
-        const gradient = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, orb.radius);
-        gradient.addColorStop(0, orb.color);
-        gradient.addColorStop(1, 'rgba(3, 3, 5, 0)');
-
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, width, height);
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+        ctx.fill();
       });
 
-      // Mouse Spotlight Glow Layer
-      const mouseGrad = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 350);
-      mouseGrad.addColorStop(0, 'rgba(255, 255, 255, 0.05)');
-      mouseGrad.addColorStop(1, 'rgba(3, 3, 5, 0)');
-      ctx.fillStyle = mouseGrad;
-      ctx.fillRect(0, 0, width, height);
+      // Soft interactive mouse ambient light spotlight
+      if (mouseX > 0 && mouseY > 0) {
+        const mouseGrad = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 450);
+        mouseGrad.addColorStop(0, 'rgba(168, 85, 247, 0.08)');
+        mouseGrad.addColorStop(0.5, 'rgba(56, 189, 248, 0.03)');
+        mouseGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = mouseGrad;
+        ctx.fillRect(0, 0, width, height);
+      }
 
       animId = requestAnimationFrame(render);
     };
@@ -82,5 +76,19 @@ export const CodeMatrixScene: React.FC = () => {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none" />;
+  return (
+    <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#020204]">
+      {/* Photographic Cinematic Deep-Space Galaxy Image Layer */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-90 filter contrast-110 saturate-110 scale-105 transition-transform duration-1000 ease-out"
+        style={{ backgroundImage: `url(${galaxyBg})` }}
+      />
+
+      {/* Dark Vignette Overlay for High Typography Contrast */}
+      <div className="absolute inset-0 bg-radial-vignette opacity-70 pointer-events-none" />
+
+      {/* Interactive Micro-Dust Stars Canvas */}
+      <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-10" />
+    </div>
+  );
 };
