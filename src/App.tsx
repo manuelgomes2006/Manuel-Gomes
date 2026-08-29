@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GalaxyScene } from './components/3d/GalaxyScene';
+import { CodeMatrixScene } from './components/3d/CodeMatrixScene';
 import { BigBangIntro } from './components/ui/BigBangIntro';
 import { SpaceHUDNav } from './components/ui/SpaceHUDNav';
 import { CustomCursor } from './components/ui/CustomCursor';
@@ -15,37 +15,37 @@ export function App() {
   const [introFinished, setIntroFinished] = useState(false);
 
   return (
-    <div className="relative min-h-screen bg-[#000000] text-zinc-100 selection:bg-violet-500 selection:text-white font-sans overflow-x-hidden">
-      {/* 1. Cinematic Big Bang Intro Preloader */}
+    <div className="relative min-h-screen bg-[#050508] text-zinc-100 selection:bg-emerald-500 selection:text-black font-sans overflow-x-hidden">
+      {/* 1. Software Developer System Boot Preloader */}
       {!introFinished && <BigBangIntro onComplete={() => setIntroFinished(true)} />}
 
-      {/* 2. 3D WebGL Galaxy Scene & GSAP Camera Controller */}
-      <GalaxyScene />
+      {/* 2. 3D WebGL Code Matrix & Cyberpunk Tech Grid Scene */}
+      <CodeMatrixScene />
 
-      {/* 3. Custom Futuristic Targeting Reticle Cursor */}
+      {/* 3. Custom Targeting Reticle Cursor */}
       <CustomCursor />
 
-      {/* 4. Spacecraft HUD Navigation */}
+      {/* 4. Software Developer Terminal HUD Navigation */}
       <SpaceHUDNav />
 
-      {/* 5. 3D Storytelling Sections Journey */}
+      {/* 5. Developer Portfolio Sections */}
       <main className="relative z-10">
-        {/* 01 — Hero: Galaxy Entry */}
+        {/* 01 — Hero: Software System Entry */}
         <Hero />
 
-        {/* 02 — About: Origin Planet */}
+        {/* 02 — About */}
         <About />
 
-        {/* 03 — Skills: Tech Constellation 3D Star Map */}
+        {/* 03 — Skills */}
         <Skills />
 
-        {/* 04 — Projects: Project Galaxies */}
+        {/* 04 — Projects */}
         <Projects />
 
-        {/* 05 — Education: Orbital Journey */}
+        {/* 05 — Education */}
         <Education />
 
-        {/* 06 — Contact: Destination Core Sun */}
+        {/* 06 — Contact */}
         <Contact />
       </main>
 
