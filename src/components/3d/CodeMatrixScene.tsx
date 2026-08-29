@@ -14,7 +14,7 @@ export const CodeMatrixScene: React.FC = () => {
 
     // 1. Scene & Camera Setup
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x050508, 0.0018);
+    scene.fog = new THREE.FogExp2(0x040406, 0.0016);
 
     const camera = new THREE.PerspectiveCamera(
       60,
@@ -29,31 +29,80 @@ export const CodeMatrixScene: React.FC = () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
 
-    // 2. 3D Developer Tech Grid Floor
-    const gridHelper = new THREE.GridHelper(1000, 80, 0x10b981, 0x1f2937);
-    gridHelper.position.y = -60;
-    gridHelper.position.z = -300;
+    // 2. 4D Hypercube (Tesseract) Wireframe Geometry Setup
+    // 16 vertices of a 4D unit hypercube (-1, 1)^4
+    const vertices4D: number[][] = [];
+    for (let i = 0; i < 16; i++) {
+      vertices4D.push([
+        i & 1 ? 25 : -25,
+        i & 2 ? 25 : -25,
+        i & 4 ? 25 : -25,
+        i & 8 ? 25 : -25,
+      ]);
+    }
+
+    // 32 Edges connecting vertices differing by 1 coordinate bit
+    const edges4D: [number, number][] = [];
+    for (let i = 0; i < 16; i++) {
+      for (let j = i + 1; j < 16; j++) {
+        let diff = 0;
+        for (let k = 0; k < 4; k++) {
+          if (((i >> k) & 1) !== ((j >> k) & 1)) diff++;
+        }
+        if (diff === 1) edges4D.push([i, j]);
+      }
+    }
+
+    const tesseractGroup = new THREE.Group();
+    tesseractGroup.position.set(0, 0, -180);
+
+    // 3D Line Segments for 4D Tesseract Edges
+    const lineMat = new THREE.LineBasicMaterial({ color: 0x10b981, transparent: true, opacity: 0.8 });
+    const lineGeo = new THREE.BufferGeometry();
+    const linePos = new Float32Array(edges4D.length * 2 * 3);
+    lineGeo.setAttribute('position', new THREE.BufferAttribute(linePos, 3));
+
+    const tesseractLines = new THREE.LineSegments(lineGeo, lineMat);
+    tesseractGroup.add(tesseractLines);
+
+    // 3D Spheres for 4D Tesseract Vertices
+    const vertexMeshes: THREE.Mesh[] = [];
+    const vertGeo = new THREE.SphereGeometry(1.8, 12, 12);
+    const vertMat = new THREE.MeshBasicMaterial({ color: 0x06b6d4 });
+
+    for (let i = 0; i < 16; i++) {
+      const mesh = new THREE.Mesh(vertGeo, vertMat);
+      tesseractGroup.add(mesh);
+      vertexMeshes.push(mesh);
+    }
+
+    scene.add(tesseractGroup);
+
+    // 3. Cyberpunk Developer Grid Floor
+    const gridHelper = new THREE.GridHelper(1200, 90, 0x10b981, 0x1f2937);
+    gridHelper.position.y = -65;
+    gridHelper.position.z = -350;
     scene.add(gridHelper);
 
-    // 3. Matrix Code Binary Particle Streams (6,000 Nodes)
-    const particleCount = 7000;
+    // 4. Matrix Binary Data Streams (8,000 Particles)
+    const particleCount = 8000;
     const particleGeometry = new THREE.BufferGeometry();
     const particlePositions = new Float32Array(particleCount * 3);
     const particleColors = new Float32Array(particleCount * 3);
 
-    const techColors = [
-      new THREE.Color(0x10b981), // Emerald Green
-      new THREE.Color(0x06b6d4), // Cyber Cyan
-      new THREE.Color(0x8b5cf6), // Glowing Violet
-      new THREE.Color(0xf8fafc), // Silver White
+    const devColors = [
+      new THREE.Color(0x10b981), // Emerald
+      new THREE.Color(0x06b6d4), // Cyan
+      new THREE.Color(0x8b5cf6), // Violet
+      new THREE.Color(0xffffff), // Silver
     ];
 
     for (let i = 0; i < particleCount; i++) {
-      particlePositions[i * 3] = (Math.random() - 0.5) * 800;
-      particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 800;
-      particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 1200 - 300;
+      particlePositions[i * 3] = (Math.random() - 0.5) * 900;
+      particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 900;
+      particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 1400 - 300;
 
-      const color = techColors[Math.floor(Math.random() * techColors.length)];
+      const color = devColors[Math.floor(Math.random() * devColors.length)];
       particleColors[i * 3] = color.r;
       particleColors[i * 3 + 1] = color.g;
       particleColors[i * 3 + 2] = color.b;
@@ -70,43 +119,10 @@ export const CodeMatrixScene: React.FC = () => {
       blending: THREE.AdditiveBlending,
     });
 
-    const codeParticles = new THREE.Points(particleGeometry, particleMaterial);
-    scene.add(codeParticles);
+    const matrixParticles = new THREE.Points(particleGeometry, particleMaterial);
+    scene.add(matrixParticles);
 
-    // 4. Floating 3D Code Wireframe Nodes
-    const codeGroup = new THREE.Group();
-
-    // Central AI Core Node (Hero)
-    const coreGeo = new THREE.IcosahedronGeometry(20, 2);
-    const coreMat = new THREE.MeshBasicMaterial({ color: 0x10b981, wireframe: true });
-    const coreMesh = new THREE.Mesh(coreGeo, coreMat);
-    coreMesh.position.set(0, 0, -200);
-    codeGroup.add(coreMesh);
-
-    // Data Structure Cube (About)
-    const cubeGeo = new THREE.BoxGeometry(30, 30, 30);
-    const cubeMat = new THREE.MeshBasicMaterial({ color: 0x06b6d4, wireframe: true });
-    const cubeMesh = new THREE.Mesh(cubeGeo, cubeMat);
-    cubeMesh.position.set(-50, -10, -450);
-    codeGroup.add(cubeMesh);
-
-    // Algorithm Octahedron (Skills)
-    const octGeo = new THREE.OctahedronGeometry(25, 1);
-    const octMat = new THREE.MeshBasicMaterial({ color: 0x8b5cf6, wireframe: true });
-    const octMesh = new THREE.Mesh(octGeo, octMat);
-    octMesh.position.set(50, 10, -700);
-    codeGroup.add(octMesh);
-
-    // Full-Stack Server Torus Node (Projects)
-    const torusGeo = new THREE.TorusGeometry(25, 4, 16, 60);
-    const torusMat = new THREE.MeshBasicMaterial({ color: 0x10b981, wireframe: true });
-    const torusMesh = new THREE.Mesh(torusGeo, torusMat);
-    torusMesh.position.set(0, 0, -950);
-    codeGroup.add(torusMesh);
-
-    scene.add(codeGroup);
-
-    // 5. GSAP ScrollTrigger Camera Controller
+    // 5. GSAP ScrollTrigger Camera Journey Controller
     const cameraTimeline = gsap.timeline({
       scrollTrigger: {
         trigger: document.body,
@@ -118,9 +134,9 @@ export const CodeMatrixScene: React.FC = () => {
 
     cameraTimeline
       .to(camera.position, { z: -250, y: -5, duration: 2, ease: 'power2.inOut' }, 0)
-      .to(camera.position, { z: -500, x: 15, duration: 2, ease: 'power2.inOut' }, 2)
-      .to(camera.position, { z: -750, x: -15, duration: 2, ease: 'power2.inOut' }, 4)
-      .to(camera.position, { z: -1000, x: 0, duration: 2, ease: 'power2.inOut' }, 6);
+      .to(camera.position, { z: -500, x: 20, duration: 2, ease: 'power2.inOut' }, 2)
+      .to(camera.position, { z: -800, x: -20, duration: 2, ease: 'power2.inOut' }, 4)
+      .to(camera.position, { z: -1100, x: 0, duration: 2, ease: 'power2.inOut' }, 6);
 
     // Mouse Parallax
     let mouseX = 0;
@@ -132,26 +148,74 @@ export const CodeMatrixScene: React.FC = () => {
     };
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
-    // 6. Animation Render Loop
+    // 6. 4D Rotation Variables & Render Loop
+    let angleXW = 0;
+    let angleYW = 0;
     let animationFrameId: number;
 
     const animate = () => {
-      codeParticles.rotation.y += 0.0005;
-      codeParticles.rotation.x += 0.0002;
+      angleXW += 0.008;
+      angleYW += 0.006;
 
-      coreMesh.rotation.y += 0.006;
-      coreMesh.rotation.x += 0.004;
+      const cosXW = Math.cos(angleXW);
+      const sinXW = Math.sin(angleXW);
+      const cosYW = Math.cos(angleYW);
+      const sinYW = Math.sin(angleYW);
 
-      cubeMesh.rotation.y += 0.005;
-      cubeMesh.rotation.z += 0.003;
+      // Rotate 4D Vertices in XW and YW Planes
+      const projected3D: [number, number, number][] = [];
 
-      octMesh.rotation.y += 0.007;
+      for (let i = 0; i < 16; i++) {
+        let [x, y, z, w] = vertices4D[i];
 
-      torusMesh.rotation.x += 0.005;
-      torusMesh.rotation.y += 0.005;
+        // XW Rotation
+        let x1 = x * cosXW - w * sinXW;
+        let w1 = w * cosXW + x * sinXW;
 
-      gridHelper.position.z += 0.3;
-      if (gridHelper.position.z > -100) gridHelper.position.z = -300;
+        // YW Rotation
+        let y1 = y * cosYW - w1 * sinYW;
+        let w2 = w1 * cosYW + y * sinYW;
+
+        // 4D -> 3D Perspective Projection
+        const distance4D = 70;
+        const scale = distance4D / (distance4D - w2);
+
+        const px = x1 * scale;
+        const py = y1 * scale;
+        const pz = z * scale;
+
+        projected3D.push([px, py, pz]);
+        vertexMeshes[i].position.set(px, py, pz);
+      }
+
+      // Update 4D Tesseract Edge Lines
+      const posAttr = lineGeo.attributes.position as THREE.BufferAttribute;
+      const posArray = posAttr.array as Float32Array;
+
+      for (let i = 0; i < edges4D.length; i++) {
+        const [u, v] = edges4D[i];
+        const p1 = projected3D[u];
+        const p2 = projected3D[v];
+
+        posArray[i * 6] = p1[0];
+        posArray[i * 6 + 1] = p1[1];
+        posArray[i * 6 + 2] = p1[2];
+
+        posArray[i * 6 + 3] = p2[0];
+        posArray[i * 6 + 4] = p2[1];
+        posArray[i * 6 + 5] = p2[2];
+      }
+      posAttr.needsUpdate = true;
+
+      // Rotate 4D group
+      tesseractGroup.rotation.y += 0.003;
+
+      // Particle Motion
+      matrixParticles.rotation.y += 0.0005;
+
+      // Developer Grid Scroll
+      gridHelper.position.z += 0.35;
+      if (gridHelper.position.z > -100) gridHelper.position.z = -350;
 
       // Mouse Parallax
       camera.position.x += (mouseX * 40 - camera.position.x) * 0.05;
