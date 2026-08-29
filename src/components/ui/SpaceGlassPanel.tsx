@@ -7,16 +7,22 @@ interface SpaceGlassPanelProps {
 
 export const SpaceGlassPanel: React.FC<SpaceGlassPanelProps> = ({ children, className = '' }) => {
   return (
-    <div className={`relative rounded-3xl bg-zinc-950/70 border border-white/10 p-6 sm:p-10 backdrop-blur-2xl shadow-2xl overflow-hidden group ${className}`}>
-      {/* Corner HUD accents */}
-      <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-white/40 rounded-tl-xl pointer-events-none" />
-      <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-white/40 rounded-tr-xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-white/40 rounded-bl-xl pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-white/40 rounded-br-xl pointer-events-none" />
+    <div className={`relative rounded-3xl bg-zinc-950/80 border border-white/15 p-6 sm:p-10 backdrop-blur-2xl shadow-2xl overflow-hidden group ${className}`}>
+      {/* Akira Studio Architectural Blueprint Corner Crosshairs (+) */}
+      <div className="absolute top-2 left-2 text-[9px] font-mono text-white/40 pointer-events-none">+</div>
+      <div className="absolute top-2 right-2 text-[9px] font-mono text-white/40 pointer-events-none">+</div>
+      <div className="absolute bottom-2 left-2 text-[9px] font-mono text-white/40 pointer-events-none">+</div>
+      <div className="absolute bottom-2 right-2 text-[9px] font-mono text-white/40 pointer-events-none">+</div>
 
-      {/* Subtle interior glow */}
-      <div className="absolute -top-32 -left-32 w-64 h-64 bg-violet-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-violet-500/20 transition-all duration-500" />
-      
+      {/* Structural Corner Guidelines */}
+      <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-white/50 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-white/50 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-white/50 pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-white/50 pointer-events-none" />
+
+      {/* Subtle Grid Line Texture */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none" />
+
       <div className="relative z-10">{children}</div>
     </div>
   );

@@ -14,7 +14,7 @@ export const CodeMatrixScene: React.FC = () => {
 
     // 1. Scene & Camera Setup
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x040406, 0.0016);
+    scene.fog = new THREE.FogExp2(0x020203, 0.0016);
 
     const camera = new THREE.PerspectiveCamera(
       60,
@@ -29,19 +29,17 @@ export const CodeMatrixScene: React.FC = () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
 
-    // 2. 4D Hypercube (Tesseract) Wireframe Geometry Setup
-    // 16 vertices of a 4D unit hypercube (-1, 1)^4
+    // 2. Akira Studio 4D Hypercube Blueprint Tesseract
     const vertices4D: number[][] = [];
     for (let i = 0; i < 16; i++) {
       vertices4D.push([
-        i & 1 ? 25 : -25,
-        i & 2 ? 25 : -25,
-        i & 4 ? 25 : -25,
-        i & 8 ? 25 : -25,
+        i & 1 ? 26 : -26,
+        i & 2 ? 26 : -26,
+        i & 4 ? 26 : -26,
+        i & 8 ? 26 : -26,
       ]);
     }
 
-    // 32 Edges connecting vertices differing by 1 coordinate bit
     const edges4D: [number, number][] = [];
     for (let i = 0; i < 16; i++) {
       for (let j = i + 1; j < 16; j++) {
@@ -56,8 +54,8 @@ export const CodeMatrixScene: React.FC = () => {
     const tesseractGroup = new THREE.Group();
     tesseractGroup.position.set(0, 0, -180);
 
-    // 3D Line Segments for 4D Tesseract Edges
-    const lineMat = new THREE.LineBasicMaterial({ color: 0x10b981, transparent: true, opacity: 0.8 });
+    // Clean White Blueprint Line Material
+    const lineMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.7 });
     const lineGeo = new THREE.BufferGeometry();
     const linePos = new Float32Array(edges4D.length * 2 * 3);
     lineGeo.setAttribute('position', new THREE.BufferAttribute(linePos, 3));
@@ -65,10 +63,10 @@ export const CodeMatrixScene: React.FC = () => {
     const tesseractLines = new THREE.LineSegments(lineGeo, lineMat);
     tesseractGroup.add(tesseractLines);
 
-    // 3D Spheres for 4D Tesseract Vertices
+    // Vertex Cross Nodes
     const vertexMeshes: THREE.Mesh[] = [];
-    const vertGeo = new THREE.SphereGeometry(1.8, 12, 12);
-    const vertMat = new THREE.MeshBasicMaterial({ color: 0x06b6d4 });
+    const vertGeo = new THREE.SphereGeometry(1.6, 12, 12);
+    const vertMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
 
     for (let i = 0; i < 16; i++) {
       const mesh = new THREE.Mesh(vertGeo, vertMat);
@@ -78,44 +76,30 @@ export const CodeMatrixScene: React.FC = () => {
 
     scene.add(tesseractGroup);
 
-    // 3. Cyberpunk Developer Grid Floor
-    const gridHelper = new THREE.GridHelper(1200, 90, 0x10b981, 0x1f2937);
+    // 3. Architectural Drafting Grid Floor
+    const gridHelper = new THREE.GridHelper(1200, 90, 0xffffff, 0x222226);
     gridHelper.position.y = -65;
     gridHelper.position.z = -350;
     scene.add(gridHelper);
 
-    // 4. Matrix Binary Data Streams (8,000 Particles)
-    const particleCount = 8000;
+    // 4. Monochrome Blueprint Particles
+    const particleCount = 7000;
     const particleGeometry = new THREE.BufferGeometry();
     const particlePositions = new Float32Array(particleCount * 3);
-    const particleColors = new Float32Array(particleCount * 3);
-
-    const devColors = [
-      new THREE.Color(0x10b981), // Emerald
-      new THREE.Color(0x06b6d4), // Cyan
-      new THREE.Color(0x8b5cf6), // Violet
-      new THREE.Color(0xffffff), // Silver
-    ];
 
     for (let i = 0; i < particleCount; i++) {
       particlePositions[i * 3] = (Math.random() - 0.5) * 900;
       particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 900;
       particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 1400 - 300;
-
-      const color = devColors[Math.floor(Math.random() * devColors.length)];
-      particleColors[i * 3] = color.r;
-      particleColors[i * 3 + 1] = color.g;
-      particleColors[i * 3 + 2] = color.b;
     }
 
     particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
-    particleGeometry.setAttribute('color', new THREE.BufferAttribute(particleColors, 3));
 
     const particleMaterial = new THREE.PointsMaterial({
-      size: 1.8,
-      vertexColors: true,
+      size: 1.5,
+      color: 0xffffff,
       transparent: true,
-      opacity: 0.75,
+      opacity: 0.45,
       blending: THREE.AdditiveBlending,
     });
 
@@ -148,7 +132,7 @@ export const CodeMatrixScene: React.FC = () => {
     };
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
-    // 6. 4D Rotation Variables & Render Loop
+    // 6. 4D Rotation Render Loop
     let angleXW = 0;
     let angleYW = 0;
     let animationFrameId: number;
@@ -162,21 +146,17 @@ export const CodeMatrixScene: React.FC = () => {
       const cosYW = Math.cos(angleYW);
       const sinYW = Math.sin(angleYW);
 
-      // Rotate 4D Vertices in XW and YW Planes
       const projected3D: [number, number, number][] = [];
 
       for (let i = 0; i < 16; i++) {
         let [x, y, z, w] = vertices4D[i];
 
-        // XW Rotation
         let x1 = x * cosXW - w * sinXW;
         let w1 = w * cosXW + x * sinXW;
 
-        // YW Rotation
         let y1 = y * cosYW - w1 * sinYW;
         let w2 = w1 * cosYW + y * sinYW;
 
-        // 4D -> 3D Perspective Projection
         const distance4D = 70;
         const scale = distance4D / (distance4D - w2);
 
@@ -188,7 +168,6 @@ export const CodeMatrixScene: React.FC = () => {
         vertexMeshes[i].position.set(px, py, pz);
       }
 
-      // Update 4D Tesseract Edge Lines
       const posAttr = lineGeo.attributes.position as THREE.BufferAttribute;
       const posArray = posAttr.array as Float32Array;
 
@@ -207,17 +186,12 @@ export const CodeMatrixScene: React.FC = () => {
       }
       posAttr.needsUpdate = true;
 
-      // Rotate 4D group
       tesseractGroup.rotation.y += 0.003;
+      matrixParticles.rotation.y += 0.0004;
 
-      // Particle Motion
-      matrixParticles.rotation.y += 0.0005;
-
-      // Developer Grid Scroll
       gridHelper.position.z += 0.35;
       if (gridHelper.position.z > -100) gridHelper.position.z = -350;
 
-      // Mouse Parallax
       camera.position.x += (mouseX * 40 - camera.position.x) * 0.05;
       camera.position.y += (-mouseY * 40 - camera.position.y) * 0.05;
 
