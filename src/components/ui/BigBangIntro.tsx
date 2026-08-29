@@ -7,18 +7,18 @@ interface BigBangIntroProps {
 }
 
 export const BigBangIntro: React.FC<BigBangIntroProps> = ({ onComplete }) => {
-  const [phase, setPhase] = useState<'initial' | 'building' | 'gathering' | 'exploded' | 'revealed' | 'done'>('initial');
+  const [phase, setPhase] = useState<'initial' | 'drafting' | 'gathering' | 'exploded' | 'revealed' | 'done'>('initial');
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const timer1 = setTimeout(() => setPhase('building'), 500);
-    const timer2 = setTimeout(() => setPhase('gathering'), 2200);
-    const timer3 = setTimeout(() => setPhase('exploded'), 4000);
-    const timer4 = setTimeout(() => setPhase('revealed'), 5200);
+    const timer1 = setTimeout(() => setPhase('drafting'), 400);
+    const timer2 = setTimeout(() => setPhase('gathering'), 2500);
+    const timer3 = setTimeout(() => setPhase('exploded'), 4200);
+    const timer4 = setTimeout(() => setPhase('revealed'), 5400);
     const timer5 = setTimeout(() => {
       setPhase('done');
       onComplete();
-    }, 7200);
+    }, 7400);
 
     return () => {
       clearTimeout(timer1);
@@ -29,7 +29,7 @@ export const BigBangIntro: React.FC<BigBangIntroProps> = ({ onComplete }) => {
     };
   }, [onComplete]);
 
-  // Orbiting Big Bang Atoms Canvas Effect
+  // Ambient Atomic Particles Canvas
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -47,15 +47,13 @@ export const BigBangIntro: React.FC<BigBangIntroProps> = ({ onComplete }) => {
     };
     window.addEventListener('resize', handleResize);
 
-    // 40 Orbiting Big Bang Atoms
-    const atoms = Array.from({ length: 45 }, () => ({
+    const atoms = Array.from({ length: 35 }, () => ({
       angle: Math.random() * Math.PI * 2,
-      speed: 0.02 + Math.random() * 0.04,
-      radiusX: 80 + Math.random() * 140,
-      radiusY: 30 + Math.random() * 80,
+      speed: 0.015 + Math.random() * 0.03,
+      radiusX: 100 + Math.random() * 160,
+      radiusY: 40 + Math.random() * 90,
       rotation: Math.random() * Math.PI,
-      size: 2 + Math.random() * 3,
-      color: ['#10b981', '#06b6d4', '#8b5cf6', '#ffffff'][Math.floor(Math.random() * 4)],
+      size: 1.5 + Math.random() * 2,
     }));
 
     const render = () => {
@@ -65,31 +63,17 @@ export const BigBangIntro: React.FC<BigBangIntroProps> = ({ onComplete }) => {
 
       atoms.forEach((atom) => {
         atom.angle += atom.speed;
-
         const cosR = Math.cos(atom.rotation);
         const sinR = Math.sin(atom.rotation);
-
         const rawX = Math.cos(atom.angle) * atom.radiusX;
         const rawY = Math.sin(atom.angle) * atom.radiusY;
-
         const x = cx + (rawX * cosR - rawY * sinR);
         const y = cy + (rawX * sinR + rawY * cosR);
 
-        // Draw Atomic Orbit Path
-        ctx.beginPath();
-        ctx.ellipse(cx, cy, atom.radiusX, atom.radiusY, atom.rotation, 0, Math.PI * 2);
-        ctx.strokeStyle = `${atom.color}15`;
-        ctx.lineWidth = 0.8;
-        ctx.stroke();
-
-        // Draw Orbiting Atom Particle
         ctx.beginPath();
         ctx.arc(x, y, atom.size, 0, Math.PI * 2);
-        ctx.fillStyle = atom.color;
-        ctx.shadowColor = atom.color;
-        ctx.shadowBlur = 12;
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
         ctx.fill();
-        ctx.shadowBlur = 0;
       });
 
       animId = requestAnimationFrame(render);
@@ -114,87 +98,102 @@ export const BigBangIntro: React.FC<BigBangIntroProps> = ({ onComplete }) => {
     <AnimatePresence>
       <motion.div
         exit={{ opacity: 0, transition: { duration: 0.9, ease: 'easeInOut' } }}
-        className="fixed inset-0 z-50 bg-[#040406] flex flex-col items-center justify-center overflow-hidden select-none font-mono"
+        className="fixed inset-0 z-50 bg-[#020203] flex flex-col items-center justify-center overflow-hidden select-none font-mono"
       >
         {/* Background Orbiting Atoms Canvas */}
-        <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-0" />
+        <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-0 opacity-40" />
 
         {/* Skip Button */}
         <button
           onClick={handleSkip}
-          className="absolute top-6 right-6 z-50 flex items-center space-x-1.5 px-4 py-2 rounded-full bg-zinc-950/90 border border-emerald-500/40 text-[10px] font-mono text-emerald-400 hover:text-white hover:border-emerald-400 transition-all duration-300 shadow-xl"
+          className="absolute top-6 right-6 z-50 flex items-center space-x-1.5 px-4 py-2 rounded-full bg-zinc-950/90 border border-white/20 text-[10px] font-mono text-zinc-300 hover:text-white hover:border-white transition-all duration-300 shadow-2xl"
         >
-          <span>SKIP BOOT</span>
+          <span>SKIP INTRO</span>
           <Play className="w-3 h-3 ml-1 fill-current" />
         </button>
 
-        {/* Phase 1 & 2: Skeleton Letter 'M' Wireframe */}
-        {(phase === 'building' || phase === 'gathering') && (
+        {/* Phase 1 & 2: Architectural Blueprint Skeleton Letter 'M' */}
+        {(phase === 'drafting' || phase === 'gathering') && (
           <div className="relative z-10 flex flex-col items-center justify-center space-y-6">
             
-            {/* SVG Wireframe Skeleton of Letter 'M' */}
-            <div className="relative w-48 h-48 sm:w-64 sm:h-64 flex items-center justify-center">
+            {/* Architectural Blueprint Vector Stage */}
+            <div className="relative w-[320px] h-[320px] sm:w-[450px] sm:h-[450px] flex items-center justify-center">
               
-              {/* Outer Energy Ring */}
-              <motion.div
-                initial={{ scale: 1.5, opacity: 0 }}
-                animate={{ scale: phase === 'gathering' ? 0.9 : 1.1, opacity: 0.8 }}
-                transition={{ duration: 1.2, repeat: Infinity, repeatType: 'reverse' }}
-                className="absolute inset-0 rounded-full border border-emerald-500/30 bg-emerald-500/5 blur-md pointer-events-none"
-              />
+              <svg viewBox="0 0 400 400" className="w-full h-full">
+                
+                {/* 1. Concentric Drafting Guide Circles */}
+                <circle cx="200" cy="200" r="170" fill="none" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="1" strokeDasharray="4 4" />
+                <circle cx="200" cy="200" r="120" fill="none" stroke="rgba(255, 255, 255, 0.06)" strokeWidth="1" />
+                <circle cx="200" cy="200" r="60" fill="none" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="1" strokeDasharray="2 4" />
 
-              <svg viewBox="0 0 200 200" className="w-full h-full drop-shadow-[0_0_25px_rgba(16,185,129,0.8)]">
-                {/* Structural Wireframe Grid Lines */}
-                <line x1="20" y1="20" x2="180" y2="180" stroke="#10b981" strokeWidth="0.5" strokeDasharray="3 3" opacity="0.3" />
-                <line x1="180" y1="20" x2="20" y2="180" stroke="#06b6d4" strokeWidth="0.5" strokeDasharray="3 3" opacity="0.3" />
+                {/* 2. Construction Baseline Lines */}
+                <line x1="0" y1="200" x2="400" y2="200" stroke="rgba(255, 255, 255, 0.12)" strokeWidth="1" />
+                <line x1="200" y1="0" x2="200" y2="400" stroke="rgba(255, 255, 255, 0.12)" strokeWidth="1" />
+                <line x1="0" y1="90" x2="400" y2="90" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="0.8" strokeDasharray="3 3" />
+                <line x1="0" y1="310" x2="400" y2="310" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="0.8" strokeDasharray="3 3" />
 
-                {/* Outer Structural Skeleton Lines of 'M' */}
+                {/* 3. 45° Perspective Intersection Guidelines */}
+                <line x1="0" y1="0" x2="400" y2="400" stroke="rgba(255, 255, 255, 0.09)" strokeWidth="0.8" />
+                <line x1="400" y1="0" x2="0" y2="400" stroke="rgba(255, 255, 255, 0.09)" strokeWidth="0.8" />
+                <line x1="60" y1="0" x2="60" y2="400" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="0.8" />
+                <line x1="340" y1="0" x2="340" y2="400" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="0.8" />
+
+                {/* 4. Outer Geometric Contour Path of Letter 'M' */}
                 <motion.path
-                  d="M 30 170 L 30 30 L 100 120 L 170 30 L 170 170"
+                  d="M 60 310 L 60 90 L 200 230 L 340 90 L 340 310"
                   fill="none"
-                  stroke="#10b981"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                  stroke="#ffffff"
+                  strokeWidth="3.5"
+                  strokeLinecap="square"
+                  strokeLinejoin="miter"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
-                  transition={{ duration: 1.6, ease: 'easeInOut' }}
+                  transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
                 />
 
-                {/* Inner Skeleton Cross Lines */}
+                {/* 5. Inner Parallel Offset Blueprint Path of Letter 'M' */}
                 <motion.path
-                  d="M 45 170 L 45 55 L 100 135 L 155 55 L 155 170"
+                  d="M 90 310 L 90 145 L 200 260 L 310 145 L 310 310"
                   fill="none"
-                  stroke="#06b6d4"
-                  strokeWidth="1.5"
-                  strokeDasharray="4 2"
+                  stroke="rgba(255, 255, 255, 0.85)"
+                  strokeWidth="1.8"
+                  strokeDasharray="6 3"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
-                  transition={{ duration: 1.8, delay: 0.3 }}
+                  transition={{ duration: 2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
                 />
 
-                {/* Wireframe Node Vertices */}
-                {[[30, 30], [100, 120], [170, 30], [30, 170], [170, 170], [100, 135]].map(([cx, cy], i) => (
-                  <circle key={i} cx={cx} cy={cy} r="4" fill="#ffffff" stroke="#10b981" strokeWidth="2" />
+                {/* 6. Structural Vertex Measurement Nodes & Crosshairs */}
+                {[
+                  [60, 90], [200, 230], [340, 90],
+                  [60, 310], [340, 310], [90, 145],
+                  [310, 145], [200, 260], [90, 310], [310, 310]
+                ].map(([cx, cy], i) => (
+                  <g key={i}>
+                    <circle cx={cx} cy={cy} r="3" fill="#000000" stroke="#ffffff" strokeWidth="1.5" />
+                    <line x1={cx - 6} y1={cy} x2={cx + 6} y2={cy} stroke="rgba(255,255,255,0.6)" strokeWidth="0.8" />
+                    <line x1={cx} y1={cy - 6} x2={cx} y2={cy + 6} stroke="rgba(255,255,255,0.6)" strokeWidth="0.8" />
+                  </g>
                 ))}
+
               </svg>
             </div>
 
-            <p className="text-xs font-mono tracking-widest text-emerald-400 uppercase font-semibold flex items-center space-x-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block" />
-              <span>INITIALIZING M-SKELETON KERNEL</span>
+            <p className="text-xs font-mono tracking-widest text-zinc-400 uppercase font-semibold flex items-center space-x-2">
+              <span className="w-2 h-2 rounded-full bg-white animate-pulse inline-block" />
+              <span>DRAFTING SKELETON 'M' ARCHITECTURE</span>
             </p>
           </div>
         )}
 
-        {/* Phase 3: BIG BANG ATOMIC EXPLOSION */}
+        {/* Phase 3: BIG BANG EXPLOSION */}
         {phase === 'exploded' && (
           <div className="relative z-10 flex items-center justify-center w-full h-full">
             <motion.div
               initial={{ scale: 0, opacity: 1 }}
               animate={{ scale: 9, opacity: 0 }}
               transition={{ duration: 1.4, ease: 'easeOut' }}
-              className="absolute w-64 h-64 rounded-full border-4 border-emerald-400 bg-gradient-to-r from-emerald-500/40 via-cyan-500/40 to-violet-500/40 blur-2xl pointer-events-none"
+              className="absolute w-64 h-64 rounded-full border-2 border-white bg-gradient-to-r from-white/40 via-zinc-400/30 to-violet-500/40 blur-2xl pointer-events-none"
             />
           </div>
         )}
@@ -207,16 +206,16 @@ export const BigBangIntro: React.FC<BigBangIntroProps> = ({ onComplete }) => {
             transition={{ duration: 0.8, ease: 'easeOut' }}
             className="text-center space-y-4 max-w-xl px-6 relative z-10"
           >
-            <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-zinc-950/90 border border-emerald-500/40 text-[10px] font-mono text-emerald-400 shadow-xl">
-              <span>SYS::4D_DEVELOPER_MATRIX_ONLINE</span>
+            <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-zinc-950/90 border border-white/20 text-[10px] font-mono text-zinc-300 shadow-xl">
+              <span>SYSTEM ARCHITECTURE READY</span>
             </div>
 
             <h1 className="text-4xl sm:text-7xl font-black tracking-tight text-white uppercase font-sans">
               MANUEL GOMES
             </h1>
 
-            <p className="text-xs sm:text-sm font-mono tracking-widest text-emerald-400 uppercase font-semibold">
-              AI DEVELOPER • 4D SYSTEM ENGINEER • BUILDER
+            <p className="text-xs sm:text-sm font-mono tracking-widest text-zinc-400 uppercase font-semibold">
+              AI DEVELOPER • CREATIVE TECHNOLOGIST • BUILDER
             </p>
           </motion.div>
         )}
@@ -227,12 +226,12 @@ export const BigBangIntro: React.FC<BigBangIntroProps> = ({ onComplete }) => {
             <motion.div
               initial={{ width: '0%' }}
               animate={{ width: '100%' }}
-              transition={{ duration: 7, ease: 'linear' }}
-              className="h-full bg-gradient-to-r from-emerald-400 to-cyan-400"
+              transition={{ duration: 7.2, ease: 'linear' }}
+              className="h-full bg-white"
             />
           </div>
           <span className="text-[9px] font-mono uppercase tracking-widest text-zinc-500">
-            SKELETON 'M' BIG BANG SYNTHESIS
+            BLUEPRINT 'M' DRAFTING COMPLETE
           </span>
         </div>
       </motion.div>
