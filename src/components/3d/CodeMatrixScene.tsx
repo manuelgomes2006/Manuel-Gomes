@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-import * as THREE from 'three';
 
 export const CodeMatrixScene: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -8,88 +7,60 @@ export const CodeMatrixScene: React.FC = () => {
     const container = containerRef.current;
     if (!container) return;
 
-    // 1. Scene & Camera Setup
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      60,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
-    camera.position.z = 100;
+    // Pure pitch black background with subtle cursor laser glow
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    container.appendChild(renderer.domElement);
+    let animId: number;
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
 
-    // 2. Sleek Floating Micro-Dust Particles (Vercel / Linear Aesthetic)
-    const particleCount = 180;
-    const particleGeometry = new THREE.BufferGeometry();
-    const particlePositions = new Float32Array(particleCount * 3);
-    const particleScales = new Float32Array(particleCount);
-
-    for (let i = 0; i < particleCount; i++) {
-      particlePositions[i * 3] = (Math.random() - 0.5) * 500;
-      particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 500;
-      particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 500;
-      particleScales[i] = Math.random() * 2 + 1;
-    }
-
-    particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
-
-    const particleMaterial = new THREE.PointsMaterial({
-      size: 1.6,
-      color: 0xffffff,
-      transparent: true,
-      opacity: 0.35,
-      blending: THREE.AdditiveBlending,
-    });
-
-    const particles = new THREE.Points(particleGeometry, particleMaterial);
-    scene.add(particles);
-
-    // 3. Mouse Parallax Motion
-    let mouseX = 0;
-    let mouseY = 0;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseX = (e.clientX - window.innerWidth / 2) * 0.0004;
-      mouseY = (e.clientY - window.innerHeight / 2) * 0.0004;
-    };
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-
-    // 4. Render Animation Loop
-    let animationFrameId: number;
-
-    const animate = () => {
-      particles.rotation.y += 0.0003;
-      particles.rotation.x += 0.0001;
-
-      camera.position.x += (mouseX * 30 - camera.position.x) * 0.04;
-      camera.position.y += (-mouseY * 30 - camera.position.y) * 0.04;
-
-      renderer.render(scene, camera);
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    animate();
+    container.appendChild(canvas);
 
     const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
     };
     window.addEventListener('resize', handleResize);
 
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('resize', handleResize);
-      cancelAnimationFrame(animationFrameId);
-      if (container && renderer.domElement) {
-        container.removeChild(renderer.domElement);
+    let mouseX = -1000;
+    let mouseY = -1000;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    };
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+
+    // Render subtle neon laser glow around mouse cursor
+    const render = () => {
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, width, height);
+
+      if (mouseX > 0 && mouseY > 0) {
+        // Laser Core Glow
+        const gradient = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 400);
+        gradient.addColorStop(0, 'rgba(16, 185, 129, 0.08)');
+        gradient.addColorStop(0.5, 'rgba(6, 182, 212, 0.03)');
+        gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, width, height);
       }
-      renderer.dispose();
+
+      animId = requestAnimationFrame(render);
+    };
+
+    render();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('mousemove', handleMouseMove);
+      cancelAnimationFrame(animId);
+      if (container.contains(canvas)) {
+        container.removeChild(canvas);
+      }
     };
   }, []);
 
