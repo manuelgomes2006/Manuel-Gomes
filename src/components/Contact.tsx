@@ -50,7 +50,33 @@ export const Contact: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(`https://formsubmit.co/ajax/${contact.email}`, {
+      // 1. Try Vercel Serverless / Custom API Backend
+      const response = await fetch('/api/send-message', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          message: formData.message.trim(),
+        })
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+        confetti({
+          particleCount: 70,
+          spread: 60,
+          origin: { y: 0.8 },
+          colors: ['#ffffff', '#a855f7', '#3b82f6']
+        });
+        return;
+      }
+
+      // 2. Fallback to FormSubmit AJAX if API is not deployed locally
+      const fallbackResponse = await fetch(`https://formsubmit.co/ajax/${contact.email}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +91,7 @@ export const Contact: React.FC = () => {
         })
       });
 
-      if (response.ok) {
+      if (fallbackResponse.ok) {
         setSubmitted(true);
         confetti({
           particleCount: 70,
@@ -78,7 +104,21 @@ export const Contact: React.FC = () => {
         setSubmitted(true);
       }
     } catch (error) {
-      window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(`Portfolio Inquiry from ${formData.name}`)}&body=${encodeURIComponent(`${formData.message}\n\nFrom: ${formData.name} (${formData.email})`)}`;
+      // 3. Fallback to FormSubmit direct
+      try {
+        await fetch(`https://formsubmit.co/ajax/${contact.email}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            name: formData.name.trim(),
+            email: formData.email.trim(),
+            message: formData.message.trim(),
+            _subject: `New Portfolio Message from ${formData.name.trim()}`
+          })
+        });
+      } catch (err) {
+        window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(`Portfolio Inquiry from ${formData.name}`)}&body=${encodeURIComponent(`${formData.message}\n\nFrom: ${formData.name} (${formData.email})`)}`;
+      }
       setSubmitted(true);
     } finally {
       setIsSubmitting(false);
