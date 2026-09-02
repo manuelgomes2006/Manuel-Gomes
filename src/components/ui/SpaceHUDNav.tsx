@@ -8,7 +8,7 @@ export const SpaceHUDNav: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['home', 'about', 'skills', 'projects', 'education', 'contact'];
+      const sections = ['home', 'about', 'education', 'skills', 'projects', 'contact'];
       const scrollPos = window.scrollY + 200;
 
       for (const sec of sections) {
@@ -31,9 +31,9 @@ export const SpaceHUDNav: React.FC = () => {
   const navLinks = [
     { id: 'home', label: 'ROOT' },
     { id: 'about', label: 'ABOUT' },
+    { id: 'education', label: 'ACADEMICS' },
     { id: 'skills', label: 'STACK' },
     { id: 'projects', label: 'PROJECTS' },
-    { id: 'education', label: 'ACADEMICS' },
     { id: 'contact', label: 'CONTACT' },
   ];
 
@@ -71,7 +71,7 @@ export const SpaceHUDNav: React.FC = () => {
           </div>
         </a>
 
-        {/* Developer Terminal HUD Links */}
+        {/* Terminal HUD Links */}
         <nav className="hidden lg:flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-zinc-950/90 border border-zinc-800 backdrop-blur-xl shadow-2xl">
           {navLinks.map((link) => {
             const isActive = activeSection === link.id;

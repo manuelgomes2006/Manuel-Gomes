@@ -16,34 +16,34 @@ export function App() {
 
   return (
     <div className="relative min-h-screen bg-[#050508] text-zinc-100 selection:bg-emerald-500 selection:text-black font-sans overflow-x-hidden">
-      {/* 1. Software Developer System Boot Preloader */}
+      {/* 1. System Boot Preloader */}
       {!introFinished && <BigBangIntro onComplete={() => setIntroFinished(true)} />}
 
-      {/* 2. 3D WebGL Code Matrix & Cyberpunk Tech Grid Scene */}
+      {/* 2. Deep-Space Galaxy Scene */}
       <CodeMatrixScene />
 
       {/* 3. Custom Targeting Reticle Cursor */}
       <CustomCursor />
 
-      {/* 4. Software Developer Terminal HUD Navigation */}
+      {/* 4. Navigation */}
       <SpaceHUDNav />
 
-      {/* 5. Developer Portfolio Sections */}
+      {/* 5. Portfolio Sections */}
       <main className="relative z-10">
-        {/* 01 — Hero: Software System Entry */}
+        {/* 01 — Hero */}
         <Hero />
 
-        {/* 02 — About */}
+        {/* 02 — About Me */}
         <About />
 
-        {/* 03 — Skills */}
+        {/* 03 — Education (Placed directly after About Me) */}
+        <Education />
+
+        {/* 04 — Skills */}
         <Skills />
 
-        {/* 04 — Projects */}
+        {/* 05 — Projects */}
         <Projects />
-
-        {/* 05 — Education */}
-        <Education />
 
         {/* 06 — Contact */}
         <Contact />
