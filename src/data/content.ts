@@ -72,9 +72,15 @@ export const PERSONAL_DATA = {
       id: "scholarmatch-ai",
       title: "ScholarMatch AI",
       category: "AI PLATFORM",
+      domainUrl: "scholarmatch.ai/evaluator",
       tagline: "Intelligent Opportunity & Eligibility Evaluation Engine",
       description: "An automated evaluation platform that parses complex student qualifications and cross-references them against global scholarships, internships, and grants using the Google Gemini API.",
       problemSolved: "Eliminates tedious manual eligibility checks by delivering rubric-grounded match percentages, verdict rationales, and actionable profile enhancement strategies in under 2 seconds.",
+      highlights: [
+        "Google Gemini API integration for real-time document & qualification analysis",
+        "Sub-2s response pipeline generating structured JSON verdicts and improvement roadmaps",
+        "Interactive scoring dashboard with granular category breakdowns"
+      ],
       metrics: [
         { label: "Response Latency", value: "< 2.0s" },
         { label: "Scoring Accuracy", value: "94% Rubric Match" },
@@ -89,9 +95,15 @@ export const PERSONAL_DATA = {
       id: "raw-fitness",
       title: "RAW FITNESS",
       category: "WEB APPLICATION",
+      domainUrl: "rawfitness.gym/explore",
       tagline: "High-Performance Digital Presence for Premier Gym Brand",
       description: "A conversion-engineered, highly responsive web application built for a boutique fitness enterprise to showcase modern workout facilities, membership tiers, and trainer portfolios.",
       problemSolved: "Elevated the local brand with mobile-first performance, accessible information hierarchy, and streamlined prospective member outreach pathways.",
+      highlights: [
+        "100/100 Google Lighthouse mobile performance score with instant FCP",
+        "Conversion-focused user journey driving direct membership inquiries",
+        "Lightweight, zero-bloat architecture engineered for seamless fluid scrolling"
+      ],
       metrics: [
         { label: "Performance", value: "100 Lighthouse" },
         { label: "Layout", value: "Mobile-First PWA" },
