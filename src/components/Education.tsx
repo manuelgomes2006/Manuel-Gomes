@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   GraduationCap, Award, BookOpen, BadgeCheck, Cloud, BarChart3, 
   ExternalLink, Eye, X, ShieldCheck, Rocket, CheckCircle2, 
-  LayoutGrid, GitBranch, ListFilter, Sparkles, Calendar, ArrowUpRight
+  LayoutGrid, GitBranch, Calendar
 } from 'lucide-react';
 import { PERSONAL_DATA } from '../data/content';
 import { SpaceGlassPanel } from './ui/SpaceGlassPanel';
@@ -11,7 +11,7 @@ import { SpaceGlassPanel } from './ui/SpaceGlassPanel';
 export const Education: React.FC = () => {
   const { education } = PERSONAL_DATA;
   const [selectedCert, setSelectedCert] = useState<any | null>(null);
-  const [viewMode, setViewMode] = useState<'grid' | 'timeline' | 'table'>('grid');
+  const [viewMode, setViewMode] = useState<'grid' | 'timeline'>('grid');
 
   // Unified chronological milestones combining Degree + Certifications
   const timelineMilestones = [
@@ -112,7 +112,7 @@ export const Education: React.FC = () => {
             </p>
           </div>
 
-          {/* View Mode Toggle (Badges | Timeline | Table) */}
+          {/* View Mode Toggle (Badges | Timeline) */}
           <div className="flex items-center p-1 rounded-xl bg-zinc-950 border border-zinc-800/90 shadow-2xl self-start md:self-auto">
             <button
               onClick={() => setViewMode('grid')}
@@ -147,63 +147,6 @@ export const Education: React.FC = () => {
               <GitBranch className="w-3.5 h-3.5 relative z-10" />
               <span className="relative z-10">Timeline</span>
             </button>
-
-            <button
-              onClick={() => setViewMode('table')}
-              className={`relative px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-sans font-semibold transition-colors flex items-center space-x-1.5 ${
-                viewMode === 'table' ? 'text-white' : 'text-zinc-400 hover:text-zinc-200'
-              }`}
-            >
-              {viewMode === 'table' && (
-                <motion.div
-                  layoutId="activeEducationView"
-                  className="absolute inset-0 rounded-lg bg-zinc-800/90 border border-zinc-700/80 shadow-inner"
-                  transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                />
-              )}
-              <ListFilter className="w-3.5 h-3.5 relative z-10" />
-              <span className="relative z-10">Index</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Ambient Marquee Ticker of Verified Honors */}
-        <div className="mb-8 p-3 rounded-2xl bg-zinc-950/80 border border-white/5 overflow-hidden relative shadow-inner">
-          <div className="flex items-center space-x-4 animate-marquee whitespace-nowrap text-[11px] font-mono text-zinc-300">
-            <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-blue-950/80 border border-blue-800/80 text-blue-300">
-              <Sparkles className="w-3 h-3 text-blue-400" />
-              <span>IBM Certified: Data Visualization with Python (DV0101EN)</span>
-            </span>
-            <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-red-950/80 border border-red-800/80 text-rose-300">
-              <Rocket className="w-3 h-3 text-rose-400" />
-              <span>Techno Billion AI: Virtual Internship Completed (Grade A)</span>
-            </span>
-            <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-sky-950/80 border border-sky-800/80 text-sky-300">
-              <Cloud className="w-3 h-3 text-sky-400" />
-              <span>IBM Certified: Cloud Fundamentals (CEICF1IN)</span>
-            </span>
-            <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-800/80 text-emerald-300">
-              <GraduationCap className="w-3 h-3 text-emerald-400" />
-              <span>Techno India University: BCA (Honours) Data Science & AI (2025–2029)</span>
-            </span>
-
-            {/* Repeated for seamless marquee loop */}
-            <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-blue-950/80 border border-blue-800/80 text-blue-300">
-              <Sparkles className="w-3 h-3 text-blue-400" />
-              <span>IBM Certified: Data Visualization with Python (DV0101EN)</span>
-            </span>
-            <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-red-950/80 border border-red-800/80 text-rose-300">
-              <Rocket className="w-3 h-3 text-rose-400" />
-              <span>Techno Billion AI: Virtual Internship Completed (Grade A)</span>
-            </span>
-            <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-sky-950/80 border border-sky-800/80 text-sky-300">
-              <Cloud className="w-3 h-3 text-sky-400" />
-              <span>IBM Certified: Cloud Fundamentals (CEICF1IN)</span>
-            </span>
-            <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-800/80 text-emerald-300">
-              <GraduationCap className="w-3 h-3 text-emerald-400" />
-              <span>Techno India University: BCA (Honours) Data Science & AI (2025–2029)</span>
-            </span>
           </div>
         </div>
 
@@ -434,93 +377,6 @@ export const Education: React.FC = () => {
                 </SpaceGlassPanel>
               </div>
             ))}
-          </motion.div>
-        )}
-
-        {/* VIEW MODE 3: MINIMALIST INDEX / DATA TABLE VIEW */}
-        {viewMode === 'table' && (
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.35 }}
-            className="rounded-3xl bg-zinc-950/90 border border-white/10 overflow-hidden shadow-2xl backdrop-blur-2xl"
-          >
-            <div className="overflow-x-auto">
-              <table className="w-full text-left font-sans border-collapse">
-                <thead>
-                  <tr className="border-b border-zinc-800 bg-zinc-900/50 text-[11px] font-mono text-zinc-400 uppercase tracking-wider">
-                    <th className="py-3.5 px-4 sm:px-6">Credential / Course</th>
-                    <th className="py-3.5 px-4 sm:px-6">Issuing Institution</th>
-                    <th className="py-3.5 px-4 sm:px-6 hidden sm:table-cell">Timeline</th>
-                    <th className="py-3.5 px-4 sm:px-6 text-right">Verification</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-800/80 text-xs">
-                  {/* Degree Row */}
-                  <tr className="hover:bg-zinc-900/40 transition-colors">
-                    <td className="py-4 px-4 sm:px-6">
-                      <div className="font-bold text-white flex items-center">
-                        <GraduationCap className="w-4 h-4 mr-2 text-emerald-400 shrink-0" />
-                        <span>{education.degree}</span>
-                      </div>
-                      <div className="text-[10px] font-mono text-zinc-400 mt-0.5">{education.specialization}</div>
-                    </td>
-                    <td className="py-4 px-4 sm:px-6 text-zinc-300 font-medium">
-                      {education.institution}
-                    </td>
-                    <td className="py-4 px-4 sm:px-6 text-zinc-400 font-mono hidden sm:table-cell">
-                      2025 — 2029
-                    </td>
-                    <td className="py-4 px-4 sm:px-6 text-right">
-                      <span className="px-2.5 py-1 rounded-full bg-emerald-950/70 border border-emerald-800/70 text-emerald-400 text-[10px] font-mono">
-                        Active Scholar
-                      </span>
-                    </td>
-                  </tr>
-
-                  {/* Certifications Rows */}
-                  {education.certifications.map((cert: any) => (
-                    <tr key={cert.id} className="hover:bg-zinc-900/40 transition-colors">
-                      <td className="py-4 px-4 sm:px-6">
-                        <div className="font-bold text-white flex items-center">
-                          {getCertIcon(cert.id)}
-                          <span>{cert.title}</span>
-                        </div>
-                        <div className="text-[10px] font-mono text-zinc-400 mt-0.5">{cert.code}</div>
-                      </td>
-                      <td className="py-4 px-4 sm:px-6 text-zinc-300 font-medium">
-                        {cert.issuer}
-                      </td>
-                      <td className="py-4 px-4 sm:px-6 text-zinc-400 font-mono hidden sm:table-cell">
-                        {cert.issueDate}
-                      </td>
-                      <td className="py-4 px-4 sm:px-6 text-right">
-                        <div className="flex items-center justify-end space-x-2">
-                          <button
-                            onClick={() => setSelectedCert(cert)}
-                            className="px-3 py-1 rounded-lg bg-white text-zinc-950 text-xs font-semibold hover:bg-zinc-200 transition-colors"
-                          >
-                            Inspect
-                          </button>
-                          {cert.verifyUrl && (
-                            <a
-                              href={cert.verifyUrl}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="p-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white"
-                              title="Verify Online"
-                            >
-                              <ExternalLink className="w-3.5 h-3.5" />
-                            </a>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
           </motion.div>
         )}
 
