@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   GraduationCap, Award, BookOpen, BadgeCheck, Cloud, BarChart3, 
   ExternalLink, Eye, X, ShieldCheck, Rocket, CheckCircle2, 
-  LayoutGrid, GitBranch, Calendar
+  LayoutGrid, GitBranch, Calendar, ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { PERSONAL_DATA } from '../data/content';
 import { SpaceGlassPanel } from './ui/SpaceGlassPanel';
@@ -12,6 +12,88 @@ export const Education: React.FC = () => {
   const { education } = PERSONAL_DATA;
   const [selectedCert, setSelectedCert] = useState<any | null>(null);
   const [viewMode, setViewMode] = useState<'grid' | 'timeline'>('grid');
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
+  const hasMovedRef = useRef(false);
+
+  const updateScrollState = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setCanScrollLeft(scrollLeft > 10);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+
+      const card = scrollContainerRef.current.firstElementChild as HTMLElement;
+      if (card) {
+        const cardWidth = card.offsetWidth + 16;
+        const index = Math.round(scrollLeft / cardWidth);
+        setActiveIndex(Math.min(Math.max(index, 0), education.certifications.length - 1));
+      }
+    }
+  };
+
+  useEffect(() => {
+    updateScrollState();
+    window.addEventListener('resize', updateScrollState);
+    return () => window.removeEventListener('resize', updateScrollState);
+  }, [education.certifications.length]);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollContainerRef.current) {
+      const card = scrollContainerRef.current.firstElementChild as HTMLElement;
+      const scrollAmount = card ? card.offsetWidth + 16 : 340;
+      scrollContainerRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const scrollToIndex = (index: number) => {
+    if (scrollContainerRef.current) {
+      const card = scrollContainerRef.current.firstElementChild as HTMLElement;
+      const scrollAmount = card ? card.offsetWidth + 16 : 340;
+      scrollContainerRef.current.scrollTo({
+        left: index * scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!scrollContainerRef.current) return;
+    isDraggingRef.current = true;
+    hasMovedRef.current = false;
+    startXRef.current = e.pageX - scrollContainerRef.current.offsetLeft;
+    scrollLeftRef.current = scrollContainerRef.current.scrollLeft;
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDraggingRef.current || !scrollContainerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startXRef.current) * 1.3;
+    if (Math.abs(walk) > 6) {
+      hasMovedRef.current = true;
+    }
+    scrollContainerRef.current.scrollLeft = scrollLeftRef.current - walk;
+    updateScrollState();
+  };
+
+  const handleMouseUpOrLeave = () => {
+    isDraggingRef.current = false;
+  };
+
+  const handleCardClick = (cert: any) => {
+    if (hasMovedRef.current) return;
+    setSelectedCert(cert);
+  };
 
   // Unified chronological milestones combining Degree + Certifications
   const timelineMilestones = [
@@ -97,17 +179,17 @@ export const Education: React.FC = () => {
   };
 
   return (
-    <section id="education" className="py-16 sm:py-24 relative scroll-mt-20 sm:scroll-mt-24">
+    <section id="education" className="py-12 sm:py-16 relative scroll-mt-20 sm:scroll-mt-24">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         
         {/* Section Header & View Mode Switcher */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12 gap-5 sm:gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8 gap-4 sm:gap-6">
           <div>
             <span className="text-[11px] font-mono uppercase tracking-widest text-zinc-400">// ACADEMIC & PROFESSIONAL CREDENTIALS</span>
-            <h2 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-white uppercase font-sans mt-1">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white uppercase font-sans mt-1">
               Education & Honors.
             </h2>
-            <p className="text-zinc-400 text-xs sm:text-sm mt-1.5 max-w-xl">
+            <p className="text-zinc-400 text-xs sm:text-sm mt-1 max-w-xl">
               Academic degree at Techno India University paired with verified IBM credentials and industry internship experience.
             </p>
           </div>
@@ -128,7 +210,7 @@ export const Education: React.FC = () => {
                 />
               )}
               <LayoutGrid className="w-3.5 h-3.5 relative z-10" />
-              <span className="relative z-10">Badges</span>
+              <span className="relative z-10">Credentials</span>
             </button>
 
             <button
@@ -150,29 +232,29 @@ export const Education: React.FC = () => {
           </div>
         </div>
 
-        {/* VIEW MODE 1: GRID BADGES VIEW */}
+        {/* VIEW MODE 1: COMPACT GRID & SCROLLABLE CERTIFICATES VIEW */}
         {viewMode === 'grid' && (
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
             transition={{ duration: 0.35 }}
-            className="space-y-8"
+            className="space-y-6"
           >
-            {/* Primary Degree Card */}
-            <SpaceGlassPanel>
-              <div className="space-y-5 sm:space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6">
+            {/* Primary Degree Card - Compact & Refined */}
+            <SpaceGlassPanel className="!p-4 sm:!p-6">
+              <div className="space-y-4 sm:space-y-5">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-6">
                   <div className="flex items-start space-x-3 sm:space-x-4">
-                    <div className="p-2.5 sm:p-3.5 rounded-2xl bg-zinc-900 border border-zinc-800 text-white shrink-0 shadow-lg">
-                      <GraduationCap className="w-5 h-5 sm:w-7 sm:h-7" />
+                    <div className="p-2 sm:p-3 rounded-2xl bg-zinc-900 border border-zinc-800 text-white shrink-0 shadow-lg">
+                      <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-400" />
                     </div>
-                    <div className="space-y-1">
+                    <div className="space-y-0.5 sm:space-y-1">
                       <div className="flex items-center space-x-1.5 text-[10px] sm:text-xs font-mono text-zinc-400 uppercase tracking-wider">
                         <Award className="w-3.5 h-3.5 text-emerald-400" />
                         <span>{education.period} · BATCH 2025—2029</span>
                       </div>
-                      <h3 className="text-lg sm:text-2xl font-black text-white tracking-tight font-sans">{education.institution}</h3>
+                      <h3 className="text-base sm:text-xl font-black text-white tracking-tight font-sans">{education.institution}</h3>
                       <p className="text-xs sm:text-sm font-semibold text-zinc-200">{education.degree}</p>
                       <p className="text-[11px] sm:text-xs font-mono text-zinc-400">
                         Specialization: <span className="text-zinc-200">{education.specialization}</span>
@@ -180,7 +262,7 @@ export const Education: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="inline-flex items-center space-x-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-emerald-950/60 border border-emerald-800/60 text-emerald-400 text-[11px] sm:text-xs font-mono self-start sm:self-auto shrink-0 shadow-lg">
+                  <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-emerald-950/60 border border-emerald-800/60 text-emerald-400 text-[11px] sm:text-xs font-mono self-start sm:self-auto shrink-0 shadow-lg">
                     <span className="relative flex h-2 w-2">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -190,16 +272,16 @@ export const Education: React.FC = () => {
                 </div>
 
                 {education.coursework && (
-                  <div className="pt-3 sm:pt-4 border-t border-zinc-800/80">
-                    <div className="flex items-center space-x-1.5 text-[11px] font-mono uppercase tracking-wider text-zinc-400 mb-2.5">
+                  <div className="pt-2.5 sm:pt-3 border-t border-zinc-800/80">
+                    <div className="flex items-center space-x-1.5 text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-zinc-400 mb-2">
                       <BookOpen className="w-3.5 h-3.5 text-zinc-400" />
                       <span>Academic Curriculum & Core Focus</span>
                     </div>
-                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                    <div className="flex flex-wrap gap-1.5">
                       {education.coursework.map((course) => (
                         <span
                           key={course}
-                          className="px-2.5 sm:px-3 py-1 rounded-lg bg-zinc-900/90 border border-zinc-800 text-[11px] sm:text-xs font-mono text-zinc-300"
+                          className="px-2.5 py-0.5 rounded-lg bg-zinc-900/90 border border-zinc-800 text-[10px] sm:text-xs font-mono text-zinc-300"
                         >
                           {course}
                         </span>
@@ -210,103 +292,191 @@ export const Education: React.FC = () => {
               </div>
             </SpaceGlassPanel>
 
-            {/* 3 Credential Badges Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-              {education.certifications.map((cert: any, idx: number) => (
-                <SpaceGlassPanel key={cert.id} className="h-full !p-4 sm:!p-5 flex flex-col justify-between group">
-                  <div className="space-y-3.5">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2.5 min-w-0">
-                        {getIssuerBadge(cert.id)}
-                        <div className="min-w-0">
-                          <span className="block text-[10px] sm:text-[11px] font-mono text-zinc-300 uppercase tracking-wider font-semibold truncate">
-                            {cert.issuer}
-                          </span>
-                          <span className="block text-[9px] font-mono text-zinc-500 truncate">
-                            {cert.issueDate}
-                          </span>
+            {/* Horizontal Scrollable Credentials Carousel */}
+            <div className="space-y-3 sm:space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2 sm:space-x-3">
+                  <div className="flex items-center space-x-2">
+                    <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                    <h4 className="text-sm sm:text-base font-bold text-white tracking-tight font-sans">
+                      Verified Credentials
+                    </h4>
+                  </div>
+                  <span className="px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-[10px] sm:text-xs font-mono text-zinc-400">
+                    {education.certifications.length} Credentials
+                  </span>
+                  <span className="hidden md:inline text-[11px] font-mono text-zinc-500">
+                    · Scroll or drag to explore
+                  </span>
+                </div>
+
+                {/* Navigation Buttons & Progress Dots */}
+                <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-1 mr-1 sm:mr-2">
+                    {education.certifications.map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => scrollToIndex(idx)}
+                        aria-label={`Go to credential ${idx + 1}`}
+                        className={`h-1.5 rounded-full transition-all duration-300 ${
+                          activeIndex === idx 
+                            ? 'w-5 bg-emerald-400' 
+                            : 'w-1.5 bg-zinc-700 hover:bg-zinc-500'
+                        }`}
+                      />
+                    ))}
+                  </div>
+
+                  <button
+                    onClick={() => scroll('left')}
+                    disabled={!canScrollLeft}
+                    aria-label="Previous certificate"
+                    className={`p-1.5 sm:p-2 rounded-xl border transition-all ${
+                      canScrollLeft
+                        ? 'bg-zinc-900 hover:bg-zinc-800 border-zinc-800 text-white hover:border-zinc-700 active:scale-95'
+                        : 'bg-zinc-950/60 border-zinc-900 text-zinc-600 cursor-not-allowed'
+                    }`}
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+
+                  <button
+                    onClick={() => scroll('right')}
+                    disabled={!canScrollRight}
+                    aria-label="Next certificate"
+                    className={`p-1.5 sm:p-2 rounded-xl border transition-all ${
+                      canScrollRight
+                        ? 'bg-zinc-900 hover:bg-zinc-800 border-zinc-800 text-white hover:border-zinc-700 active:scale-95'
+                        : 'bg-zinc-950/60 border-zinc-900 text-zinc-600 cursor-not-allowed'
+                    }`}
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Scroll Track */}
+              <div
+                ref={scrollContainerRef}
+                onScroll={updateScrollState}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUpOrLeave}
+                onMouseLeave={handleMouseUpOrLeave}
+                className="flex overflow-x-auto gap-4 sm:gap-5 pb-3 pt-1 scroll-smooth snap-x snap-mandatory cursor-grab active:cursor-grabbing select-none focus:outline-none no-scrollbar"
+                style={{ scrollbarWidth: 'none' }}
+              >
+                {education.certifications.map((cert: any) => (
+                  <div
+                    key={cert.id}
+                    className="w-[85vw] sm:w-[340px] md:w-[360px] shrink-0 snap-start flex flex-col"
+                  >
+                    <SpaceGlassPanel className="h-full !p-4 sm:!p-4 flex flex-col justify-between group select-none">
+                      <div className="space-y-3">
+                        {/* Header */}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2.5 min-w-0">
+                            {getIssuerBadge(cert.id)}
+                            <div className="min-w-0">
+                              <span className="block text-[10px] sm:text-[11px] font-mono text-zinc-300 uppercase tracking-wider font-semibold truncate">
+                                {cert.issuer}
+                              </span>
+                              <span className="block text-[9px] font-mono text-zinc-500 truncate">
+                                {cert.issueDate}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-800/80 text-emerald-400 text-[10px] font-mono shadow-sm shrink-0">
+                            <BadgeCheck className="w-3.5 h-3.5 text-emerald-400" />
+                            <span>{cert.id === 'techno-billion-internship' ? 'Grade A' : 'Verified'}</span>
+                          </div>
+                        </div>
+
+                        {/* Image Preview */}
+                        {cert.image && (
+                          <div
+                            onClick={() => handleCardClick(cert)}
+                            onContextMenu={(e) => e.preventDefault()}
+                            className="relative rounded-xl overflow-hidden bg-zinc-950 border border-zinc-800/90 cursor-pointer group/img shadow-inner select-none"
+                          >
+                            <img
+                              src={cert.image}
+                              alt={`${cert.title} preview`}
+                              draggable={false}
+                              onContextMenu={(e) => e.preventDefault()}
+                              className="w-full h-28 sm:h-32 object-cover object-top filter contrast-105 group-hover/img:scale-105 transition-transform duration-500 select-none pointer-events-none"
+                            />
+                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+                              <span className="px-3 py-1 rounded-full bg-white text-zinc-950 text-xs font-bold font-sans flex items-center space-x-1.5 shadow-xl">
+                                <Eye className="w-3.5 h-3.5" />
+                                <span>Inspect</span>
+                              </span>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Title & Description */}
+                        <div className="space-y-1">
+                          <h4 className="text-sm sm:text-base font-bold text-white tracking-tight font-sans flex items-center">
+                            {getCertIcon(cert.id)}
+                            <span className="line-clamp-1">{cert.title}</span>
+                          </h4>
+                          <p className="text-xs text-zinc-400 leading-relaxed font-normal line-clamp-2">
+                            {cert.description}
+                          </p>
+                        </div>
+
+                        {/* Skills */}
+                        <div className="flex flex-wrap gap-1 pt-0.5">
+                          {cert.skills.slice(0, 3).map((skill: string) => (
+                            <span
+                              key={skill}
+                              className="px-2 py-0.5 rounded-md bg-zinc-950/90 border border-zinc-800 text-[10px] font-mono text-zinc-300"
+                            >
+                              {skill}
+                            </span>
+                          ))}
+                          {cert.skills.length > 3 && (
+                            <span className="px-1.5 py-0.5 rounded-md bg-zinc-950/90 border border-zinc-800 text-[10px] font-mono text-zinc-500">
+                              +{cert.skills.length - 3}
+                            </span>
+                          )}
                         </div>
                       </div>
 
-                      <div className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-800/80 text-emerald-400 text-[10px] font-mono shadow-sm shrink-0">
-                        <BadgeCheck className="w-3.5 h-3.5 text-emerald-400" />
-                        <span>{cert.id === 'techno-billion-internship' ? 'Grade A' : 'Verified'}</span>
-                      </div>
-                    </div>
-
-                    {cert.image && (
-                      <div
-                        onClick={() => setSelectedCert(cert)}
-                        onContextMenu={(e) => e.preventDefault()}
-                        className="relative rounded-xl overflow-hidden bg-zinc-950 border border-zinc-800/90 cursor-pointer group/img shadow-inner select-none"
-                      >
-                        <img
-                          src={cert.image}
-                          alt={`${cert.title} preview`}
-                          draggable={false}
-                          onContextMenu={(e) => e.preventDefault()}
-                          className="w-full h-36 sm:h-40 object-cover object-top filter contrast-105 group-hover/img:scale-105 transition-transform duration-500 select-none pointer-events-none"
-                        />
-                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                          <span className="px-3.5 py-1.5 rounded-full bg-white text-zinc-950 text-xs font-bold font-sans flex items-center space-x-1.5 shadow-xl">
-                            <Eye className="w-3.5 h-3.5" />
-                            <span>View Certificate</span>
-                          </span>
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="space-y-1">
-                      <h4 className="text-sm sm:text-base font-bold text-white tracking-tight font-sans flex items-center">
-                        {getCertIcon(cert.id)}
-                        <span className="line-clamp-2">{cert.title}</span>
-                      </h4>
-                      <p className="text-xs text-zinc-400 leading-relaxed font-normal line-clamp-3">
-                        {cert.description}
-                      </p>
-                    </div>
-
-                    <div className="flex flex-wrap gap-1.5 pt-1">
-                      {cert.skills.map((skill: string) => (
-                        <span
-                          key={skill}
-                          className="px-2 py-0.5 rounded-md bg-zinc-950/90 border border-zinc-800 text-[10px] font-mono text-zinc-300"
+                      {/* Footer Actions */}
+                      <div className="pt-3 mt-2.5 border-t border-zinc-800/80 flex items-center justify-between gap-2">
+                        <button
+                          onClick={() => handleCardClick(cert)}
+                          className="px-3 py-1.5 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-semibold font-sans flex items-center space-x-1.5 transition-colors shadow-md active:scale-95"
                         >
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+                          <Eye className="w-3.5 h-3.5" />
+                          <span>Inspect</span>
+                        </button>
 
-                  <div className="pt-3.5 mt-3 border-t border-zinc-800/80 flex flex-wrap items-center gap-2">
-                    <button
-                      onClick={() => setSelectedCert(cert)}
-                      className="px-3 py-1.5 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-semibold font-sans flex items-center space-x-1.5 transition-colors shadow-md transform-gpu active:scale-95"
-                    >
-                      <Eye className="w-3.5 h-3.5" />
-                      <span>Inspect</span>
-                    </button>
-
-                    {cert.verifyUrl ? (
-                      <a
-                        href={cert.verifyUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-zinc-200 hover:text-white text-xs font-mono flex items-center space-x-1.5 transition-colors"
-                      >
-                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                        <span>Verify</span>
-                        <ExternalLink className="w-3 h-3 text-zinc-500" />
-                      </a>
-                    ) : (
-                      <div className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-xl bg-zinc-900 border border-zinc-800 text-[10px] font-mono text-zinc-400">
-                        <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                        <span>ID Verified</span>
+                        {cert.verifyUrl ? (
+                          <a
+                            href={cert.verifyUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-zinc-200 hover:text-white text-xs font-mono flex items-center space-x-1.5 transition-colors"
+                          >
+                            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                            <span>Verify</span>
+                            <ExternalLink className="w-3 h-3 text-zinc-500" />
+                          </a>
+                        ) : (
+                          <div className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-xl bg-zinc-900 border border-zinc-800 text-[10px] font-mono text-zinc-400">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                            <span>ID Verified</span>
+                          </div>
+                        )}
                       </div>
-                    )}
+                    </SpaceGlassPanel>
                   </div>
-                </SpaceGlassPanel>
-              ))}
+                ))}
+              </div>
             </div>
           </motion.div>
         )}
