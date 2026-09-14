@@ -119,10 +119,10 @@ export const Contact: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="py-16 sm:py-24 md:py-28 relative scroll-mt-20 sm:scroll-mt-24">
+    <section id="contact" className="py-12 sm:py-20 md:py-24 relative scroll-mt-20 sm:scroll-mt-24">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-start">
           
           {/* Left Column: Heading & Contact Info */}
           <motion.div
@@ -130,7 +130,7 @@ export const Contact: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 space-y-5 sm:space-y-6"
+            className="lg:col-span-5 space-y-4 sm:space-y-6"
           >
             <div>
               <span className="text-[11px] font-mono uppercase tracking-widest text-zinc-400">// GET IN TOUCH</span>
@@ -230,7 +230,7 @@ export const Contact: React.FC = () => {
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-7"
           >
-            <SpaceGlassPanel>
+            <SpaceGlassPanel className="!p-4 sm:!p-8">
               {submitted ? (
                 <div className="py-10 sm:py-12 text-center space-y-4">
                   <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-emerald-950/80 border border-emerald-500/60 text-emerald-400 flex items-center justify-center mx-auto shadow-2xl">

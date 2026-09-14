@@ -9,11 +9,11 @@ export const Projects: React.FC = () => {
   const activeProject = PERSONAL_DATA.projects.find((p) => p.id === activeProjectId) || PERSONAL_DATA.projects[0];
 
   return (
-    <section id="projects" className="py-16 sm:py-24 lg:py-28 bg-[#09090b] border-t border-zinc-900/90 relative scroll-mt-20 sm:scroll-mt-24">
+    <section id="projects" className="py-12 sm:py-20 lg:py-24 bg-[#09090b] border-t border-zinc-900/90 relative scroll-mt-20 sm:scroll-mt-24">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12 gap-5 sm:gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-10 gap-4 sm:gap-6">
           <div>
             <span className="text-[11px] font-mono uppercase tracking-widest text-zinc-400">// ENGINEERING PORTFOLIO</span>
             <h2 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-white uppercase font-sans mt-1">
@@ -100,11 +100,11 @@ export const Projects: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="p-4 sm:p-7 lg:p-10 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-center"
+              className="p-3.5 sm:p-7 lg:p-10 grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 lg:gap-10 items-center"
             >
               
               {/* Left Column: Visual Showcase Screen */}
-              <div className="lg:col-span-6 space-y-3 sm:space-y-4">
+              <div className="lg:col-span-6 space-y-2.5 sm:space-y-4">
                 <div className="relative group rounded-xl sm:rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 shadow-2xl">
                   {/* Subtle Screen Glow */}
                   <div className="absolute -inset-1 bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
@@ -113,10 +113,10 @@ export const Projects: React.FC = () => {
                     <img
                       src={activeProject.image}
                       alt={`${activeProject.title} Interface Preview`}
-                      className="w-full h-48 sm:h-64 lg:h-80 object-cover object-top filter contrast-105 group-hover:scale-[1.03] transition-transform duration-700 ease-out transform-gpu"
+                      className="w-full h-40 sm:h-64 lg:h-80 object-cover object-top filter contrast-105 group-hover:scale-[1.03] transition-transform duration-700 ease-out transform-gpu"
                     />
                   ) : (
-                    <div className="w-full h-48 sm:h-64 lg:h-80 flex flex-col justify-between p-5 bg-gradient-to-br from-zinc-900 to-black">
+                    <div className="w-full h-40 sm:h-64 lg:h-80 flex flex-col justify-between p-5 bg-gradient-to-br from-zinc-900 to-black">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-mono uppercase text-zinc-400">{activeProject.title}</span>
                         <Sparkles className="w-4 h-4 text-emerald-400" />
@@ -126,7 +126,7 @@ export const Projects: React.FC = () => {
                   )}
 
                   {/* Floating Quick Action Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 sm:p-5">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3.5 sm:p-5">
                     <a
                       href={activeProject.liveUrl}
                       target="_blank"
@@ -139,11 +139,11 @@ export const Projects: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Architectural Performance Metric Chips (Mobile Optimized) */}
+                {/* Architectural Performance Metric Chips (Scrollable on Mobile to Save Vertical Space) */}
                 {activeProject.metrics && (
-                  <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                  <div className="flex sm:grid overflow-x-auto sm:overflow-visible gap-2 sm:gap-3 no-scrollbar pb-1 sm:pb-0 sm:grid-cols-3">
                     {activeProject.metrics.map((m) => (
-                      <div key={m.label} className="p-2 sm:p-3 rounded-xl bg-zinc-900/80 border border-zinc-800 text-left">
+                      <div key={m.label} className="p-2 sm:p-3 rounded-xl bg-zinc-900/80 border border-zinc-800 text-left min-w-[105px] sm:min-w-0 shrink-0 sm:shrink">
                         <div className="text-xs sm:text-sm font-bold text-white font-mono truncate">{m.value}</div>
                         <div className="text-[9px] sm:text-[10px] text-zinc-400 font-mono mt-0.5 leading-tight truncate">{m.label}</div>
                       </div>
@@ -153,7 +153,7 @@ export const Projects: React.FC = () => {
               </div>
 
               {/* Right Column: Deep-Dive Technical Details */}
-              <div className="lg:col-span-6 space-y-4 sm:space-y-6 text-left">
+              <div className="lg:col-span-6 space-y-3 sm:space-y-5 text-left">
                 
                 {/* Category & Status */}
                 <div className="flex items-center space-x-2.5 sm:space-x-3">
@@ -171,10 +171,10 @@ export const Projects: React.FC = () => {
 
                 {/* Title & Tagline */}
                 <div>
-                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight font-sans">
+                  <h3 className="text-xl sm:text-3xl md:text-4xl font-black text-white tracking-tight font-sans">
                     {activeProject.title}
                   </h3>
-                  <p className="text-xs sm:text-sm font-mono text-zinc-400 mt-1 font-medium">
+                  <p className="text-xs sm:text-sm font-mono text-zinc-400 mt-0.5 sm:mt-1 font-medium">
                     {activeProject.tagline}
                   </p>
                 </div>
@@ -186,7 +186,7 @@ export const Projects: React.FC = () => {
 
                 {/* Architectural Highlights */}
                 {activeProject.highlights && (
-                  <div className="space-y-2 pt-0.5 sm:pt-1">
+                  <div className="space-y-1.5 pt-0.5">
                     <p className="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-zinc-400 font-semibold">
                       Engineering Highlights
                     </p>
@@ -201,13 +201,13 @@ export const Projects: React.FC = () => {
                   </div>
                 )}
 
-                {/* Tech Stack Pills */}
+                {/* Tech Stack Pills (Scrollable on Mobile) */}
                 <div className="pt-0.5">
-                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                  <div className="flex sm:flex-wrap overflow-x-auto sm:overflow-visible gap-1.5 sm:gap-2 no-scrollbar pb-1 snap-x">
                     {activeProject.tech.map((t) => (
                       <span
                         key={t}
-                        className="px-2.5 sm:px-3 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-[11px] sm:text-xs font-mono text-zinc-300"
+                        className="px-2.5 sm:px-3 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-[11px] sm:text-xs font-mono text-zinc-300 shrink-0 snap-start"
                       >
                         {t}
                       </span>
