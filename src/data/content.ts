@@ -10,17 +10,17 @@ export const PERSONAL_DATA = {
   location: "Kolkata, India",
   timezone: "IST (UTC+5:30)",
   availability: "Open to Full-Time, Remote & Contract Opportunities",
-  heroTagline: "BCA (Honours) scholar in Data Science & Artificial Intelligence. Engineering high-performance web applications, intelligent AI pipelines, and modern user experiences.",
+  heroTagline: "BCA (Honours) scholar specializing in Data Science & Artificial Intelligence (Batch 2025—2029) at Techno India University. IBM Certified in Data Visualization & Cloud Fundamentals.",
   
   metrics: [
     { label: "Production Apps", value: "2+" },
-    { label: "Academic Specialization", value: "Data Science & AI" },
-    { label: "Stack Focus", value: "React · TypeScript · AI" },
+    { label: "Academic Specialization", value: "Data Science & AI (2025-29)" },
+    { label: "Verified Credentials", value: "2x IBM Certified" },
   ],
 
   aboutHeading: "Engineering with curiosity, precision, and purpose.",
-  aboutBio: "I am a developer and BCA (Hons.) student specializing in Data Science and Artificial Intelligence. My work centers on building scalable web applications and integrating large language models to solve real-world problems. I combine robust software architecture with clean, performant interfaces designed for real users.",
-  aboutTags: ["Generative AI", "Full-Stack Development", "Data Science", "System Architecture", "UI/UX Engineering"],
+  aboutBio: "I am a developer and BCA (Hons.) scholar in Data Science & Artificial Intelligence (Batch 2025—2029) at Techno India University. Holding verified industry credentials from IBM in Data Visualization with Python and IBM Cloud Fundamentals, my work bridges intelligent machine learning pipelines with high-performance web systems.",
+  aboutTags: ["Generative AI", "Full-Stack Development", "Data Science & AI", "IBM Certified", "System Architecture"],
   
   images: {
     hero: manuelMainPortrait,
@@ -31,16 +31,37 @@ export const PERSONAL_DATA = {
 
   education: {
     institution: "Techno India University",
-    degree: "Bachelor of Computer Applications (Honours)",
+    degree: "Bachelor of Computer Applications (Honours) — BCA (H)",
     specialization: "Data Science & Artificial Intelligence",
-    period: "2024 — Present",
-    status: "Active Scholar",
+    period: "2025 — 2029",
+    status: "Currently Pursuing (2025 — 2029)",
     coursework: [
       "Data Structures & Algorithms",
-      "Machine Learning & AI",
-      "Database Management (SQL)",
-      "Web Technologies & Systems",
-      "Probability & Statistics"
+      "Machine Learning & Artificial Intelligence",
+      "Database Management Systems (SQL)",
+      "Web Technologies & System Design",
+      "Probability, Statistics & Linear Algebra",
+      "Python for Data Science"
+    ],
+    certifications: [
+      {
+        id: "ibm-data-viz",
+        title: "Data Visualization with Python",
+        issuer: "IBM",
+        badgeText: "IBM Verified Credential",
+        category: "Data Science & Analytics",
+        description: "Specialized credential covering statistical plots, dashboards, exploratory data analysis, and visual storytelling using Python, Matplotlib, and Seaborn.",
+        skills: ["Python", "Data Visualization", "Matplotlib", "Seaborn", "Exploratory Analysis"]
+      },
+      {
+        id: "ibm-cloud-fundamentals",
+        title: "IBM Cloud Fundamentals",
+        issuer: "IBM",
+        badgeText: "IBM Verified Credential",
+        category: "Cloud Infrastructure",
+        description: "Foundational mastery of cloud computing architectures, cloud service models (IaaS, PaaS, SaaS), cloud security, and deployment pipelines.",
+        skills: ["Cloud Architecture", "IaaS / PaaS", "Cloud Security", "Infrastructure Deployment"]
+      }
     ]
   },
 

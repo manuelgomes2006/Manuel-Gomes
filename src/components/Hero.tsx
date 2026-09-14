@@ -133,7 +133,7 @@ export const Hero: React.FC = () => {
                 <div className="absolute bottom-4 left-4 right-4 z-10 flex items-center justify-between pointer-events-none">
                   <div>
                     <p className="text-xs font-black uppercase tracking-widest text-white font-sans">MANUEL GOMES</p>
-                    <p className="text-[10px] font-mono text-zinc-400 mt-0.5">BCA (HONS.) DATA SCIENCE & AI</p>
+                    <p className="text-[10px] font-mono text-zinc-400 mt-0.5">BCA (HONS.) DATA SCIENCE & AI · 2025–2029</p>
                   </div>
                 </div>
               </div>
