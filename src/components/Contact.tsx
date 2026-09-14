@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Github, Linkedin, Instagram, Send, CheckCircle, Loader2, AlertCircle, Sun } from 'lucide-react';
+import { Mail, Github, Linkedin, Instagram, Send, CheckCircle, Loader2, AlertCircle, Copy, Check, Clock, Globe } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { PERSONAL_DATA } from '../data/content';
 import { SpaceGlassPanel } from './ui/SpaceGlassPanel';
@@ -11,11 +11,18 @@ export const Contact: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [emailError, setEmailError] = useState('');
+  const [copied, setCopied] = useState(false);
 
   // Strict email regex validation
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email.trim());
+  };
+
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText(contact.email);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,7 +82,7 @@ export const Contact: React.FC = () => {
         return;
       }
 
-      // 2. Fallback to FormSubmit AJAX if API is not deployed locally
+      // 2. Fallback to FormSubmit AJAX
       const fallbackResponse = await fetch(`https://formsubmit.co/ajax/${contact.email}`, {
         method: 'POST',
         headers: {
@@ -86,7 +93,7 @@ export const Contact: React.FC = () => {
           name: formData.name.trim(),
           email: formData.email.trim(),
           message: formData.message.trim(),
-          _subject: `New Portfolio Message from ${formData.name.trim()}`,
+          _subject: `Portfolio Message from ${formData.name.trim()}`,
           _template: 'table'
         })
       });
@@ -104,21 +111,8 @@ export const Contact: React.FC = () => {
         setSubmitted(true);
       }
     } catch (error) {
-      // 3. Fallback to FormSubmit direct
-      try {
-        await fetch(`https://formsubmit.co/ajax/${contact.email}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({
-            name: formData.name.trim(),
-            email: formData.email.trim(),
-            message: formData.message.trim(),
-            _subject: `New Portfolio Message from ${formData.name.trim()}`
-          })
-        });
-      } catch (err) {
-        window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(`Portfolio Inquiry from ${formData.name}`)}&body=${encodeURIComponent(`${formData.message}\n\nFrom: ${formData.name} (${formData.email})`)}`;
-      }
+      // Fallback
+      window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(`Portfolio Inquiry from ${formData.name}`)}&body=${encodeURIComponent(`${formData.message}\n\nFrom: ${formData.name} (${formData.email})`)}`;
       setSubmitted(true);
     } finally {
       setIsSubmitting(false);
@@ -131,7 +125,7 @@ export const Contact: React.FC = () => {
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           
-          {/* Left Column: Heading & Social Links */}
+          {/* Left Column: Heading & Contact Info */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -140,7 +134,7 @@ export const Contact: React.FC = () => {
             className="lg:col-span-5 space-y-6"
           >
             <div>
-              <span className="text-xs font-mono uppercase tracking-widest text-violet-400">// DESTINATION — GALAXY CORE</span>
+              <span className="text-xs font-mono uppercase tracking-widest text-zinc-400">// GET IN TOUCH</span>
               <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white uppercase font-sans mt-1">
                 {contact.heading}
               </h2>
@@ -149,21 +143,52 @@ export const Contact: React.FC = () => {
               </p>
             </div>
 
-            {/* Direct Email Box */}
-            <a
-              href={`mailto:${contact.email}`}
-              className="flex items-center space-x-3.5 p-4 rounded-2xl bg-zinc-950/80 border border-white/10 hover:border-violet-500/50 transition-all duration-300 group transform-gpu hover:scale-[1.02] shadow-xl"
-            >
-              <div className="p-3 rounded-xl bg-zinc-900 text-violet-400 group-hover:scale-105 transition-transform">
-                <Mail className="w-5 h-5" />
+            {/* Direct Email Box with One-Click Copy */}
+            <div className="p-4 rounded-2xl bg-zinc-950/80 border border-white/10 flex items-center justify-between shadow-xl">
+              <div className="flex items-center space-x-3.5 min-w-0">
+                <div className="p-3 rounded-xl bg-zinc-900 text-white shrink-0">
+                  <Mail className="w-5 h-5" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[10px] font-mono uppercase tracking-widest text-zinc-500">DIRECT EMAIL</p>
+                  <a
+                    href={`mailto:${contact.email}`}
+                    className="text-xs sm:text-sm font-semibold text-white font-mono hover:underline truncate block"
+                  >
+                    {contact.email}
+                  </a>
+                </div>
               </div>
-              <div>
-                <p className="text-[10px] font-mono uppercase tracking-widest text-zinc-500">DIRECT INBOX</p>
-                <p className="text-sm font-semibold text-white font-mono">{contact.email}</p>
-              </div>
-            </a>
 
-            {/* Socials */}
+              <button
+                onClick={handleCopyEmail}
+                title="Copy email address"
+                className="p-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-300 hover:text-white transition-all transform-gpu hover:scale-105 shrink-0 ml-2"
+              >
+                {copied ? (
+                  <span className="flex items-center text-emerald-400 text-xs font-mono">
+                    <Check className="w-4 h-4 mr-1" />
+                    <span>Copied!</span>
+                  </span>
+                ) : (
+                  <Copy className="w-4 h-4" />
+                )}
+              </button>
+            </div>
+
+            {/* Location & Timezone Details */}
+            <div className="p-4 rounded-2xl bg-zinc-950/60 border border-zinc-800/80 space-y-2 text-xs font-mono text-zinc-400">
+              <div className="flex items-center space-x-2">
+                <Globe className="w-3.5 h-3.5 text-zinc-400" />
+                <span>Location: <strong className="text-zinc-200">Kolkata, India</strong></span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Clock className="w-3.5 h-3.5 text-zinc-400" />
+                <span>Timezone: <strong className="text-zinc-200">IST (UTC +5:30)</strong></span>
+              </div>
+            </div>
+
+            {/* Social Links */}
             <div className="pt-2 space-y-2">
               <p className="text-xs font-mono uppercase tracking-widest text-zinc-500">CONNECT ON SOCIAL</p>
               <div className="flex space-x-3">
@@ -171,7 +196,7 @@ export const Contact: React.FC = () => {
                   href={contact.socials.github}
                   target="_blank"
                   rel="noreferrer"
-                  className="p-3.5 rounded-2xl bg-zinc-950/80 border border-white/10 text-zinc-400 hover:text-white hover:border-violet-500/50 transition-all duration-300 transform-gpu hover:scale-110 shadow-lg"
+                  className="p-3.5 rounded-2xl bg-zinc-950/80 border border-white/10 text-zinc-400 hover:text-white hover:border-zinc-600 transition-all duration-300 transform-gpu hover:scale-110 shadow-lg"
                   aria-label="GitHub"
                 >
                   <Github className="w-5 h-5" />
@@ -180,7 +205,7 @@ export const Contact: React.FC = () => {
                   href={contact.socials.linkedin}
                   target="_blank"
                   rel="noreferrer"
-                  className="p-3.5 rounded-2xl bg-zinc-950/80 border border-white/10 text-zinc-400 hover:text-white hover:border-violet-500/50 transition-all duration-300 transform-gpu hover:scale-110 shadow-lg"
+                  className="p-3.5 rounded-2xl bg-zinc-950/80 border border-white/10 text-zinc-400 hover:text-white hover:border-zinc-600 transition-all duration-300 transform-gpu hover:scale-110 shadow-lg"
                   aria-label="LinkedIn"
                 >
                   <Linkedin className="w-5 h-5" />
@@ -189,7 +214,7 @@ export const Contact: React.FC = () => {
                   href={contact.socials.instagram}
                   target="_blank"
                   rel="noreferrer"
-                  className="p-3.5 rounded-2xl bg-zinc-950/80 border border-white/10 text-zinc-400 hover:text-white hover:border-violet-500/50 transition-all duration-300 transform-gpu hover:scale-110 shadow-lg"
+                  className="p-3.5 rounded-2xl bg-zinc-950/80 border border-white/10 text-zinc-400 hover:text-white hover:border-zinc-600 transition-all duration-300 transform-gpu hover:scale-110 shadow-lg"
                   aria-label="Instagram"
                 >
                   <Instagram className="w-5 h-5" />
@@ -198,7 +223,7 @@ export const Contact: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Right Column: Space Glass Form */}
+          {/* Right Column: Contact Form */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -216,7 +241,7 @@ export const Contact: React.FC = () => {
                     Thank You For Reaching Out
                   </h3>
                   <p className="text-sm text-zinc-300 max-w-md mx-auto leading-relaxed font-normal">
-                    Your message has been successfully received. A team member will review your inquiry and follow up with you shortly.
+                    Your message has been delivered directly. I will review your note and respond as soon as possible.
                   </p>
                 </div>
               ) : (
@@ -226,10 +251,10 @@ export const Contact: React.FC = () => {
                     <input
                       type="text"
                       required
-                      placeholder="Your name"
+                      placeholder="Your full name"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl bg-zinc-950/90 border border-zinc-800 text-white placeholder-zinc-600 focus:outline-none focus:border-violet-500 font-sans text-sm transition-colors"
+                      className="w-full px-4 py-3 rounded-xl bg-zinc-950/90 border border-zinc-800 text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-500 font-sans text-sm transition-colors"
                     />
                   </div>
 
@@ -238,12 +263,12 @@ export const Contact: React.FC = () => {
                     <input
                       type="email"
                       required
-                      placeholder="Your email address (e.g., name@domain.com)"
+                      placeholder="name@domain.com"
                       value={formData.email}
                       onChange={handleEmailChange}
                       onBlur={handleEmailBlur}
                       className={`w-full px-4 py-3 rounded-xl bg-zinc-950/90 border text-white placeholder-zinc-600 focus:outline-none font-sans text-sm transition-colors ${
-                        emailError ? 'border-red-500/80 focus:border-red-500' : 'border-zinc-800 focus:border-violet-500'
+                        emailError ? 'border-red-500/80 focus:border-red-500' : 'border-zinc-800 focus:border-zinc-500'
                       }`}
                     />
                     {emailError && (
@@ -258,28 +283,28 @@ export const Contact: React.FC = () => {
                     <label className="text-xs font-mono uppercase tracking-widest text-zinc-400 block">Message</label>
                     <textarea
                       required
-                      rows={4}
-                      placeholder="How can I help you?"
+                      rows={5}
+                      placeholder="Tell me about your project, team, or opportunity..."
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl bg-zinc-950/90 border border-zinc-800 text-white placeholder-zinc-600 focus:outline-none focus:border-violet-500 font-sans text-sm transition-colors resize-none"
+                      className="w-full px-4 py-3 rounded-xl bg-zinc-950/90 border border-zinc-800 text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-500 font-sans text-sm transition-colors resize-none"
                     />
                   </div>
 
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-4 px-6 rounded-full bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-bold uppercase tracking-widest transition-all duration-300 shadow-xl flex items-center justify-center space-x-2 transform-gpu hover:scale-[1.01] disabled:opacity-50"
+                    className="w-full py-3.5 px-6 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 font-bold uppercase tracking-widest text-xs transition-all duration-300 shadow-xl flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed transform-gpu hover:scale-[1.01]"
                   >
                     {isSubmitting ? (
                       <>
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        <span>SENDING TRANSMISSION...</span>
+                        <span>Transmitting...</span>
                       </>
                     ) : (
                       <>
-                        <span>SEND TRANSMISSION</span>
-                        <Send className="w-3.5 h-3.5 ml-1" />
+                        <span>Send Message</span>
+                        <Send className="w-4 h-4" />
                       </>
                     )}
                   </button>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown, Github, Linkedin, Instagram, ArrowUpRight, Sparkles } from 'lucide-react';
+import { ArrowDown, Github, Linkedin, Instagram, ArrowUpRight } from 'lucide-react';
 import { PERSONAL_DATA } from '../data/content';
 import { TiltCard } from './TiltCard';
 import { ThreeCanvas } from './ThreeCanvas';
@@ -25,22 +25,21 @@ export const Hero: React.FC = () => {
           className="lg:col-span-7 space-y-6 text-left"
         >
           {/* Status tag */}
-          <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-zinc-900/90 border border-zinc-800/90 shadow-inner text-[11px] font-mono text-zinc-300">
+          <div className="inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full bg-zinc-900/90 border border-zinc-800/90 shadow-inner text-xs font-mono text-zinc-300">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
-            <span className="tracking-wide">{PERSONAL_DATA.status}</span>
+            <span className="tracking-normal">{PERSONAL_DATA.status}</span>
           </div>
 
           {/* Main Title */}
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white uppercase font-sans">
               MANUEL GOMES
             </h1>
-            <p className="text-xl sm:text-3xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-300 to-zinc-600 font-sans uppercase flex items-center">
-              <span>{PERSONAL_DATA.role}</span>
-              <Sparkles className="w-5 h-5 ml-2 text-zinc-400 inline" />
+            <p className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-300 to-zinc-500 font-sans">
+              {PERSONAL_DATA.role}
             </p>
           </div>
 
@@ -48,6 +47,16 @@ export const Hero: React.FC = () => {
           <p className="text-sm sm:text-base text-zinc-400 leading-relaxed font-normal max-w-xl">
             {PERSONAL_DATA.heroTagline}
           </p>
+
+          {/* High-Credibility Stat Counters Bar */}
+          <div className="pt-1 grid grid-cols-3 gap-4 max-w-lg border-y border-zinc-800/80 py-3.5">
+            {PERSONAL_DATA.metrics.map((metric) => (
+              <div key={metric.label} className="text-left">
+                <div className="text-lg sm:text-xl font-black text-white font-sans tracking-tight">{metric.value}</div>
+                <div className="text-[11px] font-mono text-zinc-400 mt-0.5 leading-tight">{metric.label}</div>
+              </div>
+            ))}
+          </div>
 
           {/* Action Buttons */}
           <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
@@ -68,7 +77,7 @@ export const Hero: React.FC = () => {
           </div>
 
           {/* Social Links */}
-          <div className="pt-4 flex items-center space-x-4">
+          <div className="pt-2 flex items-center space-x-3.5">
             <a
               href={PERSONAL_DATA.contact.socials.github}
               target="_blank"
@@ -118,8 +127,8 @@ export const Hero: React.FC = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent pointer-events-none" />
                 <div className="absolute bottom-5 left-5 right-5 z-10 flex items-center justify-between pointer-events-none">
                   <div>
-                    <p className="text-xs font-black uppercase tracking-widest text-white">MANUEL GOMES</p>
-                    <p className="text-[10px] font-mono text-zinc-400 mt-0.5">BCA (HONS.) DATA SCIENCE & AI</p>
+                    <p className="text-xs font-black uppercase tracking-widest text-white font-sans">MANUEL GOMES</p>
+                    <p className="text-[11px] font-mono text-zinc-400 mt-0.5">BCA (HONS.) DATA SCIENCE & AI</p>
                   </div>
                 </div>
               </div>
@@ -137,7 +146,7 @@ export const Hero: React.FC = () => {
         transition={{ delay: 1, duration: 0.5 }}
         className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center text-zinc-500 hover:text-zinc-300 transition-colors"
       >
-        <span className="text-[9px] font-mono uppercase tracking-widest mb-1">Scroll</span>
+        <span className="text-[10px] font-mono uppercase tracking-widest mb-1">Scroll Down</span>
         <ArrowDown className="w-3.5 h-3.5 animate-bounce" />
       </motion.a>
     </section>
