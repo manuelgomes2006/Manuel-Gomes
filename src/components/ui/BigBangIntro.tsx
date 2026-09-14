@@ -11,6 +11,15 @@ export const BigBangIntro: React.FC<BigBangIntroProps> = ({ onComplete }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    if (isMobile) {
+      const mobileTimer = setTimeout(() => {
+        setPhase('done');
+        onComplete();
+      }, 1600);
+      return () => clearTimeout(mobileTimer);
+    }
+
     const timer1 = setTimeout(() => setPhase('drafting'), 400);
     const timer2 = setTimeout(() => setPhase('gathering'), 2500);
     const timer3 = setTimeout(() => setPhase('exploded'), 4200);
