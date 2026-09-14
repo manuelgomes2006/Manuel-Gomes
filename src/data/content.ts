@@ -57,7 +57,6 @@ export const PERSONAL_DATA = {
         description: "Specialized credential covering statistical plots, dashboards, exploratory data analysis, and visual storytelling using Python, Matplotlib, and Seaborn.",
         skills: ["Python", "Data Visualization", "Matplotlib", "Seaborn", "Exploratory Analysis"],
         image: ibmDataVizCert,
-        pdfUrl: "./certificates/ibm-data-visualization.pdf",
         verifyUrl: "https://courses.ibmcep.cognitiveclass.ai/certificates/cf7b6459986a4b5b8647cbb881d41fe1"
       },
       {
@@ -71,7 +70,6 @@ export const PERSONAL_DATA = {
         description: "Foundational mastery of cloud computing architectures, cloud service models (IaaS, PaaS, SaaS), cloud security, and deployment pipelines.",
         skills: ["Cloud Architecture", "IaaS / PaaS", "Cloud Security", "Infrastructure Deployment"],
         image: ibmCloudCert,
-        pdfUrl: "./certificates/ibm-cloud-fundamentals.pdf",
         verifyUrl: "https://courses.ibmcep.cognitiveclass.ai/certificates/7d3e9b3a2fc44b98ab1f3cb0bcd7af40"
       }
     ]

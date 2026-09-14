@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GraduationCap, Award, BookOpen, BadgeCheck, Cloud, BarChart3, ExternalLink, Eye, X, Download, ShieldCheck } from 'lucide-react';
+import { GraduationCap, Award, BookOpen, BadgeCheck, Cloud, BarChart3, ExternalLink, Eye, X, ShieldCheck } from 'lucide-react';
 import { PERSONAL_DATA } from '../data/content';
 import { SpaceGlassPanel } from './ui/SpaceGlassPanel';
 
@@ -125,16 +125,19 @@ export const Education: React.FC = () => {
                         </div>
                       </div>
 
-                      {/* Certificate Visual Preview Snapshot */}
+                      {/* Certificate Visual Preview Snapshot (Protected) */}
                       {cert.image && (
                         <div
                           onClick={() => setSelectedCert(cert)}
-                          className="relative rounded-xl overflow-hidden bg-zinc-950 border border-zinc-800/90 cursor-pointer group/img shadow-inner"
+                          onContextMenu={(e) => e.preventDefault()}
+                          className="relative rounded-xl overflow-hidden bg-zinc-950 border border-zinc-800/90 cursor-pointer group/img shadow-inner select-none"
                         >
                           <img
                             src={cert.image}
                             alt={`${cert.title} certificate preview`}
-                            className="w-full h-36 sm:h-44 object-cover object-top filter contrast-105 group-hover/img:scale-105 transition-transform duration-500"
+                            draggable={false}
+                            onContextMenu={(e) => e.preventDefault()}
+                            className="w-full h-36 sm:h-44 object-cover object-top filter contrast-105 group-hover/img:scale-105 transition-transform duration-500 select-none pointer-events-none"
                           />
                           <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                             <span className="px-3.5 py-1.5 rounded-full bg-white text-zinc-950 text-xs font-bold font-sans flex items-center space-x-1.5 shadow-xl">
@@ -173,14 +176,14 @@ export const Education: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* Action Links */}
+                    {/* Action Links without download */}
                     <div className="pt-4 mt-3 border-t border-zinc-800/80 flex flex-wrap items-center gap-2 sm:gap-2.5">
                       <button
                         onClick={() => setSelectedCert(cert)}
                         className="px-3.5 py-2 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-semibold font-sans flex items-center space-x-1.5 transition-colors shadow-md transform-gpu active:scale-95"
                       >
                         <Eye className="w-3.5 h-3.5" />
-                        <span>Enlarge View</span>
+                        <span>View Certificate</span>
                       </button>
 
                       {cert.verifyUrl && (
@@ -191,20 +194,8 @@ export const Education: React.FC = () => {
                           className="px-3.5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-zinc-200 hover:text-white text-xs font-mono flex items-center space-x-1.5 transition-colors"
                         >
                           <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                          <span>Verify Online</span>
+                          <span>Verify Authenticity</span>
                           <ExternalLink className="w-3 h-3 text-zinc-500" />
-                        </a>
-                      )}
-
-                      {cert.pdfUrl && (
-                        <a
-                          href={cert.pdfUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="p-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-white transition-colors"
-                          title="Download Certificate PDF"
-                        >
-                          <Download className="w-3.5 h-3.5" />
                         </a>
                       )}
                     </div>
@@ -217,7 +208,7 @@ export const Education: React.FC = () => {
 
       </div>
 
-      {/* Interactive Certificate Lightbox Modal */}
+      {/* Interactive Certificate Lightbox Modal (Protected against downloading) */}
       <AnimatePresence>
         {selectedCert && (
           <>
@@ -264,48 +255,44 @@ export const Education: React.FC = () => {
                   </button>
                 </div>
 
-                {/* Certificate High-Res Image Canvas */}
-                <div className="relative rounded-2xl overflow-hidden bg-black border border-zinc-800 shadow-2xl">
+                {/* Certificate Protected Image Canvas */}
+                <div
+                  onContextMenu={(e) => e.preventDefault()}
+                  className="relative rounded-2xl overflow-hidden bg-black border border-zinc-800 shadow-2xl select-none"
+                >
                   <img
                     src={selectedCert.image}
                     alt={`${selectedCert.title} Certificate`}
-                    className="w-full h-auto object-contain max-h-[60vh] mx-auto filter contrast-105"
-                  ></img>
+                    draggable={false}
+                    onContextMenu={(e) => e.preventDefault()}
+                    className="w-full h-auto object-contain max-h-[60vh] mx-auto filter contrast-105 select-none pointer-events-none"
+                  />
+                  {/* Invisible Overlay to prevent drag/drop or right-click inspect */}
+                  <div
+                    onContextMenu={(e) => e.preventDefault()}
+                    className="absolute inset-0 z-10 select-none"
+                  />
                 </div>
 
-                {/* Modal Footer Actions */}
+                {/* Modal Footer: Verification Only (No Download) */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
                   <div className="flex items-center space-x-1.5 text-xs text-emerald-400 font-mono">
                     <BadgeCheck className="w-4 h-4 text-emerald-400" />
-                    <span>Official Verified Credential · IBM Developer Skills Network</span>
+                    <span>Official Credential · IBM Career Education Program</span>
                   </div>
 
-                  <div className="flex items-center space-x-2">
-                    {selectedCert.verifyUrl && (
-                      <a
-                        href={selectedCert.verifyUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="px-4 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs font-mono text-white flex items-center space-x-1.5 transition-colors"
-                      >
-                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                        <span>Verify Online</span>
-                        <ExternalLink className="w-3 h-3 text-zinc-400" />
-                      </a>
-                    )}
-
-                    {selectedCert.pdfUrl && (
-                      <a
-                        href={selectedCert.pdfUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="px-4 py-2 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-bold font-sans flex items-center space-x-1.5 transition-colors shadow-lg"
-                      >
-                        <Download className="w-3.5 h-3.5" />
-                        <span>Download PDF</span>
-                      </a>
-                    )}
-                  </div>
+                  {selectedCert.verifyUrl && (
+                    <a
+                      href={selectedCert.verifyUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="px-4 py-2 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 font-sans font-bold text-xs flex items-center justify-center space-x-1.5 transition-colors shadow-lg"
+                    >
+                      <ShieldCheck className="w-3.5 h-3.5 text-zinc-950" />
+                      <span>Verify Authenticity on IBM Cognitive Class</span>
+                      <ExternalLink className="w-3 h-3 text-zinc-600" />
+                    </a>
+                  )}
                 </div>
               </motion.div>
             </div>
