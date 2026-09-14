@@ -2,6 +2,8 @@ import manuelMainPortrait from '../assets/images/manuel-main-portrait.jpg';
 import manuelAboutPortrait from '../assets/images/manuel-about-portrait.jpg';
 import scholarMatchImg from '../assets/images/scholarmatch-screenshot.png';
 import rawFitnessImg from '../assets/images/raw-fitness-screenshot.png';
+import ibmDataVizCert from '../assets/images/ibm-data-viz-cert.png';
+import ibmCloudCert from '../assets/images/ibm-cloud-fundamentals-cert.png';
 
 export const PERSONAL_DATA = {
   name: "MANUEL GOMES",
@@ -47,20 +49,30 @@ export const PERSONAL_DATA = {
       {
         id: "ibm-data-viz",
         title: "Data Visualization with Python",
-        issuer: "IBM",
+        issuer: "IBM Career Education Program",
+        code: "DV0101EN",
+        issueDate: "February 13, 2026",
         badgeText: "IBM Verified Credential",
         category: "Data Science & Analytics",
         description: "Specialized credential covering statistical plots, dashboards, exploratory data analysis, and visual storytelling using Python, Matplotlib, and Seaborn.",
-        skills: ["Python", "Data Visualization", "Matplotlib", "Seaborn", "Exploratory Analysis"]
+        skills: ["Python", "Data Visualization", "Matplotlib", "Seaborn", "Exploratory Analysis"],
+        image: ibmDataVizCert,
+        pdfUrl: "./certificates/ibm-data-visualization.pdf",
+        verifyUrl: "https://courses.ibmcep.cognitiveclass.ai/certificates/cf7b6459986a4b5b8647cbb881d41fe1"
       },
       {
         id: "ibm-cloud-fundamentals",
         title: "IBM Cloud Fundamentals",
-        issuer: "IBM",
+        issuer: "IBM Career Education Program",
+        code: "CEICF1IN",
+        issueDate: "July 6, 2026",
         badgeText: "IBM Verified Credential",
         category: "Cloud Infrastructure",
         description: "Foundational mastery of cloud computing architectures, cloud service models (IaaS, PaaS, SaaS), cloud security, and deployment pipelines.",
-        skills: ["Cloud Architecture", "IaaS / PaaS", "Cloud Security", "Infrastructure Deployment"]
+        skills: ["Cloud Architecture", "IaaS / PaaS", "Cloud Security", "Infrastructure Deployment"],
+        image: ibmCloudCert,
+        pdfUrl: "./certificates/ibm-cloud-fundamentals.pdf",
+        verifyUrl: "https://courses.ibmcep.cognitiveclass.ai/certificates/7d3e9b3a2fc44b98ab1f3cb0bcd7af40"
       }
     ]
   },
