@@ -18,13 +18,13 @@ export function App() {
   // Initialize Apple-grade Lenis Smooth Momentum Scrolling
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Apple-like fluid inertia deceleration
+      duration: 1.35,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Apple exponential inertia glide
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 0.95,
-      touchMultiplier: 1.1,
+      wheelMultiplier: 0.9,
+      touchMultiplier: 1.0,
       infinite: false,
     });
 
@@ -45,7 +45,7 @@ export function App() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-[#050508] text-zinc-100 selection:bg-emerald-500 selection:text-black font-sans overflow-x-hidden">
+    <div className="relative min-h-screen bg-[#000000] text-[#f5f5f7] selection:bg-[#0071e3] selection:text-white font-sans overflow-x-hidden">
       {/* 1. System Boot Preloader */}
       {!introFinished && <BigBangIntro onComplete={() => setIntroFinished(true)} />}
 

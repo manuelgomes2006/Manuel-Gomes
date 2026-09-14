@@ -4,6 +4,9 @@ export const ThreeCanvas: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    // Only run if desktop (avoid overhead on small mobile screens)
+    if (typeof window !== 'undefined' && window.innerWidth < 768) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -20,37 +23,28 @@ export const ThreeCanvas: React.FC = () => {
     };
     window.addEventListener('resize', handleResize);
 
-    // 3D Particles
-    const numParticles = 65;
-    const particles: {
-      x: number;
-      y: number;
-      z: number;
-      vx: number;
-      vy: number;
-      vz: number;
-    }[] = [];
-
-    for (let i = 0; i < numParticles; i++) {
-      particles.push({
-        x: (Math.random() - 0.5) * 400,
-        y: (Math.random() - 0.5) * 400,
-        z: (Math.random() - 0.5) * 400,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        vz: (Math.random() - 0.5) * 0.4,
-      });
-    }
+    // Optimized particle nodes
+    const numParticles = 38;
+    const particles = Array.from({ length: numParticles }, () => ({
+      x: (Math.random() - 0.5) * 350,
+      y: (Math.random() - 0.5) * 350,
+      z: (Math.random() - 0.5) * 350,
+      vx: (Math.random() - 0.5) * 0.25,
+      vy: (Math.random() - 0.5) * 0.25,
+      vz: (Math.random() - 0.5) * 0.25,
+    }));
 
     let mouseX = 0;
     let mouseY = 0;
+    let targetMouseX = 0;
+    let targetMouseY = 0;
 
     const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
-      mouseX = (e.clientX - rect.left - width / 2) * 0.05;
-      mouseY = (e.clientY - rect.top - height / 2) * 0.05;
+      targetMouseX = (e.clientX - rect.left - width / 2) * 0.03;
+      targetMouseY = (e.clientY - rect.top - height / 2) * 0.03;
     };
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
     let angleX = 0;
     let angleY = 0;
@@ -58,75 +52,73 @@ export const ThreeCanvas: React.FC = () => {
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
-      angleX += 0.002;
-      angleY += 0.003;
+      // Smooth mouse lerp
+      mouseX += (targetMouseX - mouseX) * 0.05;
+      mouseY += (targetMouseY - mouseY) * 0.05;
+
+      angleX += 0.0015;
+      angleY += 0.002;
 
       const cosX = Math.cos(angleX + mouseY * 0.01);
       const sinX = Math.sin(angleX + mouseY * 0.01);
       const cosY = Math.cos(angleY + mouseX * 0.01);
       const sinY = Math.sin(angleY + mouseX * 0.01);
 
-      const projected: { x: number; y: number; z: number }[] = [];
+      const fov = 320;
+      const projected: { px: number; py: number; scale: number; alpha: number }[] = [];
 
-      // Update & Rotate 3D Points
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
         p.x += p.vx;
         p.y += p.vy;
         p.z += p.vz;
 
-        if (Math.abs(p.x) > 200) p.vx *= -1;
-        if (Math.abs(p.y) > 200) p.vy *= -1;
-        if (Math.abs(p.z) > 200) p.vz *= -1;
+        if (Math.abs(p.x) > 180) p.vx *= -1;
+        if (Math.abs(p.y) > 180) p.vy *= -1;
+        if (Math.abs(p.z) > 180) p.vz *= -1;
 
-        // Rotate Y
-        let x1 = p.x * cosY - p.z * sinY;
-        let z1 = p.z * cosY + p.x * sinY;
+        const x1 = p.x * cosY - p.z * sinY;
+        const z1 = p.z * cosY + p.x * sinY;
+        const y1 = p.y * cosX - z1 * sinX;
+        const z2 = z1 * cosX + p.y * sinX;
 
-        // Rotate X
-        let y1 = p.y * cosX - z1 * sinX;
-        let z2 = z1 * cosX + p.y * sinX;
-
-        // 3D Perspective Projection
-        const fov = 300;
         const scale = fov / (fov + z2 + 350);
         const px = x1 * scale + width / 2;
         const py = y1 * scale + height / 2;
+        const alpha = Math.min(0.6, Math.max(0.08, (z2 + 180) / 360));
 
-        projected.push({ x: px, y: py, z: scale });
+        projected.push({ px, py, scale, alpha });
 
-        // Draw particle node
-        const radius = Math.max(1, 2.5 * scale);
-        const alpha = Math.min(1, Math.max(0.1, (z2 + 200) / 400));
+        // Draw soft Apple-style luminous node
         ctx.beginPath();
-        ctx.arc(px, py, radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.6})`;
+        ctx.arc(px, py, Math.max(1, 2 * scale), 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.7})`;
         ctx.fill();
       }
 
-      // Draw 3D Connecting Lines between close nodes
+      // Draw lightweight connections only to adjacent nodes (O(N) instead of O(N^2))
       ctx.lineWidth = 0.5;
-      for (let i = 0; i < projected.length; i++) {
-        for (let j = i + 1; j < projected.length; j++) {
-          const dx = projected[i].x - projected[j].x;
-          const dy = projected[i].y - projected[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
+      for (let i = 0; i < projected.length - 1; i++) {
+        const p1 = projected[i];
+        const p2 = projected[i + 1];
+        const dx = p1.px - p2.px;
+        const dy = p1.py - p2.py;
+        const distSq = dx * dx + dy * dy;
 
-          if (dist < 90) {
-            const alpha = (1 - dist / 90) * 0.25;
-            ctx.beginPath();
-            ctx.moveTo(projected[i].x, projected[i].y);
-            ctx.lineTo(projected[j].x, projected[j].y);
-            ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
-            ctx.stroke();
-          }
+        if (distSq < 6400) { // dist < 80
+          const alpha = (1 - Math.sqrt(distSq) / 80) * 0.18;
+          ctx.beginPath();
+          ctx.moveTo(p1.px, p1.py);
+          ctx.lineTo(p2.px, p2.py);
+          ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+          ctx.stroke();
         }
       }
 
       animationFrameId = requestAnimationFrame(render);
     };
 
-    render();
+    animationFrameId = requestAnimationFrame(render);
 
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -135,5 +127,10 @@ export const ThreeCanvas: React.FC = () => {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="w-full h-full absolute inset-0 pointer-events-none opacity-40" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className="w-full h-full absolute inset-0 pointer-events-none opacity-30 will-change-transform"
+    />
+  );
 };

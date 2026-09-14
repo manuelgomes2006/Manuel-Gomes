@@ -1,18 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 export const CustomCursor: React.FC = () => {
-  const [pos, setPos] = useState({ x: -100, y: -100 });
-  const [isHovered, setIsHovered] = useState(false);
-  const [isClickable, setIsClickable] = useState(false);
+  const dotRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Only enable custom cursor on non-touch desktop devices
-    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return;
+    if (typeof window === 'undefined' || 'ontouchstart' in window || navigator.maxTouchPoints > 0) {
+      return;
+    }
 
-    const handleMouseMove = (e: MouseEvent) => {
-      setPos({ x: e.clientX, y: e.clientY });
+    let mouseX = -100;
+    let mouseY = -100;
+    let ringX = -100;
+    let ringY = -100;
+    let isHovering = false;
+    let animId: number;
 
-      const target = e.target as HTMLElement;
+    const onMouseMove = (e: MouseEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+      }
+
+      const target = e.target as HTMLElement | null;
       if (
         target &&
         (target.tagName === 'A' ||
@@ -21,14 +34,41 @@ export const CustomCursor: React.FC = () => {
           target.closest('button') ||
           target.getAttribute('role') === 'button')
       ) {
-        setIsClickable(true);
+        if (!isHovering) {
+          isHovering = true;
+          if (ringRef.current) {
+            ringRef.current.classList.add('cursor-active');
+          }
+        }
       } else {
-        setIsClickable(false);
+        if (isHovering) {
+          isHovering = false;
+          if (ringRef.current) {
+            ringRef.current.classList.remove('cursor-active');
+          }
+        }
       }
     };
 
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    // Smooth Butter Interpolation (120fps direct GPU transform, zero React state re-renders)
+    const render = () => {
+      ringX += (mouseX - ringX) * 0.18;
+      ringY += (mouseY - ringY) * 0.18;
+
+      if (ringRef.current) {
+        ringRef.current.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
+      }
+
+      animId = requestAnimationFrame(render);
+    };
+
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    animId = requestAnimationFrame(render);
+
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      cancelAnimationFrame(animId);
+    };
   }, []);
 
   if (typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0)) {
@@ -37,25 +77,25 @@ export const CustomCursor: React.FC = () => {
 
   return (
     <>
-      {/* Central Targeting Dot */}
+      {/* Apple-Style Minimal Center Dot */}
       <div
-        className="pointer-events-none fixed top-0 left-0 z-50 rounded-full bg-white transition-transform duration-100 ease-out transform-gpu hidden md:block"
+        ref={dotRef}
+        className="pointer-events-none fixed top-0 left-0 z-50 rounded-full bg-white transition-opacity duration-200 ease-out hidden md:block"
         style={{
-          width: '6px',
-          height: '6px',
-          transform: `translate3d(${pos.x - 3}px, ${pos.y - 3}px, 0) scale(${isClickable ? 1.8 : 1})`,
+          width: '5px',
+          height: '5px',
+          transform: 'translate3d(-100px, -100px, 0)',
         }}
       />
 
-      {/* Futuristic Target Ring */}
+      {/* Apple Dynamic Fluid Magnetic Ring */}
       <div
-        className={`pointer-events-none fixed top-0 left-0 z-50 rounded-full border transition-all duration-300 ease-out transform-gpu hidden md:block ${
-          isClickable ? 'border-violet-400 bg-violet-500/10 scale-125' : 'border-white/30'
-        }`}
+        ref={ringRef}
+        className="pointer-events-none fixed top-0 left-0 z-50 rounded-full border border-white/30 bg-white/[0.04] backdrop-blur-[1px] transition-[width,height,background-color,border-color] duration-200 ease-out hidden md:block [&.cursor-active]:!w-12 [&.cursor-active]:!h-12 [&.cursor-active]:!bg-white/[0.12] [&.cursor-active]:!border-white/50"
         style={{
-          width: '36px',
-          height: '36px',
-          transform: `translate3d(${pos.x - 18}px, ${pos.y - 18}px, 0)`,
+          width: '32px',
+          height: '32px',
+          transform: 'translate3d(-100px, -100px, 0)',
         }}
       />
     </>

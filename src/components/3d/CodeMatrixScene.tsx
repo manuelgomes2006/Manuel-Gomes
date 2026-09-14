@@ -1,11 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import galaxyBg from '../../assets/images/cinematic-galaxy-bg.jpg';
 
 export const CodeMatrixScene: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [transform, setTransform] = useState({ x: 0, y: 0, scale: 1.05 });
+  const layerRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
 
-  // Mouse Parallax & Scroll Motion Engine
+  // 120fps Direct DOM Parallax & Butter-Smooth Motion (Zero React Re-renders)
   useEffect(() => {
     let mouseX = 0;
     let mouseY = 0;
@@ -14,12 +15,12 @@ export const CodeMatrixScene: React.FC = () => {
     let scrollY = 0;
 
     const handleMouseMove = (e: MouseEvent) => {
-      targetX = (e.clientX - window.innerWidth / 2) * -0.035;
-      targetY = (e.clientY - window.innerHeight / 2) * -0.035;
+      targetX = (e.clientX - window.innerWidth / 2) * -0.025;
+      targetY = (e.clientY - window.innerHeight / 2) * -0.025;
     };
 
     const handleScroll = () => {
-      scrollY = window.scrollY * -0.08;
+      scrollY = window.scrollY * -0.05;
     };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
@@ -29,26 +30,26 @@ export const CodeMatrixScene: React.FC = () => {
     let time = 0;
 
     const animateSpace = () => {
-      time += 0.005;
+      time += 0.004;
 
       // Smooth interpolation for mouse parallax
-      mouseX += (targetX - mouseX) * 0.05;
-      mouseY += (targetY - mouseY) * 0.05;
+      mouseX += (targetX - mouseX) * 0.04;
+      mouseY += (targetY - mouseY) * 0.04;
 
-      // Slow cosmic breathing float
-      const breathScale = 1.06 + Math.sin(time) * 0.025;
-      const breathRotate = Math.sin(time * 0.5) * 0.8;
+      const breathScale = 1.04 + Math.sin(time) * 0.015;
 
-      setTransform({
-        x: mouseX,
-        y: mouseY + scrollY,
-        scale: breathScale,
-      });
+      if (layerRef.current) {
+        layerRef.current.style.transform = `translate3d(${mouseX.toFixed(2)}px, ${(mouseY + scrollY).toFixed(2)}px, 0) scale(${breathScale.toFixed(4)})`;
+      }
+
+      if (glowRef.current) {
+        glowRef.current.style.transform = `translate3d(${(mouseX * -0.5).toFixed(2)}px, ${(mouseY * -0.5).toFixed(2)}px, 0)`;
+      }
 
       animId = requestAnimationFrame(animateSpace);
     };
 
-    animateSpace();
+    animId = requestAnimationFrame(animateSpace);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
@@ -57,7 +58,7 @@ export const CodeMatrixScene: React.FC = () => {
     };
   }, []);
 
-  // Micro-Dust Particles Canvas
+  // Ambient Drifting Stardust Canvas (Lightweight & Butter-Smooth)
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -73,31 +74,21 @@ export const CodeMatrixScene: React.FC = () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
     };
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize, { passive: true });
 
-    const starCount = 180;
+    const starCount = 80;
     const stars = Array.from({ length: starCount }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
-      size: Math.random() * 1.8 + 0.5,
-      alpha: Math.random() * 0.7 + 0.2,
-      vx: (Math.random() - 0.5) * 0.2,
-      vy: -0.15 - Math.random() * 0.35,
+      size: Math.random() * 1.5 + 0.4,
+      alpha: Math.random() * 0.5 + 0.15,
+      vx: (Math.random() - 0.5) * 0.15,
+      vy: -0.1 - Math.random() * 0.25,
     }));
-
-    let mouseX = width / 2;
-    let mouseY = height / 2;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    };
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // Render drifting stars & cosmic particles
       stars.forEach((star) => {
         star.x += star.vx;
         star.y += star.vy;
@@ -112,44 +103,40 @@ export const CodeMatrixScene: React.FC = () => {
         ctx.fill();
       });
 
-      // Interactive mouse ambient light spotlight
-      if (mouseX > 0 && mouseY > 0) {
-        const mouseGrad = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 400);
-        mouseGrad.addColorStop(0, 'rgba(168, 85, 247, 0.07)');
-        mouseGrad.addColorStop(0.5, 'rgba(56, 189, 248, 0.03)');
-        mouseGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-        ctx.fillStyle = mouseGrad;
-        ctx.fillRect(0, 0, width, height);
-      }
-
       animId = requestAnimationFrame(render);
     };
 
-    render();
+    animId = requestAnimationFrame(render);
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('mousemove', handleMouseMove);
       cancelAnimationFrame(animId);
     };
   }, []);
 
   return (
-    <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#020204]">
-      {/* Moving 3D Deep-Space Galaxy Layer */}
+    <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#000000]">
+      {/* 3D Cosmic Layer with Direct Hardware Transform */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-90 filter contrast-110 saturate-110 transition-transform duration-300 ease-out transform-gpu"
+        ref={layerRef}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 filter contrast-125 saturate-120 will-change-transform transform-gpu"
         style={{
           backgroundImage: `url(${galaxyBg})`,
-          transform: `translate3d(${transform.x}px, ${transform.y}px, 0) scale(${transform.scale})`,
+          transform: 'translate3d(0, 0, 0) scale(1.04)',
         }}
       />
 
-      {/* Dark Vignette Overlay for Typography Legibility */}
-      <div className="absolute inset-0 bg-radial-vignette opacity-65 pointer-events-none" />
+      {/* Apple-Style Diffuse Ambient Glow Spheres */}
+      <div ref={glowRef} className="absolute inset-0 pointer-events-none will-change-transform">
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-[#0071e3]/[0.08] via-purple-500/[0.04] to-transparent blur-[140px]" />
+        <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] rounded-full bg-gradient-to-tr from-white/[0.03] to-transparent blur-[120px]" />
+      </div>
 
-      {/* Interactive Drifting Micro-Dust Stars Canvas */}
-      <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-10" />
+      {/* Apple Obsidian Contrast Vignette */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/90 pointer-events-none" />
+
+      {/* Lightweight Stardust Canvas */}
+      <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-10 opacity-60" />
     </div>
   );
 };

@@ -7,15 +7,14 @@ interface SpaceGlassPanelProps {
 
 export const SpaceGlassPanel: React.FC<SpaceGlassPanelProps> = ({ children, className = '' }) => {
   return (
-    <div className={`relative rounded-3xl bg-[#050508]/90 border border-zinc-800/80 hover:border-emerald-500/60 p-6 sm:p-10 backdrop-blur-2xl shadow-2xl overflow-hidden transition-all duration-300 group hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] ${className}`}>
-      {/* Neon Laser Corner Accents */}
-      <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-emerald-500/80 rounded-tl-xl pointer-events-none group-hover:scale-110 transition-transform" />
-      <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-emerald-500/80 rounded-tr-xl pointer-events-none group-hover:scale-110 transition-transform" />
-      <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-emerald-500/80 rounded-bl-xl pointer-events-none group-hover:scale-110 transition-transform" />
-      <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-emerald-500/80 rounded-br-xl pointer-events-none group-hover:scale-110 transition-transform" />
+    <div
+      className={`relative rounded-2xl sm:rounded-3xl bg-[#161618]/70 border border-white/[0.08] p-6 sm:p-10 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_1px_0_0_rgba(255,255,255,0.12)] overflow-hidden transition-all duration-300 group hover:border-white/[0.18] hover:shadow-[0_24px_60px_rgba(0,0,0,0.6),inset_0_1px_0_0_rgba(255,255,255,0.18)] ${className}`}
+    >
+      {/* Apple Subtle Specular Edge Light Reflection */}
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-60 pointer-events-none group-hover:opacity-100 transition-opacity duration-500" />
 
-      {/* Laser Line Accent Glow on Hover */}
-      <div className="absolute -top-24 -left-24 w-48 h-48 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none group-hover:bg-emerald-500/20 transition-all duration-500" />
+      {/* Subtle Ambient Radial Light Bloom on Hover */}
+      <div className="absolute -top-24 -left-24 w-56 h-56 bg-white/[0.03] rounded-full blur-3xl pointer-events-none group-hover:bg-white/[0.06] transition-all duration-500" />
 
       <div className="relative z-10">{children}</div>
     </div>

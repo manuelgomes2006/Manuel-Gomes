@@ -133,9 +133,9 @@ export const Contact: React.FC = () => {
             className="lg:col-span-5 space-y-4 sm:space-y-6"
           >
             <div>
-              <span className="text-[11px] font-mono uppercase tracking-widest text-zinc-400">// GET IN TOUCH</span>
-              <h2 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-white uppercase font-sans mt-1">
-                {contact.heading}
+              <span className="text-[11px] font-mono uppercase tracking-widest text-[#2997ff] font-semibold">Get In Touch</span>
+              <h2 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-white font-sans mt-1">
+                {contact.heading}.
               </h2>
               <p className="text-zinc-400 text-xs sm:text-sm md:text-base leading-relaxed mt-2 sm:mt-3 font-normal">
                 {contact.text}
@@ -143,9 +143,9 @@ export const Contact: React.FC = () => {
             </div>
 
             {/* Direct Email Box with One-Click Copy */}
-            <div className="p-3.5 sm:p-4 rounded-2xl bg-zinc-950/80 border border-white/10 flex items-center justify-between shadow-xl">
+            <div className="p-3.5 sm:p-4 rounded-2xl bg-[#161618]/70 border border-white/10 flex items-center justify-between shadow-md backdrop-blur-md">
               <div className="flex items-center space-x-3 min-w-0">
-                <div className="p-2.5 sm:p-3 rounded-xl bg-zinc-900 text-white shrink-0">
+                <div className="p-2.5 sm:p-3 rounded-xl bg-white/[0.08] text-white shrink-0">
                   <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
                 <div className="min-w-0">
@@ -162,7 +162,7 @@ export const Contact: React.FC = () => {
               <button
                 onClick={handleCopyEmail}
                 title="Copy email address"
-                className="p-2 sm:p-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-300 hover:text-white transition-all transform-gpu active:scale-95 shrink-0 ml-2"
+                className="p-2 sm:p-2.5 rounded-full bg-white/[0.08] hover:bg-white/[0.14] border border-white/10 text-zinc-300 hover:text-white transition-all active:scale-95 shrink-0 ml-2"
               >
                 {copied ? (
                   <span className="flex items-center text-emerald-400 text-[11px] sm:text-xs font-mono">
@@ -176,7 +176,7 @@ export const Contact: React.FC = () => {
             </div>
 
             {/* Location & Timezone Details */}
-            <div className="p-3.5 sm:p-4 rounded-2xl bg-zinc-950/60 border border-zinc-800/80 space-y-2 text-xs font-mono text-zinc-400">
+            <div className="p-3.5 sm:p-4 rounded-2xl bg-[#161618]/70 border border-white/10 space-y-2 text-xs font-mono text-zinc-400 backdrop-blur-md shadow-sm">
               <div className="flex items-center space-x-2">
                 <Globe className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
                 <span>Location: <strong className="text-zinc-200">Kolkata, India</strong></span>
@@ -195,7 +195,7 @@ export const Contact: React.FC = () => {
                   href={contact.socials.github}
                   target="_blank"
                   rel="noreferrer"
-                  className="p-3 rounded-2xl bg-zinc-950/80 border border-white/10 text-zinc-400 hover:text-white hover:border-zinc-600 transition-all duration-300 transform-gpu active:scale-95 shadow-lg"
+                  className="p-3 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 text-zinc-400 hover:text-white transition-all duration-200 active:scale-95 shadow-sm"
                   aria-label="GitHub"
                 >
                   <Github className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -204,7 +204,7 @@ export const Contact: React.FC = () => {
                   href={contact.socials.linkedin}
                   target="_blank"
                   rel="noreferrer"
-                  className="p-3 rounded-2xl bg-zinc-950/80 border border-white/10 text-zinc-400 hover:text-white hover:border-zinc-600 transition-all duration-300 transform-gpu active:scale-95 shadow-lg"
+                  className="p-3 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 text-zinc-400 hover:text-white transition-all duration-200 active:scale-95 shadow-sm"
                   aria-label="LinkedIn"
                 >
                   <Linkedin className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -213,7 +213,7 @@ export const Contact: React.FC = () => {
                   href={contact.socials.instagram}
                   target="_blank"
                   rel="noreferrer"
-                  className="p-3 rounded-2xl bg-zinc-950/80 border border-white/10 text-zinc-400 hover:text-white hover:border-zinc-600 transition-all duration-300 transform-gpu active:scale-95 shadow-lg"
+                  className="p-3 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 text-zinc-400 hover:text-white transition-all duration-200 active:scale-95 shadow-sm"
                   aria-label="Instagram"
                 >
                   <Instagram className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -253,7 +253,7 @@ export const Contact: React.FC = () => {
                       placeholder="Your full name"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl bg-zinc-950/90 border border-zinc-800 text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-500 font-sans text-base sm:text-sm transition-colors"
+                      className="w-full px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-zinc-500 focus:outline-none focus:border-[#2997ff] focus:ring-1 focus:ring-[#2997ff] font-sans text-base sm:text-sm transition-all"
                     />
                   </div>
 
@@ -266,8 +266,8 @@ export const Contact: React.FC = () => {
                       value={formData.email}
                       onChange={handleEmailChange}
                       onBlur={handleEmailBlur}
-                      className={`w-full px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl bg-zinc-950/90 border text-white placeholder-zinc-600 focus:outline-none font-sans text-base sm:text-sm transition-colors ${
-                        emailError ? 'border-red-500/80 focus:border-red-500' : 'border-zinc-800 focus:border-zinc-500'
+                      className={`w-full px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl bg-white/[0.04] border text-white placeholder-zinc-500 focus:outline-none font-sans text-base sm:text-sm transition-all ${
+                        emailError ? 'border-red-500/80 focus:border-red-500' : 'border-white/10 focus:border-[#2997ff] focus:ring-1 focus:ring-[#2997ff]'
                       }`}
                     />
                     {emailError && (
@@ -286,23 +286,23 @@ export const Contact: React.FC = () => {
                       placeholder="Tell me about your project, team, or opportunity..."
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl bg-zinc-950/90 border border-zinc-800 text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-500 font-sans text-base sm:text-sm transition-colors resize-none"
+                      className="w-full px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-zinc-500 focus:outline-none focus:border-[#2997ff] focus:ring-1 focus:ring-[#2997ff] font-sans text-base sm:text-sm transition-all resize-none"
                     />
                   </div>
 
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-3 sm:py-3.5 px-6 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 font-bold uppercase tracking-wider text-xs transition-all duration-300 shadow-xl flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed transform-gpu active:scale-98"
+                    className="w-full py-3.5 px-6 rounded-full bg-white hover:bg-zinc-200 text-black font-semibold text-xs sm:text-sm tracking-wide transition-all duration-200 shadow-md flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
                   >
                     {isSubmitting ? (
                       <>
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        <span>Transmitting...</span>
+                        <span>Sending...</span>
                       </>
                     ) : (
                       <>
-                        <span>Send Message</span>
+                        <span>Send Note</span>
                         <Send className="w-4 h-4" />
                       </>
                     )}

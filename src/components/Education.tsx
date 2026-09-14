@@ -185,8 +185,8 @@ export const Education: React.FC = () => {
         {/* Section Header & View Mode Switcher */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8 gap-4 sm:gap-6">
           <div>
-            <span className="text-[11px] font-mono uppercase tracking-widest text-zinc-400">// ACADEMIC & PROFESSIONAL CREDENTIALS</span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white uppercase font-sans mt-1">
+            <span className="text-[11px] font-mono uppercase tracking-widest text-[#2997ff] font-semibold">Academic Foundation</span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white font-sans mt-1">
               Education & Honors.
             </h2>
             <p className="text-zinc-400 text-xs sm:text-sm mt-1 max-w-xl">
@@ -194,18 +194,18 @@ export const Education: React.FC = () => {
             </p>
           </div>
 
-          {/* View Mode Toggle (Badges | Timeline) */}
-          <div className="flex items-center p-1 rounded-xl bg-zinc-950 border border-zinc-800/90 shadow-2xl self-start md:self-auto">
+          {/* Apple-Style View Mode Toggle */}
+          <div className="flex items-center p-1 rounded-full bg-white/[0.06] border border-white/10 shadow-md self-start md:self-auto backdrop-blur-md">
             <button
               onClick={() => setViewMode('grid')}
-              className={`relative px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-sans font-semibold transition-colors flex items-center space-x-1.5 ${
+              className={`relative px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-medium transition-colors flex items-center space-x-1.5 ${
                 viewMode === 'grid' ? 'text-white' : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
               {viewMode === 'grid' && (
                 <motion.div
                   layoutId="activeEducationView"
-                  className="absolute inset-0 rounded-lg bg-zinc-800/90 border border-zinc-700/80 shadow-inner"
+                  className="absolute inset-0 rounded-full bg-white/15 border border-white/15 shadow-inner"
                   transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                 />
               )}
@@ -215,14 +215,14 @@ export const Education: React.FC = () => {
 
             <button
               onClick={() => setViewMode('timeline')}
-              className={`relative px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-sans font-semibold transition-colors flex items-center space-x-1.5 ${
+              className={`relative px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-medium transition-colors flex items-center space-x-1.5 ${
                 viewMode === 'timeline' ? 'text-white' : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
               {viewMode === 'timeline' && (
                 <motion.div
                   layoutId="activeEducationView"
-                  className="absolute inset-0 rounded-lg bg-zinc-800/90 border border-zinc-700/80 shadow-inner"
+                  className="absolute inset-0 rounded-full bg-white/15 border border-white/15 shadow-inner"
                   transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                 />
               )}
@@ -337,10 +337,10 @@ export const Education: React.FC = () => {
                     onClick={() => scroll('left')}
                     disabled={!canScrollLeft}
                     aria-label="Previous certificate"
-                    className={`p-1.5 sm:p-2 rounded-xl border transition-all ${
+                    className={`p-2 rounded-full border transition-all ${
                       canScrollLeft
-                        ? 'bg-zinc-900 hover:bg-zinc-800 border-zinc-800 text-white hover:border-zinc-700 active:scale-95'
-                        : 'bg-zinc-950/60 border-zinc-900 text-zinc-600 cursor-not-allowed'
+                        ? 'bg-white/[0.08] hover:bg-white/[0.14] border-white/15 text-white active:scale-95 shadow-sm'
+                        : 'bg-white/[0.02] border-white/[0.05] text-zinc-600 cursor-not-allowed'
                     }`}
                   >
                     <ChevronLeft className="w-4 h-4" />
@@ -350,10 +350,10 @@ export const Education: React.FC = () => {
                     onClick={() => scroll('right')}
                     disabled={!canScrollRight}
                     aria-label="Next certificate"
-                    className={`p-1.5 sm:p-2 rounded-xl border transition-all ${
+                    className={`p-2 rounded-full border transition-all ${
                       canScrollRight
-                        ? 'bg-zinc-900 hover:bg-zinc-800 border-zinc-800 text-white hover:border-zinc-700 active:scale-95'
-                        : 'bg-zinc-950/60 border-zinc-900 text-zinc-600 cursor-not-allowed'
+                        ? 'bg-white/[0.08] hover:bg-white/[0.14] border-white/15 text-white active:scale-95 shadow-sm'
+                        : 'bg-white/[0.02] border-white/[0.05] text-zinc-600 cursor-not-allowed'
                     }`}
                   >
                     <ChevronRight className="w-4 h-4" />

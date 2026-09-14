@@ -70,8 +70,8 @@ export const Skills: React.FC = () => {
         {/* Section Header with Mobile Navigation Controls */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 sm:mb-10 gap-3 sm:gap-6">
           <div>
-            <span className="text-[11px] font-mono uppercase tracking-widest text-zinc-400">// TECHNICAL ARCHITECTURE</span>
-            <h2 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-white uppercase font-sans mt-1">
+            <span className="text-[11px] font-mono uppercase tracking-widest text-[#2997ff] font-semibold">Technical Architecture</span>
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-white font-sans mt-1">
               Core Competencies.
             </h2>
             <p className="text-zinc-400 text-xs sm:text-sm mt-1.5 max-w-xl">
@@ -88,7 +88,7 @@ export const Skills: React.FC = () => {
                   onClick={() => scrollToIndex(idx)}
                   aria-label={`Go to skill category ${idx + 1}`}
                   className={`h-1.5 rounded-full transition-all duration-300 ${
-                    activeIndex === idx ? 'w-5 bg-emerald-400' : 'w-1.5 bg-zinc-700'
+                    activeIndex === idx ? 'w-5 bg-white' : 'w-1.5 bg-zinc-700'
                   }`}
                 />
               ))}
@@ -100,10 +100,10 @@ export const Skills: React.FC = () => {
                 onClick={() => scroll('left')}
                 disabled={!canScrollLeft}
                 aria-label="Previous category"
-                className={`p-1.5 rounded-xl border transition-all ${
+                className={`p-1.5 rounded-full border transition-all ${
                   canScrollLeft
-                    ? 'bg-zinc-900 border-zinc-800 text-white active:scale-95'
-                    : 'bg-zinc-950/60 border-zinc-900 text-zinc-600'
+                    ? 'bg-white/[0.08] hover:bg-white/[0.14] border-white/15 text-white active:scale-95 shadow-sm'
+                    : 'bg-white/[0.02] border-white/[0.05] text-zinc-600'
                 }`}
               >
                 <ChevronLeft className="w-3.5 h-3.5" />
@@ -112,10 +112,10 @@ export const Skills: React.FC = () => {
                 onClick={() => scroll('right')}
                 disabled={!canScrollRight}
                 aria-label="Next category"
-                className={`p-1.5 rounded-xl border transition-all ${
+                className={`p-1.5 rounded-full border transition-all ${
                   canScrollRight
-                    ? 'bg-zinc-900 border-zinc-800 text-white active:scale-95'
-                    : 'bg-zinc-950/60 border-zinc-900 text-zinc-600'
+                    ? 'bg-white/[0.08] hover:bg-white/[0.14] border-white/15 text-white active:scale-95 shadow-sm'
+                    : 'bg-white/[0.02] border-white/[0.05] text-zinc-600'
                 }`}
               >
                 <ChevronRight className="w-3.5 h-3.5" />
