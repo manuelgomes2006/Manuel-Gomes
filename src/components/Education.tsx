@@ -1,12 +1,40 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GraduationCap, Award, BookOpen, BadgeCheck, Cloud, BarChart3, ExternalLink, Eye, X, ShieldCheck } from 'lucide-react';
+import { GraduationCap, Award, BookOpen, BadgeCheck, Cloud, BarChart3, ExternalLink, Eye, X, ShieldCheck, Rocket, CheckCircle2 } from 'lucide-react';
 import { PERSONAL_DATA } from '../data/content';
 import { SpaceGlassPanel } from './ui/SpaceGlassPanel';
 
 export const Education: React.FC = () => {
   const { education } = PERSONAL_DATA;
   const [selectedCert, setSelectedCert] = useState<any | null>(null);
+
+  const getCertIcon = (id: string) => {
+    switch (id) {
+      case 'ibm-data-viz':
+        return <BarChart3 className="w-4 h-4 mr-2 text-blue-400 shrink-0 inline" />;
+      case 'ibm-cloud-fundamentals':
+        return <Cloud className="w-4 h-4 mr-2 text-sky-400 shrink-0 inline" />;
+      case 'techno-billion-internship':
+        return <Rocket className="w-4 h-4 mr-2 text-rose-400 shrink-0 inline" />;
+      default:
+        return <Award className="w-4 h-4 mr-2 text-emerald-400 shrink-0 inline" />;
+    }
+  };
+
+  const getIssuerBadge = (id: string) => {
+    if (id === 'techno-billion-internship') {
+      return (
+        <div className="w-8 h-8 rounded-xl bg-red-950/90 border border-red-800/80 flex items-center justify-center text-red-400 font-black text-[11px] font-mono shadow-md shrink-0">
+          TBA
+        </div>
+      );
+    }
+    return (
+      <div className="w-8 h-8 rounded-xl bg-blue-950/90 border border-blue-800/80 flex items-center justify-center text-blue-400 font-black text-xs font-mono shadow-md shrink-0">
+        IBM
+      </div>
+    );
+  };
 
   return (
     <section id="education" className="py-16 sm:py-24 relative scroll-mt-20 sm:scroll-mt-24">
@@ -79,19 +107,19 @@ export const Education: React.FC = () => {
           </SpaceGlassPanel>
         </motion.div>
 
-        {/* 2. Professional Certifications Section (IBM) */}
+        {/* 2. Professional Credentials & Internships Section */}
         {education.certifications && (
           <div className="mt-10 sm:mt-14 space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <span className="text-[11px] font-mono uppercase tracking-widest text-zinc-400">// INDUSTRY CREDENTIALS</span>
+                <span className="text-[11px] font-mono uppercase tracking-widest text-zinc-400">// INDUSTRY CREDENTIALS & INTERNSHIPS</span>
                 <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight font-sans mt-0.5">
-                  Verified IBM Certifications.
+                  Verified Certifications & Internships.
                 </h3>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
               {education.certifications.map((cert: any, idx: number) => (
                 <motion.div
                   key={cert.id}
@@ -100,28 +128,26 @@ export const Education: React.FC = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: idx * 0.15, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <SpaceGlassPanel className="h-full !p-4 sm:!p-6 flex flex-col justify-between group">
-                    <div className="space-y-4">
+                  <SpaceGlassPanel className="h-full !p-4 sm:!p-5 flex flex-col justify-between group">
+                    <div className="space-y-3.5">
                       
                       {/* Top Issuer & Verified Badge */}
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2.5">
-                          <div className="w-8 h-8 rounded-xl bg-blue-950/90 border border-blue-800/80 flex items-center justify-center text-blue-400 font-black text-xs font-mono shadow-md">
-                            IBM
-                          </div>
-                          <div>
-                            <span className="block text-[10px] sm:text-[11px] font-mono text-zinc-400 uppercase tracking-wider font-semibold">
+                        <div className="flex items-center space-x-2.5 min-w-0">
+                          {getIssuerBadge(cert.id)}
+                          <div className="min-w-0">
+                            <span className="block text-[10px] sm:text-[11px] font-mono text-zinc-300 uppercase tracking-wider font-semibold truncate">
                               {cert.issuer}
                             </span>
-                            <span className="block text-[9px] font-mono text-zinc-500">
-                              {cert.code} · Issued {cert.issueDate}
+                            <span className="block text-[9px] font-mono text-zinc-500 truncate">
+                              {cert.issueDate}
                             </span>
                           </div>
                         </div>
 
-                        <div className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full bg-emerald-950/80 border border-emerald-800/80 text-emerald-400 text-[10px] font-mono shadow-sm">
+                        <div className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-800/80 text-emerald-400 text-[10px] font-mono shadow-sm shrink-0">
                           <BadgeCheck className="w-3.5 h-3.5 text-emerald-400" />
-                          <span>Verified</span>
+                          <span>{cert.id === 'techno-billion-internship' ? 'Grade A' : 'Verified'}</span>
                         </div>
                       </div>
 
@@ -134,10 +160,10 @@ export const Education: React.FC = () => {
                         >
                           <img
                             src={cert.image}
-                            alt={`${cert.title} certificate preview`}
+                            alt={`${cert.title} preview`}
                             draggable={false}
                             onContextMenu={(e) => e.preventDefault()}
-                            className="w-full h-36 sm:h-44 object-cover object-top filter contrast-105 group-hover/img:scale-105 transition-transform duration-500 select-none pointer-events-none"
+                            className="w-full h-36 sm:h-40 object-cover object-top filter contrast-105 group-hover/img:scale-105 transition-transform duration-500 select-none pointer-events-none"
                           />
                           <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                             <span className="px-3.5 py-1.5 rounded-full bg-white text-zinc-950 text-xs font-bold font-sans flex items-center space-x-1.5 shadow-xl">
@@ -149,16 +175,12 @@ export const Education: React.FC = () => {
                       )}
 
                       {/* Title & Description */}
-                      <div className="space-y-1.5">
-                        <h4 className="text-base sm:text-lg font-bold text-white tracking-tight font-sans flex items-center">
-                          {cert.id === 'ibm-data-viz' ? (
-                            <BarChart3 className="w-4 h-4 mr-2 text-blue-400 shrink-0 inline" />
-                          ) : (
-                            <Cloud className="w-4 h-4 mr-2 text-sky-400 shrink-0 inline" />
-                          )}
-                          <span>{cert.title}</span>
+                      <div className="space-y-1">
+                        <h4 className="text-sm sm:text-base font-bold text-white tracking-tight font-sans flex items-center">
+                          {getCertIcon(cert.id)}
+                          <span className="line-clamp-2">{cert.title}</span>
                         </h4>
-                        <p className="text-xs text-zinc-400 leading-relaxed font-normal">
+                        <p className="text-xs text-zinc-400 leading-relaxed font-normal line-clamp-3">
                           {cert.description}
                         </p>
                       </div>
@@ -177,26 +199,31 @@ export const Education: React.FC = () => {
                     </div>
 
                     {/* Action Links without download */}
-                    <div className="pt-4 mt-3 border-t border-zinc-800/80 flex flex-wrap items-center gap-2 sm:gap-2.5">
+                    <div className="pt-3.5 mt-3 border-t border-zinc-800/80 flex flex-wrap items-center gap-2">
                       <button
                         onClick={() => setSelectedCert(cert)}
-                        className="px-3.5 py-2 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-semibold font-sans flex items-center space-x-1.5 transition-colors shadow-md transform-gpu active:scale-95"
+                        className="px-3 py-1.5 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-semibold font-sans flex items-center space-x-1.5 transition-colors shadow-md transform-gpu active:scale-95"
                       >
                         <Eye className="w-3.5 h-3.5" />
-                        <span>View Certificate</span>
+                        <span>View</span>
                       </button>
 
-                      {cert.verifyUrl && (
+                      {cert.verifyUrl ? (
                         <a
                           href={cert.verifyUrl}
                           target="_blank"
                           rel="noreferrer"
-                          className="px-3.5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-zinc-200 hover:text-white text-xs font-mono flex items-center space-x-1.5 transition-colors"
+                          className="px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-zinc-200 hover:text-white text-xs font-mono flex items-center space-x-1.5 transition-colors"
                         >
                           <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                          <span>Verify Authenticity</span>
+                          <span>Verify</span>
                           <ExternalLink className="w-3 h-3 text-zinc-500" />
                         </a>
+                      ) : (
+                        <div className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-xl bg-zinc-900 border border-zinc-800 text-[10px] font-mono text-zinc-400">
+                          <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                          <span>ID Verified</span>
+                        </div>
                       )}
                     </div>
                   </SpaceGlassPanel>
@@ -228,20 +255,20 @@ export const Education: React.FC = () => {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 15 }}
                 transition={{ duration: 0.25, ease: 'easeOut' }}
-                className="pointer-events-auto max-w-3xl w-full max-h-[92vh] overflow-y-auto bg-zinc-950 border border-zinc-800 rounded-3xl p-5 sm:p-7 shadow-2xl space-y-4 font-sans"
+                className="pointer-events-auto max-w-3xl w-full max-h-[92vh] overflow-y-auto bg-zinc-950 border border-zinc-800 rounded-3xl p-4 sm:p-6 shadow-2xl space-y-3.5 font-sans"
               >
                 {/* Modal Header */}
                 <div className="flex items-start justify-between gap-4 pb-3 border-b border-zinc-800">
-                  <div className="space-y-1">
+                  <div className="space-y-1 min-w-0">
                     <div className="flex items-center space-x-2">
-                      <span className="px-2 py-0.5 rounded-md bg-blue-950 text-blue-400 text-[10px] font-mono font-bold">
-                        IBM
+                      <span className="px-2 py-0.5 rounded-md bg-zinc-900 border border-zinc-700 text-zinc-200 text-[10px] font-mono font-bold">
+                        {selectedCert.issuer}
                       </span>
-                      <span className="text-xs font-mono text-zinc-400">
+                      <span className="text-xs font-mono text-zinc-400 truncate">
                         {selectedCert.code} · Issued {selectedCert.issueDate}
                       </span>
                     </div>
-                    <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+                    <h3 className="text-base sm:text-xl font-bold text-white tracking-tight">
                       {selectedCert.title}
                     </h3>
                   </div>
@@ -249,7 +276,7 @@ export const Education: React.FC = () => {
                   <button
                     onClick={() => setSelectedCert(null)}
                     aria-label="Close modal"
-                    className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white transition-colors"
+                    className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white transition-colors shrink-0"
                   >
                     <X className="w-5 h-5" />
                   </button>
@@ -274,11 +301,15 @@ export const Education: React.FC = () => {
                   />
                 </div>
 
-                {/* Modal Footer: Verification Only (No Download) */}
+                {/* Modal Footer: Verification Actions */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
                   <div className="flex items-center space-x-1.5 text-xs text-emerald-400 font-mono">
                     <BadgeCheck className="w-4 h-4 text-emerald-400" />
-                    <span>Official Credential · IBM Career Education Program</span>
+                    <span>
+                      {selectedCert.certificateId
+                        ? `Certificate ID: ${selectedCert.certificateId}`
+                        : 'Official Verified Credential · IBM Developer Skills Network'}
+                    </span>
                   </div>
 
                   {selectedCert.verifyUrl && (
@@ -289,7 +320,7 @@ export const Education: React.FC = () => {
                       className="px-4 py-2 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 font-sans font-bold text-xs flex items-center justify-center space-x-1.5 transition-colors shadow-lg"
                     >
                       <ShieldCheck className="w-3.5 h-3.5 text-zinc-950" />
-                      <span>Verify Authenticity on IBM Cognitive Class</span>
+                      <span>Verify on Cognitive Class</span>
                       <ExternalLink className="w-3 h-3 text-zinc-600" />
                     </a>
                   )}

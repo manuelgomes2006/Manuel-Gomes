@@ -4,6 +4,7 @@ import scholarMatchImg from '../assets/images/scholarmatch-screenshot.png';
 import rawFitnessImg from '../assets/images/raw-fitness-screenshot.png';
 import ibmDataVizCert from '../assets/images/ibm-data-viz-cert.png';
 import ibmCloudCert from '../assets/images/ibm-cloud-fundamentals-cert.png';
+import technoBillionCert from '../assets/images/techno-billion-ai-internship-cert.jpg';
 
 export const PERSONAL_DATA = {
   name: "MANUEL GOMES",
@@ -12,17 +13,17 @@ export const PERSONAL_DATA = {
   location: "Kolkata, India",
   timezone: "IST (UTC+5:30)",
   availability: "Open to Full-Time, Remote & Contract Opportunities",
-  heroTagline: "BCA (Honours) scholar specializing in Data Science & Artificial Intelligence (Batch 2025—2029) at Techno India University. IBM Certified in Data Visualization & Cloud Fundamentals.",
+  heroTagline: "BCA (Honours) scholar in Data Science & Artificial Intelligence (Batch 2025—2029) at Techno India University. 2x IBM Certified & Virtual Internship Alum at Techno Billion AI.",
   
   metrics: [
     { label: "Production Apps", value: "2+" },
     { label: "Academic Specialization", value: "Data Science & AI (2025-29)" },
-    { label: "Verified Credentials", value: "2x IBM Certified" },
+    { label: "Verified Credentials", value: "3x Verified Honors" },
   ],
 
   aboutHeading: "Engineering with curiosity, precision, and purpose.",
-  aboutBio: "I am a developer and BCA (Hons.) scholar in Data Science & Artificial Intelligence (Batch 2025—2029) at Techno India University. Holding verified industry credentials from IBM in Data Visualization with Python and IBM Cloud Fundamentals, my work bridges intelligent machine learning pipelines with high-performance web systems.",
-  aboutTags: ["Generative AI", "Full-Stack Development", "Data Science & AI", "IBM Certified", "System Architecture"],
+  aboutBio: "I am a developer and BCA (Hons.) scholar in Data Science & Artificial Intelligence (Batch 2025—2029) at Techno India University. Holding verified industry credentials from IBM in Data Visualization and Cloud Fundamentals, alongside a Grade A Virtual Internship in Innovation & Entrepreneurship from Techno Billion AI, my work bridges intelligent machine learning pipelines with high-performance web systems.",
+  aboutTags: ["Generative AI", "Full-Stack Development", "Data Science & AI", "IBM Certified", "Innovation & Startups"],
   
   images: {
     hero: manuelMainPortrait,
@@ -71,6 +72,19 @@ export const PERSONAL_DATA = {
         skills: ["Cloud Architecture", "IaaS / PaaS", "Cloud Security", "Infrastructure Deployment"],
         image: ibmCloudCert,
         verifyUrl: "https://courses.ibmcep.cognitiveclass.ai/certificates/7d3e9b3a2fc44b98ab1f3cb0bcd7af40"
+      },
+      {
+        id: "techno-billion-internship",
+        title: "Virtual Internship: Sustainable Development, Innovation & Entrepreneurship",
+        issuer: "Techno Billion AI",
+        code: "ID: 1ca8fe56-5f91-4d77-95d5-d08dd217d0c1",
+        issueDate: "February 27, 2026",
+        badgeText: "Grade A · Virtual Internship",
+        category: "Internship & Leadership",
+        description: "Completed virtual internship with Grade A offered by Techno Billion AI (Center for Excellence & Empowerment), demonstrating strong understanding of innovation, sustainability, and venture building.",
+        skills: ["Innovation & Startups", "Sustainable Development", "Entrepreneurship", "AI Strategy"],
+        image: technoBillionCert,
+        certificateId: "1ca8fe56-5f91-4d77-95d5-d08dd217d0c1"
       }
     ]
   },
