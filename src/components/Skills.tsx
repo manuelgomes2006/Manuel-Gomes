@@ -128,6 +128,7 @@ export const Skills: React.FC = () => {
         <div
           ref={scrollRef}
           onScroll={updateScrollState}
+          data-lenis-prevent
           className="flex sm:grid overflow-x-auto sm:overflow-visible gap-3.5 sm:gap-6 pb-2 sm:pb-0 snap-x snap-mandatory no-scrollbar sm:grid-cols-2 lg:grid-cols-4"
         >
           {PERSONAL_DATA.skills.map((skillGroup, idx) => (

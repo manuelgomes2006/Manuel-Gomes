@@ -280,7 +280,10 @@ export const Education: React.FC = () => {
                       </div>
                       <span className="text-[9px] font-mono text-zinc-500 sm:hidden">Swipe →</span>
                     </div>
-                    <div className="flex sm:flex-wrap overflow-x-auto sm:overflow-visible gap-1.5 no-scrollbar pb-1 snap-x">
+                    <div
+                      data-lenis-prevent
+                      className="flex sm:flex-wrap overflow-x-auto sm:overflow-visible gap-1.5 no-scrollbar pb-1 snap-x"
+                    >
                       {education.coursework.map((course) => (
                         <span
                           key={course}
@@ -366,6 +369,7 @@ export const Education: React.FC = () => {
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUpOrLeave}
                 onMouseLeave={handleMouseUpOrLeave}
+                data-lenis-prevent
                 className="flex overflow-x-auto gap-4 sm:gap-5 pb-3 pt-1 scroll-smooth snap-x snap-mandatory cursor-grab active:cursor-grabbing select-none focus:outline-none no-scrollbar"
                 style={{ scrollbarWidth: 'none' }}
               >

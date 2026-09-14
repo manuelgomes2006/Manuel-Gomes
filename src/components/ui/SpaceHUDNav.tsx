@@ -54,7 +54,11 @@ export const SpaceHUDNav: React.FC = () => {
     setMobileMenuOpen(false);
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if ((window as any).__lenis) {
+        (window as any).__lenis.scrollTo(el, { offset: -70, duration: 1.1 });
+      } else {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
   };
 

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Lenis from 'lenis';
 import { CodeMatrixScene } from './components/3d/CodeMatrixScene';
 import { BigBangIntro } from './components/ui/BigBangIntro';
 import { SpaceHUDNav } from './components/ui/SpaceHUDNav';
@@ -13,6 +14,35 @@ import { Footer } from './components/Footer';
 
 export function App() {
   const [introFinished, setIntroFinished] = useState(false);
+
+  // Initialize Apple-grade Lenis Smooth Momentum Scrolling
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Apple-like fluid inertia deceleration
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 0.95,
+      touchMultiplier: 1.1,
+      infinite: false,
+    });
+
+    (window as any).__lenis = lenis;
+
+    let rafId: number;
+    function raf(time: number) {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
+    }
+    rafId = requestAnimationFrame(raf);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
+      delete (window as any).__lenis;
+    };
+  }, []);
 
   return (
     <div className="relative min-h-screen bg-[#050508] text-zinc-100 selection:bg-emerald-500 selection:text-black font-sans overflow-x-hidden">

@@ -6,6 +6,18 @@ import { TiltCard } from './TiltCard';
 import { ThreeCanvas } from './ThreeCanvas';
 
 export const Hero: React.FC = () => {
+  const handleScrollTo = (e: React.MouseEvent, id: string) => {
+    e.preventDefault();
+    const el = document.getElementById(id);
+    if (el) {
+      if ((window as any).__lenis) {
+        (window as any).__lenis.scrollTo(el, { offset: -70, duration: 1.1 });
+      } else {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  };
+
   return (
     <section id="home" className="relative min-h-[85vh] sm:min-h-[90vh] flex items-center justify-center pt-20 sm:pt-28 pb-8 sm:pb-16 overflow-hidden scroll-mt-24">
       {/* 3D Interactive WebGL Particle Background */}
@@ -49,7 +61,7 @@ export const Hero: React.FC = () => {
           </p>
 
           {/* High-Credibility Stat Counters Bar (Scrollable on Mobile to Save Vertical Space) */}
-          <div className="flex sm:grid overflow-x-auto sm:overflow-visible gap-2.5 sm:gap-4 no-scrollbar border-y border-zinc-800/80 py-2.5 sm:py-3 max-w-lg sm:grid-cols-3">
+          <div className="flex sm:grid overflow-x-auto sm:overflow-visible gap-2.5 sm:gap-4 no-scrollbar border-y border-zinc-800/80 py-2.5 sm:py-3 max-w-lg sm:grid-cols-3" data-lenis-prevent>
             {PERSONAL_DATA.metrics.map((metric) => (
               <div
                 key={metric.label}
@@ -65,6 +77,7 @@ export const Hero: React.FC = () => {
           <div className="pt-0.5 sm:pt-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3.5">
             <a
               href="#projects"
+              onClick={(e) => handleScrollTo(e, 'projects')}
               className="group px-6 sm:px-7 py-2.5 sm:py-3.5 text-xs font-bold uppercase tracking-wider text-zinc-950 bg-white hover:bg-zinc-200 rounded-full transition-all duration-300 shadow-xl text-center flex items-center justify-center transform-gpu hover:scale-[1.02] active:scale-98"
             >
               <span>View Featured Projects</span>
@@ -72,6 +85,7 @@ export const Hero: React.FC = () => {
             </a>
             <a
               href="#contact"
+              onClick={(e) => handleScrollTo(e, 'contact')}
               className="group px-6 sm:px-7 py-2.5 sm:py-3.5 text-xs font-bold uppercase tracking-wider text-zinc-200 hover:text-white bg-zinc-900/90 border border-zinc-800 hover:border-zinc-700 rounded-full transition-all duration-300 text-center flex items-center justify-center transform-gpu hover:scale-[1.02] active:scale-98"
             >
               <span>Let's Connect</span>
@@ -144,10 +158,11 @@ export const Hero: React.FC = () => {
       {/* Scroll Down Indicator */}
       <motion.a
         href="#about"
+        onClick={(e) => handleScrollTo(e, 'about')}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 0.5 }}
-        className="hidden sm:flex absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex-col items-center text-zinc-500 hover:text-zinc-300 transition-colors"
+        className="hidden sm:flex absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex-col items-center text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer"
       >
         <span className="text-[9px] font-mono uppercase tracking-widest mb-1">Scroll Down</span>
         <ArrowDown className="w-3.5 h-3.5 animate-bounce" />

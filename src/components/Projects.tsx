@@ -141,7 +141,10 @@ export const Projects: React.FC = () => {
 
                 {/* Architectural Performance Metric Chips (Scrollable on Mobile to Save Vertical Space) */}
                 {activeProject.metrics && (
-                  <div className="flex sm:grid overflow-x-auto sm:overflow-visible gap-2 sm:gap-3 no-scrollbar pb-1 sm:pb-0 sm:grid-cols-3">
+                  <div
+                    data-lenis-prevent
+                    className="flex sm:grid overflow-x-auto sm:overflow-visible gap-2 sm:gap-3 no-scrollbar pb-1 sm:pb-0 sm:grid-cols-3"
+                  >
                     {activeProject.metrics.map((m) => (
                       <div key={m.label} className="p-2 sm:p-3 rounded-xl bg-zinc-900/80 border border-zinc-800 text-left min-w-[105px] sm:min-w-0 shrink-0 sm:shrink">
                         <div className="text-xs sm:text-sm font-bold text-white font-mono truncate">{m.value}</div>
@@ -203,7 +206,10 @@ export const Projects: React.FC = () => {
 
                 {/* Tech Stack Pills (Scrollable on Mobile) */}
                 <div className="pt-0.5">
-                  <div className="flex sm:flex-wrap overflow-x-auto sm:overflow-visible gap-1.5 sm:gap-2 no-scrollbar pb-1 snap-x">
+                  <div
+                    data-lenis-prevent
+                    className="flex sm:flex-wrap overflow-x-auto sm:overflow-visible gap-1.5 sm:gap-2 no-scrollbar pb-1 snap-x"
+                  >
                     {activeProject.tech.map((t) => (
                       <span
                         key={t}

@@ -66,7 +66,7 @@ export const About: React.FC = () => {
                     </p>
                     <span className="text-[9px] font-mono text-zinc-500 sm:hidden">Swipe →</span>
                   </div>
-                  <div className="flex sm:flex-wrap overflow-x-auto sm:overflow-visible gap-1.5 sm:gap-2 no-scrollbar pb-1 snap-x">
+                  <div className="flex sm:flex-wrap overflow-x-auto sm:overflow-visible gap-1.5 sm:gap-2 no-scrollbar pb-1 snap-x" data-lenis-prevent>
                     {PERSONAL_DATA.aboutTags.map((tag) => (
                       <span
                         key={tag}
