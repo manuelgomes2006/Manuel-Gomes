@@ -5,14 +5,15 @@ export const ThreeCanvas: React.FC = () => {
 
   useEffect(() => {
     // Only run if desktop (avoid overhead on small mobile screens)
-    if (typeof window !== 'undefined' && window.innerWidth < 768) return;
+    if (typeof window === 'undefined' || window.innerWidth < 768) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    let animationFrameId: number;
+    let animationFrameId = 0;
+    let isVisible = true;
     let width = (canvas.width = canvas.parentElement?.clientWidth || window.innerWidth);
     let height = (canvas.height = canvas.parentElement?.clientHeight || 450);
 
@@ -24,14 +25,14 @@ export const ThreeCanvas: React.FC = () => {
     window.addEventListener('resize', handleResize);
 
     // Optimized particle nodes
-    const numParticles = 38;
+    const numParticles = 28;
     const particles = Array.from({ length: numParticles }, () => ({
       x: (Math.random() - 0.5) * 350,
       y: (Math.random() - 0.5) * 350,
       z: (Math.random() - 0.5) * 350,
-      vx: (Math.random() - 0.5) * 0.25,
-      vy: (Math.random() - 0.5) * 0.25,
-      vz: (Math.random() - 0.5) * 0.25,
+      vx: (Math.random() - 0.5) * 0.2,
+      vy: (Math.random() - 0.5) * 0.2,
+      vz: (Math.random() - 0.5) * 0.2,
     }));
 
     let mouseX = 0;
@@ -50,14 +51,19 @@ export const ThreeCanvas: React.FC = () => {
     let angleY = 0;
 
     const render = () => {
+      if (!isVisible) {
+        animationFrameId = 0;
+        return;
+      }
+
       ctx.clearRect(0, 0, width, height);
 
       // Smooth mouse lerp
       mouseX += (targetMouseX - mouseX) * 0.05;
       mouseY += (targetMouseY - mouseY) * 0.05;
 
-      angleX += 0.0015;
-      angleY += 0.002;
+      angleX += 0.0012;
+      angleY += 0.0016;
 
       const cosX = Math.cos(angleX + mouseY * 0.01);
       const sinX = Math.sin(angleX + mouseY * 0.01);
@@ -85,18 +91,17 @@ export const ThreeCanvas: React.FC = () => {
         const scale = fov / (fov + z2 + 350);
         const px = x1 * scale + width / 2;
         const py = y1 * scale + height / 2;
-        const alpha = Math.min(0.6, Math.max(0.08, (z2 + 180) / 360));
+        const alpha = Math.min(0.5, Math.max(0.06, (z2 + 180) / 360));
 
         projected.push({ px, py, scale, alpha });
 
-        // Draw soft Apple-style luminous node
         ctx.beginPath();
-        ctx.arc(px, py, Math.max(1, 2 * scale), 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.7})`;
+        ctx.arc(px, py, Math.max(1, 1.8 * scale), 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.6})`;
         ctx.fill();
       }
 
-      // Draw lightweight connections only to adjacent nodes (O(N) instead of O(N^2))
+      // Fast lightweight connections
       ctx.lineWidth = 0.5;
       for (let i = 0; i < projected.length - 1; i++) {
         const p1 = projected[i];
@@ -105,8 +110,8 @@ export const ThreeCanvas: React.FC = () => {
         const dy = p1.py - p2.py;
         const distSq = dx * dx + dy * dy;
 
-        if (distSq < 6400) { // dist < 80
-          const alpha = (1 - Math.sqrt(distSq) / 80) * 0.18;
+        if (distSq < 4900) { // dist < 70
+          const alpha = (1 - Math.sqrt(distSq) / 70) * 0.15;
           ctx.beginPath();
           ctx.moveTo(p1.px, p1.py);
           ctx.lineTo(p2.px, p2.py);
@@ -118,19 +123,32 @@ export const ThreeCanvas: React.FC = () => {
       animationFrameId = requestAnimationFrame(render);
     };
 
+    // Pause rendering loop when canvas is scrolled off-screen
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible && !animationFrameId) {
+        animationFrameId = requestAnimationFrame(render);
+      } else if (!isVisible && animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = 0;
+      }
+    });
+    observer.observe(canvas);
+
     animationFrameId = requestAnimationFrame(render);
 
     return () => {
+      observer.disconnect();
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
-      cancelAnimationFrame(animationFrameId);
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
     };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      className="w-full h-full absolute inset-0 pointer-events-none opacity-30 will-change-transform"
+      className="w-full h-full absolute inset-0 pointer-events-none opacity-25 will-change-transform"
     />
   );
 };

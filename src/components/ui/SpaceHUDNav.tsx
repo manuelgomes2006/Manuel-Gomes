@@ -7,26 +7,30 @@ export const SpaceHUDNav: React.FC = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Zero-cost IntersectionObserver replaces layout-thrashing scroll listener
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = ['home', 'about', 'education', 'skills', 'projects', 'contact'];
-      const scrollPos = window.scrollY + 180;
+    const sections = ['home', 'about', 'education', 'skills', 'projects', 'contact'];
 
-      for (const sec of sections) {
-        const el = document.getElementById(sec);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPos >= top && scrollPos < top + height) {
-            setActiveSection(sec);
-            break;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
           }
-        }
+        });
+      },
+      {
+        rootMargin: '-25% 0px -60% 0px',
+        threshold: 0,
       }
-    };
+    );
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   // Prevent background scroll when mobile menu is open

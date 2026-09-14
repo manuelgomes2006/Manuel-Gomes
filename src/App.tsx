@@ -15,16 +15,25 @@ import { Footer } from './components/Footer';
 export function App() {
   const [introFinished, setIntroFinished] = useState(false);
 
-  // Initialize Apple-grade Lenis Smooth Momentum Scrolling
+  // Initialize Apple-grade Lenis Smooth Momentum Scrolling (Desktop only, 100% native on touch)
   useEffect(() => {
+    // Never hijack touch on mobile/tablet — allow native 120Hz compositor scrolling
+    const isTouch =
+      typeof window !== 'undefined' &&
+      ('ontouchstart' in window || navigator.maxTouchPoints > 0 || window.innerWidth < 768);
+
+    if (isTouch) {
+      return;
+    }
+
     const lenis = new Lenis({
-      duration: 1.35,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Apple exponential inertia glide
+      duration: 0.75, // Snappy & immediate response, zero sluggish input lag
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 0.9,
-      touchMultiplier: 1.0,
+      wheelMultiplier: 1.05,
+      touchMultiplier: 0,
       infinite: false,
     });
 

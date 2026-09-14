@@ -3,63 +3,52 @@ import galaxyBg from '../../assets/images/cinematic-galaxy-bg.jpg';
 
 export const CodeMatrixScene: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const layerRef = useRef<HTMLDivElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
 
-  // 120fps Direct DOM Parallax & Butter-Smooth Motion (Zero React Re-renders)
+  // Desktop Mouse Parallax (Zero scroll listeners, zero layout thrashing)
   useEffect(() => {
+    if (typeof window === 'undefined' || 'ontouchstart' in window || window.innerWidth < 768) {
+      return;
+    }
+
     let mouseX = 0;
     let mouseY = 0;
     let targetX = 0;
     let targetY = 0;
-    let scrollY = 0;
+    let animId: number;
 
     const handleMouseMove = (e: MouseEvent) => {
-      targetX = (e.clientX - window.innerWidth / 2) * -0.025;
-      targetY = (e.clientY - window.innerHeight / 2) * -0.025;
-    };
-
-    const handleScroll = () => {
-      scrollY = window.scrollY * -0.05;
+      targetX = (e.clientX - window.innerWidth / 2) * -0.03;
+      targetY = (e.clientY - window.innerHeight / 2) * -0.03;
     };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    window.addEventListener('scroll', handleScroll, { passive: true });
 
-    let animId: number;
-    let time = 0;
-
-    const animateSpace = () => {
-      time += 0.004;
-
-      // Smooth interpolation for mouse parallax
-      mouseX += (targetX - mouseX) * 0.04;
-      mouseY += (targetY - mouseY) * 0.04;
-
-      const breathScale = 1.04 + Math.sin(time) * 0.015;
-
-      if (layerRef.current) {
-        layerRef.current.style.transform = `translate3d(${mouseX.toFixed(2)}px, ${(mouseY + scrollY).toFixed(2)}px, 0) scale(${breathScale.toFixed(4)})`;
-      }
+    const animate = () => {
+      mouseX += (targetX - mouseX) * 0.05;
+      mouseY += (targetY - mouseY) * 0.05;
 
       if (glowRef.current) {
-        glowRef.current.style.transform = `translate3d(${(mouseX * -0.5).toFixed(2)}px, ${(mouseY * -0.5).toFixed(2)}px, 0)`;
+        glowRef.current.style.transform = `translate3d(${mouseX.toFixed(1)}px, ${mouseY.toFixed(1)}px, 0)`;
       }
 
-      animId = requestAnimationFrame(animateSpace);
+      animId = requestAnimationFrame(animate);
     };
 
-    animId = requestAnimationFrame(animateSpace);
+    animId = requestAnimationFrame(animate);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('scroll', handleScroll);
       cancelAnimationFrame(animId);
     };
   }, []);
 
-  // Ambient Drifting Stardust Canvas (Lightweight & Butter-Smooth)
+  // Ambient Stardust Canvas (Paused on Mobile to maximize 120Hz scroll framerate)
   useEffect(() => {
+    if (typeof window === 'undefined' || window.innerWidth < 768) {
+      return;
+    }
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -74,16 +63,16 @@ export const CodeMatrixScene: React.FC = () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
     };
-    window.addEventListener('resize', handleResize, { passive: true });
+    window.addEventListener('resize', handleResize);
 
-    const starCount = 80;
+    const starCount = 45;
     const stars = Array.from({ length: starCount }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
-      size: Math.random() * 1.5 + 0.4,
-      alpha: Math.random() * 0.5 + 0.15,
-      vx: (Math.random() - 0.5) * 0.15,
-      vy: -0.1 - Math.random() * 0.25,
+      size: Math.random() * 1.4 + 0.5,
+      alpha: Math.random() * 0.4 + 0.1,
+      vx: (Math.random() - 0.5) * 0.1,
+      vy: -0.08 - Math.random() * 0.15,
     }));
 
     const render = () => {
@@ -116,27 +105,31 @@ export const CodeMatrixScene: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#000000]">
-      {/* 3D Cosmic Layer with Direct Hardware Transform */}
+      {/* 1. Static Cached Cosmic Layer (No repaint during scroll) */}
       <div
-        ref={layerRef}
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 filter contrast-125 saturate-120 will-change-transform transform-gpu"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-35 filter contrast-125 saturate-110"
         style={{
           backgroundImage: `url(${galaxyBg})`,
-          transform: 'translate3d(0, 0, 0) scale(1.04)',
         }}
       />
 
-      {/* Apple-Style Diffuse Ambient Glow Spheres */}
-      <div ref={glowRef} className="absolute inset-0 pointer-events-none will-change-transform">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-[#0071e3]/[0.08] via-purple-500/[0.04] to-transparent blur-[140px]" />
-        <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] rounded-full bg-gradient-to-tr from-white/[0.03] to-transparent blur-[120px]" />
-      </div>
+      {/* 2. Fast GPU Radial Gradients (Replaces expensive blur filters) */}
+      <div
+        ref={glowRef}
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: `
+            radial-gradient(circle at 50% 30%, rgba(0, 113, 227, 0.08) 0%, transparent 60%),
+            radial-gradient(circle at 80% 70%, rgba(147, 51, 234, 0.04) 0%, transparent 50%)
+          `,
+        }}
+      />
 
-      {/* Apple Obsidian Contrast Vignette */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/90 pointer-events-none" />
+      {/* 3. Obsidian Vignette */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/95 pointer-events-none" />
 
-      {/* Lightweight Stardust Canvas */}
-      <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-10 opacity-60" />
+      {/* 4. Desktop Only Lightweight Stardust */}
+      <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-10 opacity-50 hidden md:block" />
     </div>
   );
 };

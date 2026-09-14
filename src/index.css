@@ -5,7 +5,7 @@
 @layer base {
   :root {
     --apple-bg: #000000;
-    --apple-card: rgba(22, 22, 24, 0.72);
+    --apple-card: rgba(20, 20, 23, 0.92);
     --apple-card-border: rgba(255, 255, 255, 0.08);
     --apple-card-highlight: rgba(255, 255, 255, 0.12);
     --apple-blue: #0071e3;
@@ -15,7 +15,6 @@
   }
 
   html {
-    scroll-behavior: smooth;
     scroll-padding-top: 80px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -61,22 +60,20 @@ html.lenis, html.lenis body {
 
 /* Apple Pro Signature Design Utilities */
 @layer components {
-  /* Apple VisionOS / macOS Frosted Glass Card */
+  /* Apple Liquid Retina Titanium Card (Zero GPU Blur Cost during Scroll) */
   .apple-card {
-    background: rgba(22, 22, 24, 0.72);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    background: rgba(20, 20, 23, 0.92);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
-    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
   }
 
   .apple-card:hover {
     border-color: rgba(255, 255, 255, 0.16);
-    box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.65), inset 0 1px 0 0 rgba(255, 255, 255, 0.18);
+    box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.65), inset 0 1px 0 0 rgba(255, 255, 255, 0.16);
   }
 
-  /* Apple Navigation Glass Pill */
+  /* Apple Navigation Glass Pill (Fixed Header Only) */
   .apple-glass-nav {
     background: rgba(0, 0, 0, 0.75);
     backdrop-filter: blur(20px) saturate(180%);
@@ -91,7 +88,7 @@ html.lenis, html.lenis body {
     color: #000000;
     font-weight: 600;
     border-radius: 9999px;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     box-shadow: 0 4px 14px rgba(255, 255, 255, 0.12);
   }
 
@@ -108,16 +105,15 @@ html.lenis, html.lenis body {
   .apple-btn-secondary {
     background: rgba(255, 255, 255, 0.08);
     color: #f5f5f7;
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     font-weight: 500;
     border-radius: 9999px;
-    backdrop-filter: blur(16px);
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .apple-btn-secondary:hover {
     background: rgba(255, 255, 255, 0.14);
-    border-color: rgba(255, 255, 255, 0.24);
+    border-color: rgba(255, 255, 255, 0.22);
     color: #ffffff;
     transform: scale(1.02);
   }

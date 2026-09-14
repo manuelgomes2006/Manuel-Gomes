@@ -23,8 +23,13 @@ export const Hero: React.FC = () => {
       {/* 3D Apple Constellation Background */}
       <ThreeCanvas />
 
-      {/* Apple Diffuse Ambient Light Flares */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[320px] sm:w-[800px] h-[320px] sm:h-[800px] bg-gradient-to-tr from-[#0071e3]/[0.07] via-white/[0.02] to-transparent blur-[140px] rounded-full pointer-events-none" />
+      {/* Apple Diffuse Ambient Light Flares (Fast GPU radial-gradient) */}
+      <div
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[320px] sm:w-[800px] h-[320px] sm:h-[800px] pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at center, rgba(0, 113, 227, 0.08) 0%, rgba(255, 255, 255, 0.02) 40%, transparent 70%)',
+        }}
+      />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center relative z-10">
         
